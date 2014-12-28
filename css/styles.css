@@ -1,0 +1,22 @@
+.react-resizable {
+  position: relative;
+}
+.react-draggable-active {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+.react-resizable-handle {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  line-height: 28px;
+  font-size: 20px;
+  text-align: right;
+  cursor: se-resize;
+}
+.react-resizable:hover .react-resizable-handle {
+  opacity: 1;
+}

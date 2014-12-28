@@ -1,0 +1,36 @@
+{
+  "name": "react-grid-layout",
+  "version": "0.0.1",
+  "description": "A component that is resizable with handles.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "./node_modules/.bin/webpack",
+    "dev-server": "echo 'Open http://localhost:4002/examples/1.html'; webpack-dev-server --config webpack-dev-server.config.js --hot --progress --colors --port 4002 --content-base ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:STRML/react-resizable.git"
+  },
+  "keywords": [
+    "react",
+    "resize",
+    "resizable"
+  ],
+  "author": "Samuel Reed <samuel.trace.reed@gmail.com> (http://strml.net/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/STRML/react-resizable/issues"
+  },
+  "homepage": "https://github.com/STRML/react-resizable",
+  "devDependencies": {
+    "css-loader": "^0.9.0",
+    "jsx-loader": "^0.12.2",
+    "lodash": "^2.4.1",
+    "react": "^0.12.2",
+    "react-hot-loader": "^1.0.4",
+    "style-loader": "^0.8.2",
+    "webpack": "^1.4.14",
+    "webpack-dev-server": "^1.7.0"
+  }
+}
