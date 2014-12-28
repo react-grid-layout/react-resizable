@@ -28,14 +28,17 @@ var ResizableBox = module.exports = React.createClass({
     // Basic wrapper around a Resizable instance.
     // If you use Resizable directly, you are responsible for updating the component
     // with a new width and height.
+    var {handleSize, minConstraints, maxConstraints, ...props} = this.props;
     return (
       <Resizable 
-        {...this.props}
+        minConstraints={minConstraints}
+        maxConstraints={maxConstraints}
+        handleSize={handleSize}
         width={this.state.width}
         height={this.state.height}
         onResize={this.onResize}
         >
-        <div className="box" style={{width: this.state.width + 'px', height: this.state.height + 'px'}}>
+        <div style={{width: this.state.width + 'px', height: this.state.height + 'px'}} {...props}>
           {this.props.children}
         </div>
       </Resizable>
