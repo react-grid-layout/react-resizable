@@ -12,10 +12,10 @@ var TestLayout = module.exports = React.createClass({
   render() {
     return (
       <div>
-        <ResizableBox width={200} height={200}>
+        <ResizableBox className="box" width={200} height={200}>
           Resizable box, starting at 200x200, no constraints
         </ResizableBox>
-        <ResizableBox width={200} height={200} minConstraints={[150, 150]} maxConstraints={[500, 300]}>
+        <ResizableBox className="box" width={200} height={200} minConstraints={[150, 150]} maxConstraints={[500, 300]}>
           Resizable box, starting at 200x200. Min size is 150x150, max is 500x300.
         </ResizableBox>
       </div>

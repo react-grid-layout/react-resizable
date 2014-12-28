@@ -24,22 +24,22 @@ var Resizable = module.exports = React.createClass({
     };
   },
 
-  getInitialState() {
-    var p = this.props;
-    return {
-      cancelled: false,
-      minConstraints: this.parseConstraints(p.minConstraints, p.handleSize[0]) || this.props.handleSize,
-      maxConstraints: this.parseConstraints(p.maxConstraints, p.handleSize[1])
-    };
+  minConstraints() {
+    return this.parseConstraints(this.props.minConstraints, this.props.handleSize[0]) || this.props.handleSize;
   },
 
-  componentWillReceiveProps(p) {
-    this.setState({
-      minConstraints: this.parseConstraints(p.minConstraints, p.handleSize[0]) || this.props.handleSize,
-      maxConstraints: this.parseConstraints(p.maxConstraints, p.handleSize[1])
-    });
+  maxConstraints() {
+    return this.parseConstraints(this.props.maxConstraints, this.props.handleSize[1]);
   },
 
+  /**
+   * Constraints must be subtracted by the size of the handle to work properly.
+   * This has a side-effect of effectively limiting the minimum size to the handleSize,
+   * which IMO is fine.
+   * @param  {Array} constraints Constraints array.
+   * @param  {Array} handleSize  Handle size array.
+   * @return {Array}             Transformed constraints.
+   */
   parseConstraints(constraints, handleSize) {
     if (!constraints) return;
     return constraints.map(function(c) {
@@ -47,6 +47,12 @@ var Resizable = module.exports = React.createClass({
     });
   },
 
+  /**
+   * Given left and top coords of the handle, figure out the width and height of the box.
+   * @param  {Number} options.left Left coord.
+   * @param  {Number} options.top  Top coord.
+   * @return {Object}              Width & height (px).
+   */
   calcWH({left, top}) {
     var s = this.props.handleSize;
     return {width: left + s[0], height: top + s[1]};
@@ -88,8 +94,8 @@ var Resizable = module.exports = React.createClass({
           onStop={this.onResizeStop}
           onStart={this.onResizeStart}
           onDrag={this.onResize}
-          minConstraints={this.state.minConstraints}
-          maxConstraints={this.state.maxConstraints}
+          minConstraints={this.minConstraints()}
+          maxConstraints={this.maxConstraints()}
           >
           <span className="react-resizable-handle">⌟</span>
         </Draggable>

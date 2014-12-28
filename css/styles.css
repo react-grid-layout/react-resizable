@@ -12,10 +12,10 @@
   position: absolute;
   width: 20px;
   height: 20px;
-  line-height: 28px;
+  line-height: 22px;
   font-size: 20px;
   box-sizing: border-box;
-  padding: 0 1px 1px 0;
+  padding: 0 3px 3px 0;
   text-align: right;
   cursor: se-resize;
 }
