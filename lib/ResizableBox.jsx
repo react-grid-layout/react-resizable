@@ -1,6 +1,6 @@
 'use strict';
 var React = require('react/addons');
-var Resizable = require('./Resizable.jsx');
+var Resizable = require('./Resizable');
 
 // An example use of Resizable.
 var ResizableBox = module.exports = React.createClass({
