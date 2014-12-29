@@ -1,12 +1,14 @@
 'use strict';
 var React = require('react/addons');
 var Draggable = require('react-draggable');
+var assign = Object.assign || require('object.assign');
 
 var Resizable = module.exports = React.createClass({
   displayName: 'Resizable',
   mixins: [React.addons.PureRenderMixin],
 
   propTypes: {
+    children: React.PropTypes.element,
     // Functions
     onResizeStop: React.PropTypes.func,
     onResizeStart: React.PropTypes.func,
@@ -85,9 +87,15 @@ var Resizable = module.exports = React.createClass({
 
   render() {
     var p = this.props;
-    var child = React.addons.cloneWithProps(React.Children.only(this.props.children), {
-      children: [
-        React.Children.only(this.props.children).props.children,
+    // What we're doing here is getting the child of this element, and cloning it with this element's props. 
+    // We are then defining its children as: 
+    // Its original children (resizable's child's children), and
+    // A draggable handle.
+
+    return React.addons.cloneWithProps(p.children, assign({}, p, {
+      // Array.isArray() check fixes react-hot-loader, doesn't seem to have other consequences
+      children: Array.isArray(p.children) ? p.children : [
+        p.children.props.children,
         <Draggable
           start={{x: p.width - 20 + 'px', y: p.height - 20 + 'px'}}
           moveOnStartChange={true}
@@ -100,8 +108,6 @@ var Resizable = module.exports = React.createClass({
           <span className="react-resizable-handle">⌟</span>
         </Draggable>
       ]
-    });
-
-    return child;
+    }));
   }
 });
