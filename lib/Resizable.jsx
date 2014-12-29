@@ -105,7 +105,7 @@ var Resizable = module.exports = React.createClass({
           minConstraints={this.minConstraints()}
           maxConstraints={this.maxConstraints()}
           >
-          <span className="react-resizable-handle">⌟</span>
+          <span className="react-resizable-handle" />
         </Draggable>
       ]
     }));
