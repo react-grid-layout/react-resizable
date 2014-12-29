@@ -8,7 +8,7 @@
   -o-user-select: none;
   user-select: none;
 }
-.react-resizable-handle {
+.react-resizable-handle.react-draggable {
   position: absolute;
   width: 20px;
   height: 20px;
@@ -19,7 +19,4 @@
   background-origin: content-box;
   box-sizing: border-box;
   cursor: se-resize;
-}
-.react-resizable:hover .react-resizable-handle {
-  opacity: 1;
 }
