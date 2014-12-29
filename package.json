@@ -1,11 +1,11 @@
 {
   "name": "react-resizable",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "A component that is resizable with handles.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "./node_modules/.bin/webpack",
+    "build": "webpack .",
     "dev-server": "echo 'Open http://localhost:4002/examples/1.html'; webpack-dev-server --config webpack-dev-server.config.js --hot --progress --colors --port 4002 --content-base ."
   },
   "repository": {
@@ -32,5 +32,8 @@
     "style-loader": "^0.8.2",
     "webpack": "^1.4.14",
     "webpack-dev-server": "^1.7.0"
+  },
+  "dependencies": {
+    "object.assign": "^1.1.1"
   }
 }
