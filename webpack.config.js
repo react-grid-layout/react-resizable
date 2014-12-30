@@ -10,7 +10,7 @@ module.exports = {
     },
     module: {
       loaders: [
-        {test: /\.jsx$/, loader: 'jsx-loader?harmony'}
+        {test: /\.jsx?$/, exclude: /node_modules/, loader: '6to5-loader?experimental=true'},
       ]
     },
     resolve: {

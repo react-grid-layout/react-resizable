@@ -1,4 +1,9 @@
-JAVASCRIPT_DIR := .
- 
+.PHONY: js
+
 js:
-	jsx $(JAVASCRIPT_DIR)/lib $(JAVASCRIPT_DIR)/build --harmony -x jsx --no-cache-dir
+	rm -rf ./build
+	./node_modules/.bin/6to5 --experimental ./lib --out-dir ./build
+	rename 's/jsx$$/js/' ./build/*
+
+check-build:
+	bash check-build.sh

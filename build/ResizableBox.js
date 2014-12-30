@@ -1,47 +1,61 @@
-'use strict';
-var React = require('react/addons');
-var Resizable = require('./Resizable');
+"use strict";
+
+var _objectWithoutProperties = function (obj, keys) {
+  var target = {};
+  for (var i in obj) {
+    if (keys.indexOf(i) >= 0) continue;
+    if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;
+    target[i] = obj[i];
+  }
+
+  return target;
+};
+
+"use strict";
+var React = require("react/addons");
+var Resizable = require("./Resizable");
 
 // An example use of Resizable.
 var ResizableBox = module.exports = React.createClass({
-  displayName: 'ResizableBox',
+  displayName: "ResizableBox",
   mixins: [React.addons.PureRenderMixin],
 
-  propTypes: {
-  },
+  propTypes: {},
 
-  getInitialState:function() {
+  getInitialState: function () {
     return {
       width: this.props.width,
-      height: this.props.height 
+      height: this.props.height
     };
   },
 
-  onResize:function(event, $__0 ) {var element=$__0.element,size=$__0.size;
+  onResize: function (event, _ref) {
+    var element = _ref.element;
+    var size = _ref.size;
     this.setState({
       width: size.width,
       height: size.height
     });
   },
 
-  render:function() {
+  render: function () {
     // Basic wrapper around a Resizable instance.
     // If you use Resizable directly, you are responsible for updating the component
     // with a new width and height.
-    var $__0=     this.props,handleSize=$__0.handleSize,minConstraints=$__0.minConstraints,maxConstraints=$__0.maxConstraints,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{handleSize:1,minConstraints:1,maxConstraints:1});
-    return (
-      React.createElement(Resizable, {
-        minConstraints: minConstraints, 
-        maxConstraints: maxConstraints, 
-        handleSize: handleSize, 
-        width: this.state.width, 
-        height: this.state.height, 
-        onResize: this.onResize
-        }, 
-        React.createElement("div", React.__spread({style: {width: this.state.width + 'px', height: this.state.height + 'px'}},  props), 
-          this.props.children
-        )
-      )
-    );
+    var handleSize = this.props.handleSize;
+    var minConstraints = this.props.minConstraints;
+    var maxConstraints = this.props.maxConstraints;
+    var props = _objectWithoutProperties(this.props, ["handleSize", "minConstraints", "maxConstraints"]);
+
+    return React.createElement(Resizable, {
+      minConstraints: minConstraints,
+      maxConstraints: maxConstraints,
+      handleSize: handleSize,
+      width: this.state.width,
+      height: this.state.height,
+      onResize: this.onResize
+    }, React.createElement("div", React.__spread({
+      style: { width: this.state.width + "px", height: this.state.height + "px" }
+    }, props), this.props.children));
   }
 });
