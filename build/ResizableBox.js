@@ -32,10 +32,12 @@ var ResizableBox = module.exports = React.createClass({
   onResize: function (event, _ref) {
     var element = _ref.element;
     var size = _ref.size;
-    this.setState({
-      width: size.width,
-      height: size.height
-    });
+    if (size.width !== this.state.width || size.height !== this.state.height) {
+      this.setState({
+        width: size.width,
+        height: size.height
+      });
+    }
   },
 
   render: function () {
@@ -53,7 +55,8 @@ var ResizableBox = module.exports = React.createClass({
       handleSize: handleSize,
       width: this.state.width,
       height: this.state.height,
-      onResize: this.onResize
+      onResize: this.onResize,
+      draggableOpts: this.props.draggableOpts
     }, React.createElement("div", React.__spread({
       style: { width: this.state.width + "px", height: this.state.height + "px" }
     }, props), this.props.children));

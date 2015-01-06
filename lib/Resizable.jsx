@@ -16,8 +16,10 @@ var Resizable = module.exports = React.createClass({
 
     width: React.PropTypes.number.isRequired,
     height: React.PropTypes.number.isRequired,
-    // If you change this, be sure to update styles
-    handleSize: React.PropTypes.array
+    // If you change this, be sure to update your css
+    handleSize: React.PropTypes.array,
+    // These will be passed wholesale to react-draggable
+    draggableOpts: React.PropTypes.object
   },
 
   getDefaultProps() {
@@ -59,6 +61,7 @@ var Resizable = module.exports = React.createClass({
       children: [
         p.children.props.children,
         <Draggable
+          {...p.draggableOpts}
           start={{x: p.width - 20 + 'px', y: p.height - 20 + 'px'}}
           moveOnStartChange={true}
           onStop={this.resizeHandler('onResizeStop')}
