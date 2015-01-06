@@ -1,10 +1,10 @@
-'use strict';
-var React = require('react/addons');
-var Draggable = require('react-draggable');
-var assign = Object.assign || require('object.assign');
+"use strict";
+var React = require("react/addons");
+var Draggable = require("react-draggable");
+var assign = Object.assign || require("object.assign");
 
 var Resizable = module.exports = React.createClass({
-  displayName: 'Resizable',
+  displayName: "Resizable",
   mixins: [React.addons.PureRenderMixin],
 
   propTypes: {
@@ -22,17 +22,17 @@ var Resizable = module.exports = React.createClass({
     draggableOpts: React.PropTypes.object
   },
 
-  getDefaultProps() {
+  getDefaultProps: function () {
     return {
-      handleSize: [20, 20] 
+      handleSize: [20, 20]
     };
   },
 
-  minConstraints() {
+  minConstraints: function () {
     return parseConstraints(this.props.minConstraints, this.props.handleSize[0]) || this.props.handleSize;
   },
 
-  maxConstraints() {
+  maxConstraints: function () {
     return parseConstraints(this.props.maxConstraints, this.props.handleSize[1]);
   },
 
@@ -43,36 +43,34 @@ var Resizable = module.exports = React.createClass({
    * @param  {String} handlerName Handler name to wrap.
    * @return {Function}           Handler function.
    */
-  resizeHandler(handlerName) {
+  resizeHandler: function (handlerName) {
     var me = this;
-    return function(e, {element, position}) {
-      me.props[handlerName] && me.props[handlerName](e, {element, size: calcWH(position, me.props.handleSize)});
+    return function (e, _ref) {
+      var element = _ref.element;
+      var position = _ref.position;
+      me.props[handlerName] && me.props[handlerName](e, { element: element, size: calcWH(position, me.props.handleSize) });
     };
   },
 
-  render() {
+  render: function () {
     var p = this.props;
-    // What we're doing here is getting the child of this element, and cloning it with this element's props. 
-    // We are then defining its children as: 
+    // What we're doing here is getting the child of this element, and cloning it with this element's props.
+    // We are then defining its children as:
     // Its original children (resizable's child's children), and
     // A draggable handle.
 
     return React.addons.cloneWithProps(p.children, assign({}, p, {
-      children: [
-        p.children.props.children,
-        <Draggable
-          {...p.draggableOpts}
-          start={{x: p.width - 20 + 'px', y: p.height - 20 + 'px'}}
-          moveOnStartChange={true}
-          onStop={this.resizeHandler('onResizeStop')}
-          onStart={this.resizeHandler('onResizeStart')}
-          onDrag={this.resizeHandler('onResize')}
-          minConstraints={this.minConstraints()}
-          maxConstraints={this.maxConstraints()}
-          >
-          <span className="react-resizable-handle" />
-        </Draggable>
-      ]
+      children: [p.children.props.children, React.createElement(Draggable, React.__spread({}, p.draggableOpts, {
+        start: { x: p.width - 20 + "px", y: p.height - 20 + "px" },
+        moveOnStartChange: true,
+        onStop: this.resizeHandler("onResizeStop"),
+        onStart: this.resizeHandler("onResizeStart"),
+        onDrag: this.resizeHandler("onResize"),
+        minConstraints: this.minConstraints(),
+        maxConstraints: this.maxConstraints()
+      }), React.createElement("span", {
+        className: "react-resizable-handle"
+      }))]
     }));
   }
 });
@@ -84,8 +82,10 @@ var Resizable = module.exports = React.createClass({
  * @param  {Array}  handleSize   Handle data.
  * @return {Object}              Coordinates
  */
-function calcWH({left, top}, handleSize) {
-  return {width: left + handleSize[0], height: top + handleSize[1]};
+function calcWH(_ref2, handleSize) {
+  var left = _ref2.left;
+  var top = _ref2.top;
+  return { width: left + handleSize[0], height: top + handleSize[1] };
 }
 
 /**
@@ -98,7 +98,7 @@ function calcWH({left, top}, handleSize) {
  */
 function parseConstraints(constraints, handleSize) {
   if (!constraints) return;
-  return constraints.map(function(c) {
+  return constraints.map(function (c) {
     return c - handleSize;
   });
 }

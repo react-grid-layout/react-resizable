@@ -12,6 +12,10 @@ See the example and associated code in [TestLayout](/test/TestLayout.jsx) and
 Make sure you use the associated styles in [/css/styles.css](/css/styles.css), as without them, you will have
 problems with handle placement and visibility.
 
+This module depends on a fork of [mzabriskie's react-draggable](https://github.com/mzabriskie/react-draggable), 
+hosted [here](https://github.com/strml/react-draggable). You can pass options directly to the underlying `Draggable`
+instance by using the prop `draggableOpts`. See the demo for more on this.
+
 
 ### Usage
 
@@ -21,9 +25,26 @@ var ResizableBox = require('react-resizable').ResizableBox;
 ...
 render: function() {
   return (
-    <ResizableBox width={200} height={200} 
+    <ResizableBox width={200} height={200} draggableOpts={{...}}
         minConstraints={[100, 100]} maxConstraints={[300, 300]}>
       <span>Contents</span>
     </ResizableBox>
   );
 }
+
+
+### Options
+
+```javascript
+// Functions
+onResizeStop: React.PropTypes.func,
+onResizeStart: React.PropTypes.func,
+onResize: React.PropTypes.func,
+
+width: React.PropTypes.number.isRequired,
+height: React.PropTypes.number.isRequired,
+// If you change this, be sure to update your css
+handleSize: React.PropTypes.array,
+// These will be passed wholesale to react-draggable
+draggableOpts: React.PropTypes.object
+```

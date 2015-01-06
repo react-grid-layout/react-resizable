@@ -1,12 +1,15 @@
 {
   "name": "react-resizable",
-  "version": "0.0.3",
+  "version": "0.2.0",
   "description": "A component that is resizable with handles.",
   "main": "index.js",
   "scripts": {
+    "lint": "jsxhint lib/ test/",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack .",
-    "dev-server": "echo 'Open http://localhost:4002/examples/1.html'; webpack-dev-server --config webpack-dev-server.config.js --hot --progress --colors --port 4002 --content-base ."
+    "build": "make js",
+    "build-example": "webpack",
+    "check-build": "make check-build",
+    "dev": "echo 'Open http://localhost:4002/examples/1.html'; webpack-dev-server --config webpack-dev-server.config.js --hot --progress --colors --port 4002 --content-base ."
   },
   "repository": {
     "type": "git",
@@ -24,9 +27,12 @@
   },
   "homepage": "https://github.com/STRML/react-resizable",
   "devDependencies": {
+    "6to5": "^2.2.0",
+    "6to5-loader": "^1.0.0",
     "css-loader": "^0.9.0",
-    "jsx-loader": "^0.12.2",
+    "jshint": "^2.5.11",
     "lodash": "^2.4.1",
+    "precommit-hook": "^1.0.7",
     "react": "^0.12.2",
     "react-hot-loader": "^1.0.4",
     "style-loader": "^0.8.2",
@@ -34,6 +40,14 @@
     "webpack-dev-server": "^1.7.0"
   },
   "dependencies": {
-    "object.assign": "^1.1.1"
-  }
+    "object.assign": "^1.1.1",
+    "react-draggable": "strml/react-draggable"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "precommit": [
+    "check-build",
+    "lint"
+  ]
 }

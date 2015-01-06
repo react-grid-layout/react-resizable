@@ -15,6 +15,9 @@ var TestLayout = module.exports = React.createClass({
         <ResizableBox className="box" width={200} height={200}>
           <span className="text">Resizable box, starting at 200x200, no constraints</span>
         </ResizableBox>
+        <ResizableBox className="box" width={200} height={200} draggableOpts={{grid: [25, 25]}}>
+          <span className="text">Resizable box that snaps to even intervals of 25px.</span>
+        </ResizableBox>
         <ResizableBox className="box" width={200} height={200} minConstraints={[150, 150]} maxConstraints={[500, 300]}>
           <span className="text">Resizable box, starting at 200x200. Min size is 150x150, max is 500x300.</span>
         </ResizableBox>
