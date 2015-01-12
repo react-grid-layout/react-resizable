@@ -1,7 +1,7 @@
 'use strict';
 var React = require('react/addons');
 var Draggable = require('react-draggable');
-var assign = Object.assign || require('object.assign');
+var assign = require('object-assign');
 
 var Resizable = module.exports = React.createClass({
   displayName: 'Resizable',

@@ -40,7 +40,7 @@
     "webpack-dev-server": "^1.7.0"
   },
   "dependencies": {
-    "object.assign": "^1.1.1",
+    "object-assign": "^2.0.0",
     "react-draggable": "strml/react-draggable"
   },
   "publishConfig": {
