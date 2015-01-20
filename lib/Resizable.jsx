@@ -1,11 +1,13 @@
 'use strict';
-var React = require('react/addons');
+var React = require('react');
 var Draggable = require('react-draggable');
 var assign = require('object-assign');
+var PureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
+var cloneWithProps = require('react/lib/cloneWithProps');
 
 var Resizable = module.exports = React.createClass({
   displayName: 'Resizable',
-  mixins: [React.addons.PureRenderMixin],
+  mixins: [PureRenderMixin],
 
   propTypes: {
     children: React.PropTypes.element,
@@ -57,7 +59,7 @@ var Resizable = module.exports = React.createClass({
     // Its original children (resizable's child's children), and
     // A draggable handle.
 
-    return React.addons.cloneWithProps(p.children, assign({}, p, {
+    return cloneWithProps(p.children, assign({}, p, {
       children: [
         p.children.props.children,
         <Draggable
