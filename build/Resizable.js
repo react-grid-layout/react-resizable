@@ -63,7 +63,7 @@ var Resizable = module.exports = React.createClass({
 
     return cloneWithProps(p.children, assign({}, p, {
       children: [p.children.props.children, React.createElement(Draggable, React.__spread({}, p.draggableOpts, {
-        start: { x: p.width - 20 + "px", y: p.height - 20 + "px" },
+        start: { x: p.width - 20, y: p.height - 20 },
         moveOnStartChange: true,
         onStop: this.resizeHandler("onResizeStop"),
         onStart: this.resizeHandler("onResizeStart"),
