@@ -1,10 +1,12 @@
 'use strict';
 var React = require('react');
 var Resizable = require('./Resizable');
+var PureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
 
 // An example use of Resizable.
 var ResizableBox = module.exports = React.createClass({
   displayName: 'ResizableBox',
+  mixins: [PureRenderMixin],
 
   propTypes: {
   },

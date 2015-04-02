@@ -1,9 +1,11 @@
 'use strict';
 var React = require('react');
 var Draggable = require('react-draggable');
+var PureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
 
 var Resizable = module.exports = React.createClass({
   displayName: 'Resizable',
+  mixins: [PureRenderMixin],
 
   propTypes: {
     children: React.PropTypes.element,
