@@ -1,13 +1,9 @@
 'use strict';
 var React = require('react');
 var Draggable = require('react-draggable');
-var assign = require('object-assign');
-var PureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
-var cloneWithProps = require('react/lib/cloneWithProps');
 
 var Resizable = module.exports = React.createClass({
   displayName: 'Resizable',
-  mixins: [PureRenderMixin],
 
   propTypes: {
     children: React.PropTypes.element,
@@ -54,13 +50,13 @@ var Resizable = module.exports = React.createClass({
 
   render() {
     var p = this.props;
+
     // What we're doing here is getting the child of this element, and cloning it with this element's props.
     // We are then defining its children as:
     // Its original children (resizable's child's children), and
     // A draggable handle.
-
-    return cloneWithProps(p.children, assign({}, p, {
-      children: [
+    return React.cloneElement(p.children, p,
+      [
         p.children.props.children,
         <Draggable
           {...p.draggableOpts}
@@ -71,11 +67,12 @@ var Resizable = module.exports = React.createClass({
           onDrag={this.resizeHandler('onResize')}
           minConstraints={this.minConstraints()}
           maxConstraints={this.maxConstraints()}
+          key="draggable"
           >
           <span className="react-resizable-handle" />
         </Draggable>
       ]
-    }));
+    );
   }
 });
 

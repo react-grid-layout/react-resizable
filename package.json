@@ -27,27 +27,30 @@
   },
   "homepage": "https://github.com/STRML/react-resizable",
   "devDependencies": {
-    "6to5": "^2.2.0",
-    "6to5-loader": "^1.0.0",
-    "css-loader": "^0.9.0",
-    "jshint": "^2.5.11",
-    "lodash": "^2.4.1",
-    "precommit-hook": "^1.0.7",
-    "react": "^0.12.2",
-    "react-hot-loader": "^1.0.4",
-    "style-loader": "^0.8.2",
-    "webpack": "^1.4.14",
-    "webpack-dev-server": "^1.7.0"
+    "babel": "^5.0.1",
+    "babel-core": "^5.0.1",
+    "babel-loader": "^5.0.0",
+    "css-loader": "^0.9.1",
+    "jshint": "^2.6.3",
+    "lodash": "^3.6.0",
+    "pre-commit": "^1.0.6",
+    "precommit-hook": "^2.0.1",
+    "react": "^0.13.1",
+    "react-hot-loader": "^1.2.4",
+    "style-loader": "^0.9.0",
+    "webpack": "^1.7.3",
+    "webpack-dev-server": "^1.8.0"
+  },
+  "peerDependencies": {
+    "react": "^0.13"
   },
   "dependencies": {
-    "object-assign": "^2.0.0",
     "react-draggable": "strml/react-draggable"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
   "precommit": [
-    "check-build",
     "lint"
   ]
 }
