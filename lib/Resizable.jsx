@@ -26,7 +26,7 @@ var Resizable = module.exports = React.createClass({
 
   getDefaultProps() {
     return {
-      handleSize: [20, 20] 
+      handleSize: [20, 20]
     };
   },
 
@@ -41,7 +41,7 @@ var Resizable = module.exports = React.createClass({
 
   /**
    * Wrapper around drag events to provide more useful data.
-   * 
+   *
    * @param  {String} handlerName Handler name to wrap.
    * @return {Function}           Handler function.
    */
@@ -54,8 +54,8 @@ var Resizable = module.exports = React.createClass({
 
   render() {
     var p = this.props;
-    // What we're doing here is getting the child of this element, and cloning it with this element's props. 
-    // We are then defining its children as: 
+    // What we're doing here is getting the child of this element, and cloning it with this element's props.
+    // We are then defining its children as:
     // Its original children (resizable's child's children), and
     // A draggable handle.
 

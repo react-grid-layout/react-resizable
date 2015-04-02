@@ -41,7 +41,7 @@ var Resizable = module.exports = React.createClass({
 
   /**
    * Wrapper around drag events to provide more useful data.
-   * 
+   *
    * @param  {String} handlerName Handler name to wrap.
    * @return {Function}           Handler function.
    */

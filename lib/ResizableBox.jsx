@@ -14,7 +14,7 @@ var ResizableBox = module.exports = React.createClass({
   getInitialState() {
     return {
       width: this.props.width,
-      height: this.props.height 
+      height: this.props.height
     };
   },
 
@@ -33,7 +33,7 @@ var ResizableBox = module.exports = React.createClass({
     // with a new width and height.
     var {handleSize, minConstraints, maxConstraints, ...props} = this.props;
     return (
-      <Resizable 
+      <Resizable
         minConstraints={minConstraints}
         maxConstraints={maxConstraints}
         handleSize={handleSize}

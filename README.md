@@ -6,13 +6,13 @@ A simple widget that can be resized via a handle.
 
 You can either use the `<Resizable>` element directly, or use the much simpler `<ResizableBox>` element.
 
-See the example and associated code in [TestLayout](/test/TestLayout.jsx) and 
+See the example and associated code in [TestLayout](/test/TestLayout.jsx) and
 [ResizableBox](/lib/ResizableBox.jsx) for more details.
 
 Make sure you use the associated styles in [/css/styles.css](/css/styles.css), as without them, you will have
 problems with handle placement and visibility.
 
-This module depends on a fork of [mzabriskie's react-draggable](https://github.com/mzabriskie/react-draggable), 
+This module depends on a fork of [mzabriskie's react-draggable](https://github.com/mzabriskie/react-draggable),
 hosted [here](https://github.com/strml/react-draggable). You can pass options directly to the underlying `Draggable`
 instance by using the prop `draggableOpts`. See the demo for more on this.
 

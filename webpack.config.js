@@ -1,7 +1,7 @@
 module.exports = {
     context: __dirname,
     entry: [
-      "./test/test.js", 
+      "./test/test.js",
     ],
     output: {
         path: __dirname + "/dist",
