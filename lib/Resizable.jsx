@@ -2,13 +2,16 @@
 var React = require('react');
 var Draggable = require('react-draggable');
 var PureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
+var assign = require('object-assign');
+var cloneWithProps = require('react/lib/cloneWithProps');
 
 var Resizable = module.exports = React.createClass({
   displayName: 'Resizable',
   mixins: [PureRenderMixin],
 
   propTypes: {
-    children: React.PropTypes.element,
+    // Require that one and only one child be present.
+    children: React.PropTypes.element.isRequired,
     // Functions
     onResizeStop: React.PropTypes.func,
     onResizeStart: React.PropTypes.func,
@@ -57,8 +60,8 @@ var Resizable = module.exports = React.createClass({
     // We are then defining its children as:
     // Its original children (resizable's child's children), and
     // A draggable handle.
-    return React.cloneElement(p.children, p,
-      [
+    return cloneWithProps(p.children, assign({}, p, {
+      children: [
         p.children.props.children,
         <Draggable
           {...p.draggableOpts}
@@ -69,12 +72,11 @@ var Resizable = module.exports = React.createClass({
           onDrag={this.resizeHandler('onResize')}
           minConstraints={this.minConstraints()}
           maxConstraints={this.maxConstraints()}
-          key="draggable"
           >
           <span className="react-resizable-handle" />
         </Draggable>
       ]
-    );
+    }));
   }
 });
 
