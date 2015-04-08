@@ -9,22 +9,56 @@ var ResizableBox = module.exports = React.createClass({
   mixins: [PureRenderMixin],
 
   propTypes: {
+    lockAspectRatio: React.PropTypes.bool
+  },
+
+  getDefaultProps() {
+    return {
+      lockAspectRatio: false,
+      handleSize: [20,20],
+      minConstraints: [20,20]
+    };
   },
 
   getInitialState() {
     return {
       width: this.props.width,
-      height: this.props.height
+      height: this.props.height,
+      aspectRatio: this.props.width / this.props.height
     };
   },
 
   onResize(event, {element, size}) {
-    if (size.width !== this.state.width || size.height !== this.state.height) {
-      this.setState({
-        width: size.width,
-        height: size.height
-      });
+    var {width, height} = size;
+    var widthChanged = width !== this.state.width, heightChanged = height !== this.state.height;
+    if (!widthChanged && !heightChanged) return;
+
+    if (this.props.lockAspectRatio) {
+      [width, height] = this.preserveAspectRatio(width, height);
     }
+
+    this.setState({
+      width: width,
+      height: height
+    });
+  },
+
+  // If you do this, be careful of constraints
+  preserveAspectRatio(width, height) {
+    var [min, max] = [this.props.minConstraints, this.props.maxConstraints];
+
+    height = width / this.state.aspectRatio;
+    width = height * this.state.aspectRatio;
+
+    if (min) {
+      width = Math.max(min[0], width);
+      height = Math.max(min[1], height);
+    }
+    if (max) {
+      width = Math.min(max[0], width);
+      height = Math.min(max[1], height);
+    }
+    return [width, height];
   },
 
   render() {

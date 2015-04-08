@@ -34,8 +34,7 @@ render: function() {
 
 
 ### Options
-
-```javascript
+{
 // Functions
 onResizeStop: React.PropTypes.func,
 onResizeStart: React.PropTypes.func,
@@ -47,4 +46,5 @@ height: React.PropTypes.number.isRequired,
 handleSize: React.PropTypes.array,
 // These will be passed wholesale to react-draggable
 draggableOpts: React.PropTypes.object
+}
 ```

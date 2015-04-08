@@ -24,6 +24,12 @@ var TestLayout = module.exports = React.createClass({
         <ResizableBox className="box box3" width={200} height={200} minConstraints={[150, 150]} maxConstraints={[500, 300]}>
           <span className="text">Resizable box with a handle that only appears on hover.</span>
         </ResizableBox>
+        <ResizableBox className="box" width={200} height={200} lockAspectRatio={true}>
+          <span className="text">Resizable square with a locked aspect ratio.</span>
+        </ResizableBox>
+        <ResizableBox className="box" width={200} height={120} lockAspectRatio={true}>
+          <span className="text">Resizable rectangle with a locked aspect ratio.</span>
+        </ResizableBox>
       </div>
     );
   }

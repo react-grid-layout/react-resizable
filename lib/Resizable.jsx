@@ -32,11 +32,11 @@ var Resizable = module.exports = React.createClass({
   },
 
   minConstraints() {
-    return parseConstraints(this.props.minConstraints, this.props.handleSize[0]) || this.props.handleSize;
+    return parseConstraints(this.props.minConstraints, this.props.handleSize) || this.props.handleSize;
   },
 
   maxConstraints() {
-    return parseConstraints(this.props.maxConstraints, this.props.handleSize[1]);
+    return parseConstraints(this.props.maxConstraints, this.props.handleSize);
   },
 
 
@@ -101,7 +101,7 @@ function calcWH({left, top}, handleSize) {
  */
 function parseConstraints(constraints, handleSize) {
   if (!constraints) return;
-  return constraints.map(function(c) {
-    return c - handleSize;
+  return constraints.map(function(c, i) {
+    return c - handleSize[i];
   });
 }
