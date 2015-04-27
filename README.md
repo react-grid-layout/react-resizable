@@ -31,9 +31,10 @@ render: function() {
     </ResizableBox>
   );
 }
-
+```
 
 ### Options
+```
 {
 // Functions
 onResizeStop: React.PropTypes.func,
