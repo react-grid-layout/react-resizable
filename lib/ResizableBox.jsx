@@ -15,8 +15,7 @@ var ResizableBox = module.exports = React.createClass({
   getDefaultProps() {
     return {
       lockAspectRatio: false,
-      handleSize: [20,20],
-      minConstraints: [20,20]
+      handleSize: [20,20]
     };
   },
 
@@ -37,10 +36,7 @@ var ResizableBox = module.exports = React.createClass({
       [width, height] = this.preserveAspectRatio(width, height);
     }
 
-    this.setState({
-      width: width,
-      height: height
-    });
+    this.setState({width, height});
   },
 
   // If you do this, be careful of constraints

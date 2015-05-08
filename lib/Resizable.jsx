@@ -3,7 +3,7 @@ var React = require('react');
 var Draggable = require('react-draggable');
 var PureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
 var assign = require('object-assign');
-var cloneWithProps = require('react/lib/cloneWithProps');
+var cloneElement = require('./cloneElement');
 
 var Resizable = module.exports = React.createClass({
   displayName: 'Resizable',
@@ -31,12 +31,24 @@ var Resizable = module.exports = React.createClass({
     };
   },
 
-  minConstraints() {
-    return parseConstraints(this.props.minConstraints, this.props.handleSize) || this.props.handleSize;
+  getInitialState: function() {
+    return {
+      bounds: this.constraintsToBounds(),
+      initialWidth: this.props.width,
+      initialHeight: this.props.height
+    };
   },
 
-  maxConstraints() {
-    return parseConstraints(this.props.maxConstraints, this.props.handleSize);
+  constraintsToBounds() {
+    var p = this.props;
+    var mins = p.minConstraints || p.handleSize;
+    var maxes = p.maxConstraints || [Infinity, Infinity];
+    return {
+      left: mins[0] - p.width,
+      top: mins[1] - p.height,
+      right: maxes[0] - p.width,
+      bottom: maxes[1] - p.height
+    };
   },
 
 
@@ -48,8 +60,8 @@ var Resizable = module.exports = React.createClass({
    */
   resizeHandler(handlerName) {
     var me = this;
-    return function(e, {element, position}) {
-      me.props[handlerName] && me.props[handlerName](e, {element, size: calcWH(position, me.props.handleSize)});
+    return function(e, {node, position}) {
+      me.props[handlerName] && me.props[handlerName](e, {node, size: calcWH(me.state, position)});
     };
   },
 
@@ -60,18 +72,15 @@ var Resizable = module.exports = React.createClass({
     // We are then defining its children as:
     // Its original children (resizable's child's children), and
     // A draggable handle.
-    return cloneWithProps(p.children, assign({}, p, {
+    return cloneElement(p.children, assign({}, p, {
       children: [
         p.children.props.children,
         <Draggable
           {...p.draggableOpts}
-          start={{x: p.width - 20, y: p.height - 20}}
-          moveOnStartChange={true}
           onStop={this.resizeHandler('onResizeStop')}
           onStart={this.resizeHandler('onResizeStart')}
           onDrag={this.resizeHandler('onResize')}
-          minConstraints={this.minConstraints()}
-          maxConstraints={this.maxConstraints()}
+          bounds={this.state.bounds}
           >
           <span className="react-resizable-handle" />
         </Draggable>
@@ -81,27 +90,11 @@ var Resizable = module.exports = React.createClass({
 });
 
 /**
- * Parse left and top coordinates; we have to add the handle size to get the full picture.
+ * Parse left and top coordinates.
  * @param  {Number} options.left Left coordinate.
  * @param  {Number} options.top  Top coordinate.
- * @param  {Array}  handleSize   Handle data.
  * @return {Object}              Coordinates
  */
-function calcWH({left, top}, handleSize) {
-  return {width: left + handleSize[0], height: top + handleSize[1]};
-}
-
-/**
- * Constraints must be subtracted by the size of the handle to work properly.
- * This has a side-effect of effectively limiting the minimum size to the handleSize,
- * which IMO is fine.
- * @param  {Array} constraints Constraints array.
- * @param  {Array} handleSize  Handle size array.
- * @return {Array}             Transformed constraints.
- */
-function parseConstraints(constraints, handleSize) {
-  if (!constraints) return;
-  return constraints.map(function(c, i) {
-    return c - handleSize[i];
-  });
+function calcWH({initialWidth, initialHeight}, {left, top}) {
+  return {width: initialWidth + left, height: initialHeight + top};
 }
