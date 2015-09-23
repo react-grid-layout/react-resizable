@@ -36,7 +36,11 @@ var ResizableBox = module.exports = React.createClass({
       [width, height] = this.preserveAspectRatio(width, height);
     }
 
-    this.setState({width, height});
+    this.setState({width, height}, () => {
+        if (this.props.onResize) {
+            this.props.onResize(event, {element, size});
+        }
+    });
   },
 
   // If you do this, be careful of constraints
@@ -69,7 +73,9 @@ var ResizableBox = module.exports = React.createClass({
         handleSize={handleSize}
         width={this.state.width}
         height={this.state.height}
+        onResizeStart={this.props.onResizeStart}
         onResize={this.onResize}
+        onResizeStop={this.props.onResizeStop}
         draggableOpts={this.props.draggableOpts}
         >
         <div style={{width: this.state.width + 'px', height: this.state.height + 'px'}} {...props}>
