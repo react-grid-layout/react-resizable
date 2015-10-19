@@ -42,7 +42,9 @@
     "webpack-dev-server": "^1.8.0"
   },
   "dependencies": {
-    "object-assign": "^2.0.0",
+    "object-assign": "^2.0.0"
+  },
+  "peerDependencies": {
     "react-draggable": "^0.8.1"
   },
   "publishConfig": {
