@@ -4,6 +4,8 @@ var PropTypes = React.PropTypes;
 var Resizable = require('./Resizable');
 
 // An example use of Resizable.
+type Size = {width: number, height: number};
+type ResizeData = {element: Element, size: Size};
 var ResizableBox = module.exports = React.createClass({
   displayName: 'ResizableBox',
 
@@ -30,28 +32,28 @@ var ResizableBox = module.exports = React.createClass({
     };
   },
 
-  onResize(event, {element, size}) {
+  onResize(event: Event, {element, size}: ResizeData) {
     var {width, height} = size;
     var widthChanged = width !== this.state.width, heightChanged = height !== this.state.height;
     if (!widthChanged && !heightChanged) return;
 
-    if (this.props.lockAspectRatio) {
-      [width, height] = this.preserveAspectRatio(width, height);
-    }
+    [width, height] = this.runConstraints(width, height);
 
     this.setState({width, height}, () => {
-        if (this.props.onResize) {
-            this.props.onResize(event, {element, size: {width, height}});
-        }
+      if (this.props.onResize) {
+        this.props.onResize(event, {element, size: {width, height}});
+      }
     });
   },
 
   // If you do this, be careful of constraints
-  preserveAspectRatio(width: number, height: number) {
+  runConstraints(width: number, height: number) {
     var [min, max] = [this.props.minConstraints, this.props.maxConstraints];
 
-    height = width / this.state.aspectRatio;
-    width = height * this.state.aspectRatio;
+    if (this.props.lockAspectRatio) {
+      height = width / this.state.aspectRatio;
+      width = height * this.state.aspectRatio;
+    }
 
     if (min) {
       width = Math.max(min[0], width);
