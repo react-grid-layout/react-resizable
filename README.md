@@ -30,9 +30,11 @@ render: function() {
     </ResizableBox>
   );
 }
+```
 
+### <Resizable> Options
 
-### Options
+```js
 {
 // Functions
 onResizeStop: React.PropTypes.func,
@@ -46,4 +48,21 @@ handleSize: React.PropTypes.array,
 // These will be passed wholesale to react-draggable
 draggableOpts: React.PropTypes.object
 }
+```
+
+### <ResizableBox> Options
+
+```js
+{
+lockAspectRatio: React.PropTypes.bool, // Preserves aspect
+
+// Constaints coords, pass [x,y]
+minConstraints: React.PropTypes.arrayOf(React.PropTypes.number),
+maxConstraints: React.PropTypes.arrayOf(React.PropTypes.number),
+
+// Initial width/height - otherwise use CSS
+height: React.PropTypes.number,
+width: React.PropTypes.number
+}
+```
 ```

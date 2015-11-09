@@ -1,15 +1,18 @@
 'use strict';
 var React = require('react');
+var PropTypes = React.PropTypes;
 var Resizable = require('./Resizable');
-var PureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
 
 // An example use of Resizable.
 var ResizableBox = module.exports = React.createClass({
   displayName: 'ResizableBox',
-  mixins: [PureRenderMixin],
 
   propTypes: {
-    lockAspectRatio: React.PropTypes.bool
+    lockAspectRatio: PropTypes.bool,
+    minConstraints: PropTypes.arrayOf(PropTypes.number),
+    maxConstraints: PropTypes.arrayOf(PropTypes.number),
+    height: PropTypes.number,
+    width: PropTypes.number
   },
 
   getDefaultProps() {
@@ -44,7 +47,7 @@ var ResizableBox = module.exports = React.createClass({
   },
 
   // If you do this, be careful of constraints
-  preserveAspectRatio(width, height) {
+  preserveAspectRatio(width: number, height: number) {
     var [min, max] = [this.props.minConstraints, this.props.maxConstraints];
 
     height = width / this.state.aspectRatio;

@@ -1,7 +1,5 @@
 'use strict';
-var React = require('react/addons');
-typeof window !== "undefined" && (window.React = React); // for devtools
-typeof window !== "undefined" && (window.Perf = React.addons.Perf); // for devtools
+var React = require('react');
 var _ = require('lodash');
 var ResizableBox = require('../lib/ResizableBox.jsx');
 var Resizable = require('../lib/Resizable.jsx');
@@ -15,7 +13,7 @@ var TestLayout = module.exports = React.createClass({
   },
 
   onClick() {
-    this.setState({width: 200, height: 200})
+    this.setState({width: 200, height: 200});
   },
 
   onResize(event, {element, size}) {

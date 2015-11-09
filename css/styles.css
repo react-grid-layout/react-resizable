@@ -1,7 +1,7 @@
 .react-resizable {
   position: relative;
 }
-.react-resizable-handle.react-draggable {
+.react-resizable-handle {
   position: absolute;
   width: 20px;
   height: 20px;
@@ -14,11 +14,4 @@
   background-origin: content-box;
   box-sizing: border-box;
   cursor: se-resize;
-  /* Since this handle is absolutely positioned, we don't want the
-     draggable transforms to actually move it */
-  transform: none !important;
-  -webkit-transform: none !important;
-  -ms-transform: none !important;
-  -o-transform: none !important;
-  -moz-transform: none !important;
 }

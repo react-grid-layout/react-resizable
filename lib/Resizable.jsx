@@ -1,13 +1,11 @@
 'use strict';
 var React = require('react');
-var Draggable = require('react-draggable');
-var PureRenderMixin = require('react/lib/ReactComponentWithPureRenderMixin');
+var DraggableCore = require('react-draggable').DraggableCore;
 var assign = require('object-assign');
 var cloneElement = require('./cloneElement');
 
 var Resizable = module.exports = React.createClass({
   displayName: 'Resizable',
-  mixins: [PureRenderMixin],
 
   propTypes: {
     // Require that one and only one child be present.
@@ -31,22 +29,21 @@ var Resizable = module.exports = React.createClass({
     };
   },
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       bounds: this.constraintsToBounds(),
-      initialWidth: this.props.width,
-      initialHeight: this.props.height
+      width: this.props.width,
+      height: this.props.height
     };
   },
 
-  componentWillReceiveProps: function(props) {
+  componentWillReceiveProps(props: Object) {
     if (!this.state.resizing) {
       this.setState({
-        initialWidth: props.width,
-        initialHeight: props.height,
+        width: props.width,
+        height: props.height,
         bounds: this.constraintsToBounds()
       });
-      this.refs.draggable.resetState();
     }
   },
 
@@ -62,22 +59,25 @@ var Resizable = module.exports = React.createClass({
     };
   },
 
-
   /**
    * Wrapper around drag events to provide more useful data.
    *
    * @param  {String} handlerName Handler name to wrap.
    * @return {Function}           Handler function.
    */
-  resizeHandler(handlerName) {
+  resizeHandler(handlerName: string) {
     var me = this;
     return function(e, {node, position}) {
-      me.props[handlerName] && me.props[handlerName](e, {node, size: calcWH(me.state, position)});
+      let width = me.state.width + position.deltaX, height = me.state.height + position.deltaY;
+      console.log(position);
+      me.props[handlerName] && me.props[handlerName](e, {node, size: {width, height}});
 
       if (handlerName === 'onResizeStart') {
         me.setState({resizing: true});
       } else if (handlerName === 'onResizeStop') {
         me.setState({resizing: false});
+      } else {
+        me.setState({width, height});
       }
     };
   },
@@ -92,7 +92,7 @@ var Resizable = module.exports = React.createClass({
     return cloneElement(p.children, assign({}, p, {
       children: [
         p.children.props.children,
-        <Draggable
+        <DraggableCore
           {...p.draggableOpts}
           ref="draggable"
           onStop={this.resizeHandler('onResizeStop')}
@@ -101,18 +101,8 @@ var Resizable = module.exports = React.createClass({
           bounds={this.state.bounds}
           >
           <span className="react-resizable-handle" />
-        </Draggable>
+        </DraggableCore>
       ]
     }));
   }
 });
-
-/**
- * Parse left and top coordinates.
- * @param  {Number} options.left Left coordinate.
- * @param  {Number} options.top  Top coordinate.
- * @return {Object}              Coordinates
- */
-function calcWH({initialWidth, initialHeight}, {left, top}) {
-  return {width: initialWidth + left, height: initialHeight + top};
-}
