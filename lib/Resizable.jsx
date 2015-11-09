@@ -69,7 +69,6 @@ var Resizable = module.exports = React.createClass({
     var me = this;
     return function(e, {node, position}) {
       let width = me.state.width + position.deltaX, height = me.state.height + position.deltaY;
-      console.log(position);
       me.props[handlerName] && me.props[handlerName](e, {node, size: {width, height}});
 
       if (handlerName === 'onResizeStart') {
