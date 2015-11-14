@@ -4,7 +4,7 @@
   "description": "A component that is resizable with handles.",
   "main": "index.js",
   "scripts": {
-    "lint": "jsxhint lib/ test/",
+    "lint": "eslint lib/ test/",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "bash build.sh",
     "build-example": "webpack",
