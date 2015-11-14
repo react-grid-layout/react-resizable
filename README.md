@@ -19,6 +19,7 @@ See the [demo](/test/TestLayout.jsx) for more on this.
 ### Usage
 
 ```javascript
+var Resizable = require('react-resizable').Resizable; // or,
 var ResizableBox = require('react-resizable').ResizableBox;
 
 ...
