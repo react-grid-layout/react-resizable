@@ -1,24 +1,18 @@
-'use strict';
-var React = require('react');
-var _ = require('lodash');
-var ResizableBox = require('../lib/ResizableBox.jsx');
-var Resizable = require('../lib/Resizable.jsx');
-require('style!css!../css/styles.css');
+import React from 'react';
+import Resizable from '../lib/Resizable';
+import ResizableBox from '../lib/ResizableBox';
+import 'style!css!../css/styles.css';
 
-var TestLayout = module.exports = React.createClass({
-  displayName: 'TestLayout',
+export default class TestLayout extends React.Component {
+  state = {width: 200, height: 200};
 
-  getInitialState() {
-    return {width: 200, height: 200};
-  },
-
-  onClick() {
+  onClick = () => {
     this.setState({width: 200, height: 200});
-  },
+  };
 
-  onResize(event, {element, size}) {
+  onResize = (event, {element, size}) => {
     this.setState({width: size.width, height: size.height});
-  },
+  };
 
   render() {
     return (
@@ -51,4 +45,4 @@ var TestLayout = module.exports = React.createClass({
       </div>
     );
   }
-});
+}

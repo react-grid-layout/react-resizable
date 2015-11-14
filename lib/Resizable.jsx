@@ -1,41 +1,50 @@
-'use strict';
-var React = require('react');
-var DraggableCore = require('react-draggable').DraggableCore;
-var assign = require('object-assign');
-var cloneElement = require('./cloneElement');
+import {default as React, PropTypes} from 'react';
+import {DraggableCore} from 'react-draggable';
+import assign from 'object-assign';
+import cloneElement from './cloneElement';
 
-var Resizable = module.exports = React.createClass({
-  displayName: 'Resizable',
+export default class Resizable extends React.Component {
+  static propTypes = {
+    //
+    // Required Props
+    //
 
-  propTypes: {
     // Require that one and only one child be present.
-    children: React.PropTypes.element.isRequired,
-    // Functions
-    onResizeStop: React.PropTypes.func,
-    onResizeStart: React.PropTypes.func,
-    onResize: React.PropTypes.func,
+    children: PropTypes.element.isRequired,
 
-    width: React.PropTypes.number.isRequired,
-    height: React.PropTypes.number.isRequired,
+    // Initial w/h
+    width: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired,
+
+    //
+    // Optional props
+    //
+
     // If you change this, be sure to update your css
-    handleSize: React.PropTypes.array,
-    // These will be passed wholesale to react-draggable
-    draggableOpts: React.PropTypes.object
-  },
+    handleSize: PropTypes.array,
 
-  getDefaultProps() {
-    return {
-      handleSize: [20, 20]
-    };
-  },
+    // Min/max size
+    minConstraints: PropTypes.arrayOf(PropTypes.number),
+    maxConstraints: PropTypes.arrayOf(PropTypes.number),
 
-  getInitialState() {
-    return {
-      bounds: this.constraintsToBounds(),
-      width: this.props.width,
-      height: this.props.height
-    };
-  },
+    // Callbacks
+    onResizeStop: PropTypes.func,
+    onResizeStart: PropTypes.func,
+    onResize: PropTypes.func,
+
+    // These will be passed wholesale to react-draggable's DraggableCore
+    draggableOpts: PropTypes.object
+  };
+
+  static defaultProps =  {
+    handleSize: [20, 20]
+  };
+
+  state = {
+    bounds: this.constraintsToBounds(),
+    width: this.props.width,
+    height: this.props.height
+  };
 
   componentWillReceiveProps(props: Object) {
     if (!this.state.resizing) {
@@ -45,19 +54,19 @@ var Resizable = module.exports = React.createClass({
         bounds: this.constraintsToBounds()
       });
     }
-  },
+  }
 
   constraintsToBounds() {
-    var p = this.props;
-    var mins = p.minConstraints || p.handleSize;
-    var maxes = p.maxConstraints || [Infinity, Infinity];
+    let p = this.props;
+    let mins = p.minConstraints || p.handleSize;
+    let maxes = p.maxConstraints || [Infinity, Infinity];
     return {
       left: mins[0] - p.width,
       top: mins[1] - p.height,
       right: maxes[0] - p.width,
       bottom: maxes[1] - p.height
     };
-  },
+  }
 
   /**
    * Wrapper around drag events to provide more useful data.
@@ -66,23 +75,22 @@ var Resizable = module.exports = React.createClass({
    * @return {Function}           Handler function.
    */
   resizeHandler(handlerName: string) {
-    var me = this;
-    return function(e, {node, position}) {
-      let width = me.state.width + position.deltaX, height = me.state.height + position.deltaY;
-      me.props[handlerName] && me.props[handlerName](e, {node, size: {width, height}});
+    return (e, {node, position}) => {
+      let width = this.state.width + position.deltaX, height = this.state.height + position.deltaY;
+      this.props[handlerName] && this.props[handlerName](e, {node, size: {width, height}});
 
       if (handlerName === 'onResizeStart') {
-        me.setState({resizing: true});
+        this.setState({resizing: true});
       } else if (handlerName === 'onResizeStop') {
-        me.setState({resizing: false});
+        this.setState({resizing: false});
       } else {
-        me.setState({width, height});
+        this.setState({width, height});
       }
     };
-  },
+  }
 
   render() {
-    var p = this.props, s = this.state;
+    let p = this.props;
 
     // What we're doing here is getting the child of this element, and cloning it with this element's props.
     // We are then defining its children as:
@@ -104,4 +112,4 @@ var Resizable = module.exports = React.createClass({
       ]
     }));
   }
-});
+}
