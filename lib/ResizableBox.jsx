@@ -1,40 +1,35 @@
-'use strict';
-var React = require('react');
-var PropTypes = React.PropTypes;
-var Resizable = require('./Resizable');
+import {default as React, PropTypes} from 'react';
+import Resizable from './Resizable';
 
-// An example use of Resizable.
 type Size = {width: number, height: number};
 type ResizeData = {element: Element, size: Size};
-var ResizableBox = module.exports = React.createClass({
-  displayName: 'ResizableBox',
 
-  propTypes: {
+// An example use of Resizable.
+export default class ResizableBox extends React.Component {
+  static propTypes = {
     lockAspectRatio: PropTypes.bool,
     minConstraints: PropTypes.arrayOf(PropTypes.number),
     maxConstraints: PropTypes.arrayOf(PropTypes.number),
     height: PropTypes.number,
     width: PropTypes.number
-  },
+  };
 
-  getDefaultProps() {
-    return {
-      lockAspectRatio: false,
-      handleSize: [20,20]
-    };
-  },
+  static defaultProps = {
+    lockAspectRatio: false,
+    handleSize: [20,20]
+  };
 
-  getInitialState() {
-    return {
-      width: this.props.width,
-      height: this.props.height,
-      aspectRatio: this.props.width / this.props.height
-    };
-  },
+  state = {
+    width: this.props.width,
+    height: this.props.height,
+    aspectRatio: this.props.width / this.props.height
+  };
 
-  onResize(event: Event, {element, size}: ResizeData) {
-    var {width, height} = size;
-    var widthChanged = width !== this.state.width, heightChanged = height !== this.state.height;
+  // TODO data is ResizeData type, but that doesn't work in babel-typecheck pre-babel6
+  onResize = (event: Event, data: Object) => {
+    let {element, size} = data;
+    let {width, height} = size;
+    let widthChanged = width !== this.state.width, heightChanged = height !== this.state.height;
     if (!widthChanged && !heightChanged) return;
 
     [width, height] = this.runConstraints(width, height);
@@ -44,11 +39,11 @@ var ResizableBox = module.exports = React.createClass({
         this.props.onResize(event, {element, size: {width, height}});
       }
     });
-  },
+  }
 
   // If you do this, be careful of constraints
   runConstraints(width: number, height: number) {
-    var [min, max] = [this.props.minConstraints, this.props.maxConstraints];
+    let [min, max] = [this.props.minConstraints, this.props.maxConstraints];
 
     if (this.props.lockAspectRatio) {
       height = width / this.state.aspectRatio;
@@ -64,13 +59,13 @@ var ResizableBox = module.exports = React.createClass({
       height = Math.min(max[1], height);
     }
     return [width, height];
-  },
+  }
 
   render() {
     // Basic wrapper around a Resizable instance.
     // If you use Resizable directly, you are responsible for updating the component
     // with a new width and height.
-    var {handleSize, minConstraints, maxConstraints, ...props} = this.props;
+    let {handleSize, minConstraints, maxConstraints, ...props} = this.props;
     return (
       <Resizable
         minConstraints={minConstraints}
@@ -89,4 +84,4 @@ var ResizableBox = module.exports = React.createClass({
       </Resizable>
     );
   }
-});
+}
