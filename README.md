@@ -9,8 +9,7 @@ You can either use the `<Resizable>` element directly, or use the much simpler `
 See the example and associated code in [TestLayout](/test/TestLayout.jsx) and
 [ResizableBox](/lib/ResizableBox.jsx) for more details.
 
-Make sure you use the associated styles in [/css/styles.css](/css/styles.css), as without them, you will have
-problems with handle placement and visibility.
+The newer version of react-resizable uses inline styles and you don't need to include any additional CSS files.
 
 You can pass options directly to the underlying `Draggable` instance by using the prop `draggableOpts`.
 See the [demo](/test/TestLayout.jsx) for more on this.
