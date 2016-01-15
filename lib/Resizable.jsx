@@ -2,6 +2,7 @@ import {default as React, PropTypes} from 'react';
 import {DraggableCore} from 'react-draggable';
 import assign from 'object-assign';
 import cloneElement from './cloneElement';
+import {reactResizableStyle, reactResizableHandleStyle} from './styles';
 
 export default class Resizable extends React.Component {
   static propTypes = {
@@ -91,16 +92,14 @@ export default class Resizable extends React.Component {
 
   render() {
     let p = this.props;
-    let className = p.className ?
-      `${p.className} react-resizable`:
-      'react-resizable'
 
     // What we're doing here is getting the child of this element, and cloning it with this element's props.
     // We are then defining its children as:
     // Its original children (resizable's child's children), and
     // A draggable handle.
-    return cloneElement(p.children, assign({}, p, {
-      className,
+    return cloneElement(p.children, assign({
+      style: reactResizableStyle
+    }, p, {
       children: [
         p.children.props.children,
         <DraggableCore
@@ -111,7 +110,7 @@ export default class Resizable extends React.Component {
           onDrag={this.resizeHandler('onResize')}
           bounds={this.state.bounds}
           >
-          <span className="react-resizable-handle" />
+          <span style={reactResizableHandleStyle} />
         </DraggableCore>
       ]
     }));
