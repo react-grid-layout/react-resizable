@@ -33,7 +33,7 @@ render: function() {
 }
 ```
 
-### <Resizable> Options
+### `<Resizable>` Options
 
 ```js
 {
@@ -51,7 +51,7 @@ draggableOpts: React.PropTypes.object
 }
 ```
 
-### <ResizableBox> Options
+### `<ResizableBox>` Options
 
 ```js
 {
