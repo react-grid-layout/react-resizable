@@ -2,7 +2,7 @@ module.exports = {
     context: __dirname,
     entry: [
       "webpack-dev-server/client?http://localhost:4002",
-      "webpack/hot/dev-server", 
+      "webpack/hot/dev-server",
       "./test/test.js",
     ],
     output: {
@@ -12,12 +12,11 @@ module.exports = {
     },
     module: {
       loaders: [
-        {test: /\.jsx?$/, exclude: /node_modules/, loader: '6to5-loader?experimental=true'},
-        {test: /\.jsx$/, exclude: /node_modules/, loader: 'react-hot-loader'}
+        {test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader?cacheDirectory=true'}
       ]
     },
     debug: true,
-    devtool: "#inline-source-map",
+    devtool: "eval",
     resolve: {
       extensions: ["", ".webpack.js", ".web.js", ".js", ".jsx"]
     }

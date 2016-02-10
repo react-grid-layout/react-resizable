@@ -1,0 +1,5 @@
+examples/
+test/
+lib/
+build.sh
+*.config.js

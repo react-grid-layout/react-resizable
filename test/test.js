@@ -1,7 +1,8 @@
-'use strict';
-var Layout = require('./TestLayout.jsx');
-var React = require('react');
-document.addEventListener("DOMContentLoaded", function(event) { 
+import TestLayout from './TestLayout';
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+document.addEventListener("DOMContentLoaded", function(event) {
   var contentDiv = document.getElementById('content');
-  React.render(React.createElement(Layout), contentDiv);
+  ReactDOM.render(React.createElement(TestLayout), contentDiv);
 });

@@ -1,50 +1,57 @@
-'use strict';
-var React = require('react/addons');
-var Resizable = require('./Resizable');
+// @flow
+import {default as React, PropTypes} from 'react';
+import Resizable from './Resizable';
+
+type State = {width: number, height: number, aspectRatio: number};
+type Size = {width: number, height: number};
+type ResizeData = {element: Element, size: Size};
 
 // An example use of Resizable.
-var ResizableBox = module.exports = React.createClass({
-  displayName: 'ResizableBox',
-  mixins: [React.addons.PureRenderMixin],
+export default class ResizableBox extends React.Component {
+  static propTypes = {
+    height: PropTypes.number,
+    width: PropTypes.number
+  };
 
-  propTypes: {
-  },
+  static defaultProps = {
+    handleSize: [20,20]
+  };
 
-  getInitialState() {
-    return {
-      width: this.props.width,
-      height: this.props.height 
-    };
-  },
+  state: State = {
+    width: this.props.width,
+    height: this.props.height,
+  };
 
-  onResize(event, {element, size}) {
-    if (size.width !== this.state.width || size.height !== this.state.height) {
-      this.setState({
-        width: size.width,
-        height: size.height
-      });
-    }
-  },
+  onResize = (event, {element, size}) => {
+    let {width, height} = size;
 
-  render() {
+    this.setState(size, () => {
+      this.props.onResize && this.props.onResize(event, {element, size});
+    });
+  };
+  onResize: (event: Event, data: ResizeData) => void;
+
+  render(): ReactElement {
     // Basic wrapper around a Resizable instance.
-    // If you use Resizable directly, you are responsible for updating the component
+    // If you use Resizable directly, you are responsible for updating the child component
     // with a new width and height.
-    var {handleSize, minConstraints, maxConstraints, ...props} = this.props;
+    let {handleSize, onResizeStart, onResizeStop, draggableOpts,
+         minConstraints, maxConstraints, lockAspectRatio, ...props} = this.props;
     return (
-      <Resizable 
-        minConstraints={minConstraints}
-        maxConstraints={maxConstraints}
+      <Resizable
         handleSize={handleSize}
         width={this.state.width}
         height={this.state.height}
+        onResizeStart={onResizeStart}
         onResize={this.onResize}
-        draggableOpts={this.props.draggableOpts}
+        onResizeStop={onResizeStop}
+        draggableOpts={draggableOpts}
+        minConstraints={minConstraints}
+        maxConstraints={maxConstraints}
+        lockAspectRatio={lockAspectRatio}
         >
-        <div style={{width: this.state.width + 'px', height: this.state.height + 'px'}} {...props}>
-          {this.props.children}
-        </div>
+        <div style={{width: this.state.width + 'px', height: this.state.height + 'px'}} {...props} />
       </Resizable>
     );
   }
-});
+}
