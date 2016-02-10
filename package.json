@@ -3,6 +3,7 @@
   "version": "1.0.1",
   "description": "A component that is resizable with handles.",
   "main": "index.js",
+  "browser": "dist/bundle.js",
   "scripts": {
     "lint": "eslint --ext .js,.jsx lib/ test/; flow",
     "test": "echo \"Error: no test specified\" && exit 1",
