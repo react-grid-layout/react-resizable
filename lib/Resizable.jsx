@@ -14,11 +14,9 @@ type Position = {
   deltaY: number
 };
 type State = {
-  aspectRatio: number,
-  bounds: Bounds,
   resizing: boolean,
-  height: number,
-  width: number,
+  width: number, height: number,
+  initialWidth: number, initialHeight: number
 };
 type DragCallbackData = {
   node: HTMLElement,
@@ -72,36 +70,42 @@ export default class Resizable extends React.Component {
   };
 
   state: State = {
-    aspectRatio: this.props.width / this.props.height,
-    bounds: this.constraintsToBounds(),
     resizing: false,
+    initialHeight: this.props.height,
+    initialWidth: this.props.width,
     height: this.props.height,
     width: this.props.width,
   };
 
   componentWillReceiveProps(nextProps: Object) {
+    // If parent changes height/width, set that in our state.
     if (!this.state.resizing &&
         (nextProps.width !== this.props.width || nextProps.height !== this.props.height)) {
       this.setState({
         width: nextProps.width,
-        height: nextProps.height
+        height: nextProps.height,
       });
     }
   }
 
+  /**
+   * Convert our constraints into bounds for the <Draggable>.
+   * We have to use initialHeight/Width here because that's where the <Draggable>'s `0` is.
+   */
   constraintsToBounds(): Bounds {
-    const {minConstraints, maxConstraints, height, width} = this.props;
+    const {minConstraints, maxConstraints} = this.props;
+    const {initialHeight, initialWidth} = this.state;
     return {
-      left: minConstraints[0] - width,
-      top: minConstraints[1] - height,
-      right: maxConstraints[0] - width,
-      bottom: maxConstraints[1] - height
+      left: minConstraints[0] - initialWidth,
+      top: minConstraints[1] - initialHeight,
+      right: maxConstraints[0] - initialWidth,
+      bottom: maxConstraints[1] - initialHeight
     };
   }
 
   lockAspectRatio(width: number, height: number, aspectRatio: number): [number, number] {
-    height = width / this.state.aspectRatio;
-    width = height * this.state.aspectRatio;
+    height = width / aspectRatio;
+    width = height * aspectRatio;
     return [width, height];
   }
 
@@ -119,7 +123,7 @@ export default class Resizable extends React.Component {
       if (handlerName === 'onResize' && !widthChanged && !heightChanged) return;
 
       if (this.props.lockAspectRatio) {
-        [width, height] = this.lockAspectRatio(width, height, this.state.aspectRatio);
+        [width, height] = this.lockAspectRatio(width, height, this.state.width / this.state.height);
       }
 
       // Set the appropriate state for this handler.
@@ -162,7 +166,7 @@ export default class Resizable extends React.Component {
           onStop={this.resizeHandler('onResizeStop')}
           onStart={this.resizeHandler('onResizeStart')}
           onDrag={this.resizeHandler('onResize')}
-          bounds={this.state.bounds}
+          bounds={this.constraintsToBounds()}
           >
           <span className="react-resizable-handle" />
         </Draggable>
