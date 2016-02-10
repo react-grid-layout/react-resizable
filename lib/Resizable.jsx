@@ -84,6 +84,8 @@ export default class Resizable extends React.Component {
       this.setState({
         width: nextProps.width,
         height: nextProps.height,
+        initialWidth: nextProps.width,
+        initialHeight: nextProps.height
       });
     }
   }
