@@ -59,7 +59,7 @@ export default class ResizableBox extends React.Component {
       height = Math.min(max[1], height);
     }
     return [width, height];
-  }
+  };
 
   render() {
     // Basic wrapper around a Resizable instance.
