@@ -139,9 +139,7 @@ export default class Resizable extends React.Component {
       let widthChanged = width !== this.state.width, heightChanged = height !== this.state.height;
       if (handlerName === 'onResize' && !widthChanged && !heightChanged) return;
 
-      console.log({width, height, slackW: this.state.slackW, slackH: this.state.slackH});
       [width, height] = this.runConstraints(width, height);
-      console.log({width, height, slackW: this.state.slackW, slackH: this.state.slackH});
 
       // Set the appropriate state for this handler.
       let newState = {};
