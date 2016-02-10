@@ -116,7 +116,7 @@ export default class Resizable extends React.Component {
       let width = this.state.width + deltaX, height = this.state.height + deltaY;
 
       let widthChanged = width !== this.state.width, heightChanged = height !== this.state.height;
-      if (!widthChanged && !heightChanged) return;
+      if (handlerName === 'onResize' && !widthChanged && !heightChanged) return;
 
       if (this.props.lockAspectRatio) {
         [width, height] = this.lockAspectRatio(width, height, this.state.aspectRatio);
