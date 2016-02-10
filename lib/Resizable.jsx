@@ -1,9 +1,20 @@
 import {default as React, PropTypes} from 'react';
 import {DraggableCore} from 'react-draggable';
-import assign from 'object-assign';
 import cloneElement from './cloneElement';
 
+type Position = {
+  deltaX: number,
+  deltaY: number
+};
+type State = {
+  aspectRatio: number,
+  resizing: boolean,
+  height: number,
+  width: number,
+};
+
 export default class Resizable extends React.Component {
+
   static propTypes = {
     //
     // Required Props
@@ -40,8 +51,8 @@ export default class Resizable extends React.Component {
     handleSize: [20, 20]
   };
 
-  state = {
     bounds: this.constraintsToBounds(),
+  state: State = {
     width: this.props.width,
     height: this.props.height
   };
@@ -74,8 +85,8 @@ export default class Resizable extends React.Component {
    * @param  {String} handlerName Handler name to wrap.
    * @return {Function}           Handler function.
    */
-  resizeHandler(handlerName: string) {
-    return (e, {node, position}) => {
+  resizeHandler(handlerName: string): Function {
+    return (e, {node, position}: {node: HTMLElement, position: Position}) => {
       let width = this.state.width + position.deltaX, height = this.state.height + position.deltaY;
       this.props[handlerName] && this.props[handlerName](e, {node, size: {width, height}});
 
@@ -89,17 +100,18 @@ export default class Resizable extends React.Component {
     };
   }
 
-  render() {
+  render(): ReactElement {
     let p = this.props;
     let className = p.className ?
       `${p.className} react-resizable`:
-      'react-resizable'
+      'react-resizable';
 
     // What we're doing here is getting the child of this element, and cloning it with this element's props.
     // We are then defining its children as:
     // Its original children (resizable's child's children), and
     // A draggable handle.
-    return cloneElement(p.children, assign({}, p, {
+    return cloneElement(p.children, {
+      ...p,
       className,
       children: [
         p.children.props.children,
@@ -114,6 +126,6 @@ export default class Resizable extends React.Component {
           <span className="react-resizable-handle" />
         </DraggableCore>
       ]
-    }));
+    });
   }
 }

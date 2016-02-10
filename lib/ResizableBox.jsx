@@ -1,6 +1,7 @@
 import {default as React, PropTypes} from 'react';
 import Resizable from './Resizable';
 
+type State = {width: number, height: number, aspectRatio: number};
 type Size = {width: number, height: number};
 type ResizeData = {element: Element, size: Size};
 
@@ -19,15 +20,13 @@ export default class ResizableBox extends React.Component {
     handleSize: [20,20]
   };
 
-  state = {
+  state: State = {
     width: this.props.width,
     height: this.props.height,
     aspectRatio: this.props.width / this.props.height
   };
 
-  // TODO data is ResizeData type, but that doesn't work in babel-typecheck pre-babel6
-  onResize = (event: Event, data: Object) => {
-    let {element, size} = data;
+  onResize = (event, {element, size}) => {
     let {width, height} = size;
     let widthChanged = width !== this.state.width, heightChanged = height !== this.state.height;
     if (!widthChanged && !heightChanged) return;
@@ -60,8 +59,9 @@ export default class ResizableBox extends React.Component {
     }
     return [width, height];
   };
+  onResize: (event: Event, data: ResizeData) => void;
 
-  render() {
+  render(): ReactElement {
     // Basic wrapper around a Resizable instance.
     // If you use Resizable directly, you are responsible for updating the component
     // with a new width and height.
