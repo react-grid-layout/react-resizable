@@ -161,7 +161,7 @@ export default class Resizable extends React.Component {
     };
   }
 
-  render(): ReactElement {
+  render(): React.Element {
     let p = this.props;
     let className = p.className ?
       `${p.className} react-resizable`:
