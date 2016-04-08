@@ -7,6 +7,7 @@ module.exports = {
         path: __dirname + "/dist",
         filename: "bundle.js",
         sourceMapFilename: "[file].map",
+        libraryTarget: 'umd'
     },
     externals: {
       'react': {
