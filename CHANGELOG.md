@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.3.3 (Apr 19, 2016)
+
+- Enhancement: Add Flow comments.
+
 ### 1.3.2 (Apr 8, 2016)
 
 - Bugfix: Prevent `width` and `height` from leaking to the underlying DOM element and being written.
