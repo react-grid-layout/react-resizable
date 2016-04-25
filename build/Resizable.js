@@ -128,8 +128,8 @@ var Resizable = function(_React$Component) {
     return function(e, _ref) {
       var node = _ref.node;
       var position = _ref.position;
-      var deltaX = position.deltaX;
-      var deltaY = position.deltaY;
+      var deltaX = position.deltaX ? position.deltaX : 0;
+      var deltaY = position.deltaY ? position.deltaY : 0;
       var width = _this2.state.width + deltaX,
           height = _this2.state.height + deltaY;
       var widthChanged = width !== _this2.state.width,
