@@ -132,6 +132,10 @@ export default class Resizable extends React.Component {
    */
   resizeHandler(handlerName: string): Function {
     return (e, {node, position}: DragCallbackData) => {
+      if (!position) {
+        position.deltaX = 0;
+        position.deltaY = 0;
+      }
       const {deltaX, deltaY} = position;
       let width = this.state.width + deltaX, height = this.state.height + deltaY;
 
