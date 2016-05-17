@@ -118,7 +118,7 @@ export default class Resizable extends React.Component {
     slackW += (oldW - width);
     slackH += (oldH - height);
     if (slackW !== this.state.slackW || slackH !== this.state.slackH) {
-      this.setState({slackW, slackH});
+      this.setState({slackW: slackW > 0 ? slackW : 0, slackH: slackH > 0 ? slackH : 0});
     }
 
     return [width, height];
