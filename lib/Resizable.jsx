@@ -147,6 +147,7 @@ export default class Resizable extends React.Component {
         newState.resizing = true;
       } else if (handlerName === 'onResizeStop') {
         newState.resizing = false;
+        newState.slackW = newState.slackH = 0;
       } else {
         // Early return if no change after constraints
         if (width === this.state.width && height === this.state.height) return;
