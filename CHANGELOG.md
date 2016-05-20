@@ -1,5 +1,14 @@
 # Changelog
 
+### 1.4.0 (May 20, 2016)
+
+- Update to React-Draggable v2, which changed callback data structure.
+
+### 1.3.4 (May 17, 2016)
+
+- Bugfix: Slack was not being reset on resizeStop. Fixes #34, #36.
+- Added `flow-bin` to devDeps.
+
 ### 1.3.3 (Apr 19, 2016)
 
 - Enhancement: Add Flow comments.
