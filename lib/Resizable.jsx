@@ -4,8 +4,7 @@ import {DraggableCore} from 'react-draggable';
 import cloneElement from './cloneElement';
 
 type Position = {
-  deltaX: number,
-  deltaY: number
+
 };
 type State = {
   resizing: boolean,
@@ -14,7 +13,9 @@ type State = {
 };
 type DragCallbackData = {
   node: HTMLElement,
-  position: Position
+  x: number, y: number,
+  deltaX: number, deltaY: number,
+  lastX: number, lastY: number
 };
 
 export default class Resizable extends React.Component {
@@ -131,8 +132,7 @@ export default class Resizable extends React.Component {
    * @return {Function}           Handler function.
    */
   resizeHandler(handlerName: string): Function {
-    return (e, {node, position}: DragCallbackData) => {
-      const {deltaX, deltaY} = position;
+    return (e, {node, deltaX, deltaY}: DragCallbackData) => {
       let width = this.state.width + deltaX, height = this.state.height + deltaY;
 
       // Early return if no change
