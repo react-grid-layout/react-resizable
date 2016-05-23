@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.4.1 (May 23, 2016)
+
+- Bugfix: Resizable handle should have a `key` when injected. Fixes React warnings on custom components.
+
 ### 1.4.0 (May 20, 2016)
 
 - Update to React-Draggable v2, which changed callback data structure.
