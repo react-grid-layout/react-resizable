@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.4.2 (July 1, 2016)
+
+- Bugfix: Don't pass unknown props to underlying DOM element. Fixes React 15.2.0 warnings.
+
 ### 1.4.1 (May 23, 2016)
 
 - Bugfix: Resizable handle should have a `key` when injected. Fixes React warnings on custom components.
