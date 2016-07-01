@@ -164,8 +164,12 @@ export default class Resizable extends React.Component {
   }
 
   render(): React.Element {
-    let {width, height, ...p} = this.props;
-    let className = p.className ?
+    // eslint-disable-next-line no-unused-vars
+    const {children, draggableOpts, width, height,
+        handleSize, lockAspectRatio, minConstraints, maxConstraints, onResize,
+        onResizeStop, onResizeStart, ...p} = this.props;
+
+    const className = p.className ?
       `${p.className} react-resizable`:
       'react-resizable';
 
@@ -173,13 +177,13 @@ export default class Resizable extends React.Component {
     // We are then defining its children as:
     // Its original children (resizable's child's children), and
     // A draggable handle.
-    return cloneElement(p.children, {
+    return cloneElement(children, {
       ...p,
       className,
       children: [
-        p.children.props.children,
+        children.props.children,
         <DraggableCore
-          {...p.draggableOpts}
+          {...draggableOpts}
           key="resizableHandle"
           ref="draggable"
           onStop={this.resizeHandler('onResizeStop')}
