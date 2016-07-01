@@ -87,7 +87,7 @@ export default class Resizable extends React.Component {
 
   // If you do this, be careful of constraints
   runConstraints(width: number, height: number): [number, number] {
-    let [min, max] = [this.props.minConstraints, this.props.maxConstraints];
+    const [min, max] = [this.props.minConstraints, this.props.maxConstraints];
 
     if (this.props.lockAspectRatio) {
       const ratio = this.state.width / this.state.height;
@@ -97,7 +97,7 @@ export default class Resizable extends React.Component {
 
     if (!min && !max) return [width, height];
 
-    let [oldW, oldH] = [width, height];
+    const [oldW, oldH] = [width, height];
 
     // Add slack to the values used to calculate bound position. This will ensure that if
     // we start removing slack, the element won't react to it right away until it's been
@@ -133,16 +133,17 @@ export default class Resizable extends React.Component {
    */
   resizeHandler(handlerName: string): Function {
     return (e, {node, deltaX, deltaY}: DragCallbackData) => {
-      let width = this.state.width + deltaX, height = this.state.height + deltaY;
+      let width = this.state.width + deltaX;
+      let height = this.state.height + deltaY;
 
       // Early return if no change
-      let widthChanged = width !== this.state.width, heightChanged = height !== this.state.height;
+      const widthChanged = width !== this.state.width, heightChanged = height !== this.state.height;
       if (handlerName === 'onResize' && !widthChanged && !heightChanged) return;
 
       [width, height] = this.runConstraints(width, height);
 
       // Set the appropriate state for this handler.
-      let newState = {};
+      const newState = {};
       if (handlerName === 'onResizeStart') {
         newState.resizing = true;
       } else if (handlerName === 'onResizeStop') {
