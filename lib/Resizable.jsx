@@ -9,6 +9,7 @@ export type Props = {
   height: number,
   handleSize: [number, number],
   lockAspectRatio: boolean,
+  axis: Axis,
   minConstraints: [number, number],
   maxConstraints: [number, number],
   onResizeStop?: ?(e: SyntheticEvent, data: ResizeCallbackData) => any,
@@ -16,6 +17,7 @@ export type Props = {
   onResize?: ?(e: SyntheticEvent, data: ResizeCallbackData) => any,
   draggableOpts?: ?Object
 };
+type Axis = 'both' | 'x' | 'y' | 'none';
 type Position = {
 
 };
@@ -59,6 +61,13 @@ export default class Resizable extends React.Component {
     // If true, will only allow width/height to move in lockstep
     lockAspectRatio: PropTypes.bool,
 
+    // Restricts resizing to a particular axis (default: 'both')
+    // 'both' - allows resizing by width or height
+    // 'x' - only allows the width to be changed
+    // 'y' - only allows the height to be changed
+    // 'none' - disables resizing altogether
+    axis: PropTypes.oneOf(['both', 'x', 'y', 'none']),
+
     // Min/max size
     minConstraints: PropTypes.arrayOf(PropTypes.number),
     maxConstraints: PropTypes.arrayOf(PropTypes.number),
@@ -76,6 +85,7 @@ export default class Resizable extends React.Component {
   static defaultProps =  {
     handleSize: [20, 20],
     lockAspectRatio: false,
+    axis: 'both',
     minConstraints: [20, 20],
     maxConstraints: [Infinity, Infinity]
   };
@@ -151,8 +161,14 @@ export default class Resizable extends React.Component {
    */
   resizeHandler(handlerName: string): Function {
     return (e: SyntheticEvent | MouseEvent, {node, deltaX, deltaY}: DragCallbackData) => {
-      let width = this.state.width + deltaX;
-      let height = this.state.height + deltaY;
+
+      // Axis restrictions
+      const canDragX = this.props.axis === 'both' || this.props.axis === 'x';
+      const canDragY = this.props.axis === 'both' || this.props.axis === 'y';
+
+      // Update w/h
+      let width = this.state.width + (canDragX ? deltaX : 0);
+      let height = this.state.height + (canDragY ? deltaY : 0);
 
       // Early return if no change
       const widthChanged = width !== this.state.width, heightChanged = height !== this.state.height;
@@ -181,14 +197,13 @@ export default class Resizable extends React.Component {
       } else {
         this.setState(newState);
       }
-
     };
   }
 
   render(): React.Element<any> {
     // eslint-disable-next-line no-unused-vars
-    const {children, draggableOpts, width, height,
-        handleSize, lockAspectRatio, minConstraints, maxConstraints, onResize,
+    const {children, draggableOpts, width, height, handleSize,
+        lockAspectRatio, axis, minConstraints, maxConstraints, onResize,
         onResizeStop, onResizeStart, ...p} = this.props;
 
     const className = p.className ?
