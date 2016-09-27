@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.4.3 (Sep 27, 2016)
+
+- Bugfix: Don't pass `onResize` in `<ResizableBox>`.
+
 ### 1.4.2 (July 1, 2016)
 
 - Bugfix: Don't pass unknown props to underlying DOM element. Fixes React 15.2.0 warnings.
