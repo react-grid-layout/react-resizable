@@ -163,7 +163,7 @@ export default class Resizable extends React.Component {
     };
   }
 
-  render(): React.Element {
+  render(): React.Element<any> {
     // eslint-disable-next-line no-unused-vars
     const {children, draggableOpts, width, height,
         handleSize, lockAspectRatio, minConstraints, maxConstraints, onResize,

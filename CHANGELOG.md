@@ -3,6 +3,7 @@
 ### 1.4.3 (Sep 27, 2016)
 
 - Bugfix: Don't pass `onResize` in `<ResizableBox>`.
+- Bugfix: Fix new Flow errors (type parameters no longer optional).
 
 ### 1.4.2 (July 1, 2016)
 

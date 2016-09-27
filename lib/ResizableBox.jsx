@@ -31,7 +31,7 @@ export default class ResizableBox extends React.Component {
   };
   onResize: (event: Event, data: ResizeData) => void;
 
-  render(): React.Element {
+  render(): React.Element<any> {
     // Basic wrapper around a Resizable instance.
     // If you use Resizable directly, you are responsible for updating the child component
     // with a new width and height.
