@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.4.5 (Sep 30, 2016)
+
+- Fix bad publish
+
 ### 1.4.4 (Sep 30, 2016)
 
 - Bugfix: Minor flow errors
