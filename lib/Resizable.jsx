@@ -132,7 +132,7 @@ export default class Resizable extends React.Component {
    * @return {Function}           Handler function.
    */
   resizeHandler(handlerName: string): Function {
-    return (e, {node, deltaX, deltaY}: DragCallbackData) => {
+    return (e: Event, {node, deltaX, deltaY}: DragCallbackData) => {
       let width = this.state.width + deltaX;
       let height = this.state.height + deltaY;
 
