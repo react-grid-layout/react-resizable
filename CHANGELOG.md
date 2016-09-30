@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.4.4 (Sep 30, 2016)
+
+- Bugfix: Minor flow errors
+
 ### 1.4.3 (Sep 27, 2016)
 
 - Bugfix: Don't pass `onResize` in `<ResizableBox>`.
