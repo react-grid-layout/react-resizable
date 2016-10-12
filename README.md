@@ -15,12 +15,20 @@ problems with handle placement and visibility.
 You can pass options directly to the underlying `Draggable` instance by using the prop `draggableOpts`.
 See the [demo](/test/TestLayout.jsx) for more on this.
 
+### Installation
+
+Using [npm](https://www.npmjs.com/):
+
+    $ npm install --save react-resizable
 
 ### Usage
 
 ```javascript
 var Resizable = require('react-resizable').Resizable; // or,
 var ResizableBox = require('react-resizable').ResizableBox;
+
+// Using ES6 transpiler
+import { Resizable, ResizableBox } from 'react-resizable';
 
 ...
 render: function() {
