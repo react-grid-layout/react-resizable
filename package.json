@@ -54,7 +54,8 @@
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
-    "react-draggable": "^2.1.0"
+    "react-draggable": "^2.1.0",
+    "styled-components": "^1.0.0"
   },
   "peerDependencies": {
     "react": "^0.14.0 || ^15.0.0",

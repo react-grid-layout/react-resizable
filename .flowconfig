@@ -1,9 +1,10 @@
 [ignore]
-.*/node_modules/react/.*
-.*/node_modules/babel.*
-.*/node_modules/fbjs/.*
-.*/node_modules/express/.*
-.*/node_modules/serve-index/.*
+<PROJECT_ROOT>/node_modules/react/.*
+<PROJECT_ROOT>/node_modules/babel.*
+<PROJECT_ROOT>/node_modules/fbjs/.*
+<PROJECT_ROOT>/node_modules/styled-components/src/.*
+<PROJECT_ROOT>/node_modules/express/.*
+<PROJECT_ROOT>/node_modules/serve-index/.*
 .*test
 
 [include]
