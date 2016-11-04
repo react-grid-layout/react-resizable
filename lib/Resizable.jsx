@@ -71,7 +71,7 @@ export default class Resizable extends React.Component {
   componentWillReceiveProps(nextProps: Object) {
     // If parent changes height/width, set that in our state.
     if (!this.state.resizing &&
-        (nextProps.width !== this.props.width || nextProps.height !== this.props.height)) {
+        (nextProps.width !== this.state.width || nextProps.height !== this.state.height)) {
       this.setState({
         width: nextProps.width,
         height: nextProps.height
