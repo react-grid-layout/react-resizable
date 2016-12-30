@@ -185,7 +185,6 @@ export default class Resizable extends React.Component {
         <DraggableCore
           {...draggableOpts}
           key="resizableHandle"
-          ref="draggable"
           onStop={this.resizeHandler('onResizeStop')}
           onStart={this.resizeHandler('onResizeStart')}
           onDrag={this.resizeHandler('onResize')}
