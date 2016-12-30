@@ -1,5 +1,10 @@
 # Changelog
 
+### 1.4.6 (Dec 30, 2016)
+
+- Removed unused ref from `<Resizable>`.
+- Added development lockfile.
+
 ### 1.4.5 (Sep 30, 2016)
 
 - Fix bad publish
