@@ -10,7 +10,7 @@
     "build-example": "webpack",
     "dev": "echo 'Open http://localhost:4003/examples/1.html' && cross-env NODE_ENV=test webpack-dev-server --config webpack-dev-server.config.js --hot --progress --colors --port 4003 --content-base .",
     "prepublish": "npm run build",
-    "validate": "npm ls",
+    "validate": "yarn list",
     "preversion": "npm run lint",
     "version": "git add CHANGELOG.md",
     "postversion": "git push && git push --tags"
