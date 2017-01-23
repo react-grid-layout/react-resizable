@@ -132,7 +132,7 @@ export default class Resizable extends React.Component {
    * @return {Function}           Handler function.
    */
   resizeHandler(handlerName: string): Function {
-    return (e: Event, {node, deltaX, deltaY}: DragCallbackData) => {
+    return (e: SyntheticEvent | MouseEvent, {node, deltaX, deltaY}: DragCallbackData) => {
       let width = this.state.width + deltaX;
       let height = this.state.height + deltaY;
 
@@ -156,9 +156,13 @@ export default class Resizable extends React.Component {
         newState.height = height;
       }
 
-      this.setState(newState, () => {
-        this.props[handlerName] && this.props[handlerName](e, {node, size: {width, height}});
-      });
+      const hasCb = typeof this.props[handlerName] === 'function';
+      if (hasCb) {
+        if (typeof e.persist === 'function') e.persist();
+        this.setState(newState, () => this.props[handlerName](e, {node, size: {width, height}}));
+      } else {
+        this.setState(newState);
+      }
 
     };
   }
