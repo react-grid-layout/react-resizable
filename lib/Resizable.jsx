@@ -3,6 +3,19 @@ import {default as React, PropTypes} from 'react';
 import {DraggableCore} from 'react-draggable';
 import cloneElement from './cloneElement';
 
+export type Props = {
+  children: React.Element<any>,
+  width: number,
+  height: number,
+  handleSize: [number, number],
+  lockAspectRatio: boolean,
+  minConstraints: [number, number],
+  maxConstraints: [number, number],
+  onResizeStop?: ?(e: SyntheticEvent, data: ResizeCallbackData) => any,
+  onResizeStart?: ?(e: SyntheticEvent, data: ResizeCallbackData) => any,
+  onResize?: ?(e: SyntheticEvent, data: ResizeCallbackData) => any,
+  draggableOpts?: ?Object
+};
 type Position = {
 
 };
@@ -16,6 +29,10 @@ type DragCallbackData = {
   x: number, y: number,
   deltaX: number, deltaY: number,
   lastX: number, lastY: number
+};
+type ResizeCallbackData = {
+  node: HTMLElement,
+  size: {width: number, height: number}
 };
 
 export default class Resizable extends React.Component {
@@ -54,6 +71,7 @@ export default class Resizable extends React.Component {
     // These will be passed wholesale to react-draggable's DraggableCore
     draggableOpts: PropTypes.object
   };
+  props: Props;
 
   static defaultProps =  {
     handleSize: [20, 20],
