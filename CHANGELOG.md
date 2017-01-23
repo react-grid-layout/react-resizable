@@ -1,5 +1,10 @@
 # Changelog
 
+### 1.5.0 (Jan 23, 2017)
+
+- Bugfix: Persist SyntheticEvents when needed (#45, #46)
+- Feature: Add componentWillReceiveProps to `<ResizableBox>` (#44, thanks @JoaoMosmann)
+
 ### 1.4.6 (Dec 30, 2016)
 
 - Removed unused ref from `<Resizable>`.
