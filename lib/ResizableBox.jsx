@@ -22,13 +22,25 @@ export default class ResizableBox extends React.Component {
     height: this.props.height,
   };
 
-  onResize = (event: Event, {element, size}: ResizeData) => {
+  onResize = (e: Event, {element, size}: ResizeData) => {
     const {width, height} = size;
 
-    this.setState(size, () => {
-      this.props.onResize && this.props.onResize(event, {element, size});
-    });
+    if (this.props.onResize) {
+      e.persist && e.persist();
+      this.setState(size, () => this.props.onResize(e, {element, size}));
+    } else {
+      this.setState(size);
+    }
   };
+
+  componentWillReceiveProps(nextProps: typeof ResizableBox.prototype.props) {
+    if (nextProps.width !== this.props.width || nextProps.height !== this.props.height) {
+      this.setState({
+        width: nextProps.width,
+        height: nextProps.height
+      });
+    }
+  }
 
   render(): React.Element<any> {
     // Basic wrapper around a Resizable instance.
