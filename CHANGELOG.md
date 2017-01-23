@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.6.0 (Jan 23, 2017)
+
+- Feature: Allow restricting by axis. (#40, thanks @dnissley-al)
+
 ### 1.5.0 (Jan 23, 2017)
 
 - Bugfix: Persist SyntheticEvents when needed (#45, #46)

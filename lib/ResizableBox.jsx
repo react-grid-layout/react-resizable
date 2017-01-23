@@ -3,7 +3,6 @@ import {default as React, PropTypes} from 'react';
 import Resizable from './Resizable';
 import type {Props as ResizableProps} from './Resizable';
 
-type Props = {width: number, height: number};
 type State = {width: number, height: number};
 type Size = {width: number, height: number};
 type ResizeData = {element: Element, size: Size};
@@ -14,7 +13,7 @@ export default class ResizableBox extends React.Component {
     height: PropTypes.number,
     width: PropTypes.number
   };
-  props: Props & ResizableProps;
+  props: ResizableProps;
 
   static defaultProps = {
     handleSize: [20,20]
@@ -36,7 +35,7 @@ export default class ResizableBox extends React.Component {
     }
   };
 
-  componentWillReceiveProps(nextProps: typeof ResizableBox.prototype.props) {
+  componentWillReceiveProps(nextProps: ResizableProps) {
     if (nextProps.width !== this.props.width || nextProps.height !== this.props.height) {
       this.setState({
         width: nextProps.width,
