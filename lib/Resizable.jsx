@@ -180,6 +180,7 @@ export default class Resizable extends React.Component {
       const newState = {};
       if (handlerName === 'onResizeStart') {
         newState.resizing = true;
+        e.persist && e.persist()
       } else if (handlerName === 'onResizeStop') {
         newState.resizing = false;
         newState.slackW = newState.slackH = 0;
