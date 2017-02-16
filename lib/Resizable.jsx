@@ -153,6 +153,13 @@ export default class Resizable extends React.Component {
     return [width, height];
   }
 
+  getBodyScale() {
+    const regExp = /scale\(([^)]+)\)/;
+    const bodyTransform = document && document.body ? document.body.style.transform : '';
+    const matches = regExp.exec(bodyTransform);
+    return matches ? matches[1] : 1;
+  }
+
   /**
    * Wrapper around drag events to provide more useful data.
    *
@@ -166,9 +173,11 @@ export default class Resizable extends React.Component {
       const canDragX = this.props.axis === 'both' || this.props.axis === 'x';
       const canDragY = this.props.axis === 'both' || this.props.axis === 'y';
 
+      const scale = this.getBodyScale();
+
       // Update w/h
-      let width = this.state.width + (canDragX ? deltaX : 0);
-      let height = this.state.height + (canDragY ? deltaY : 0);
+      let width = this.state.width + (canDragX ? deltaX / scale : 0);
+      let height = this.state.height + (canDragY ? deltaY / scale : 0);
 
       // Early return if no change
       const widthChanged = width !== this.state.width, heightChanged = height !== this.state.height;
