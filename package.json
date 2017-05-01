@@ -46,6 +46,7 @@
     "flow-bin": "^0.38.0",
     "lodash": "^4.3.0",
     "pre-commit": "^1.1.2",
+    "prop-types": "^15.5.8",
     "react": "^15.0.0",
     "react-dom": "^15.0.0",
     "style-loader": "^0.13.0",

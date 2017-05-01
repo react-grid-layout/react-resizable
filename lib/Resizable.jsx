@@ -1,5 +1,6 @@
 // @flow
-import {default as React, PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import {DraggableCore} from 'react-draggable';
 import cloneElement from './cloneElement';
 
