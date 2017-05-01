@@ -1,5 +1,11 @@
 # Changelog
 
+### 1.7.0 (May 1, 2017)
+
+- Deprecation: `React.PropTypes` now deprecated in React 15.5, moved to `prop-types` package
+- Internal: Update devDeps, upgrade to webpack 2
+- Internal: Remove babel `stage-1` and `transform-flow-comments`, bring in only selected plugins, makes for leaner dev/build.
+
 ### 1.6.0 (Jan 23, 2017)
 
 - Feature: Allow restricting by axis. (#40, thanks @dnissley-al)
