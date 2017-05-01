@@ -1,7 +1,6 @@
 import React from 'react';
 import Resizable from '../lib/Resizable';
 import ResizableBox from '../lib/ResizableBox';
-import 'style-loader!css-loader!../css/styles.css';
 
 export default class TestLayout extends React.Component {
   state = {width: 200, height: 200};
