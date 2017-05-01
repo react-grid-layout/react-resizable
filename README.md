@@ -12,18 +12,26 @@ See the example and associated code in [TestLayout](/test/TestLayout.jsx) and
 Make sure you use the associated styles in [/css/styles.css](/css/styles.css), as without them, you will have
 problems with handle placement and visibility.
 
-You can pass options directly to the underlying `Draggable` instance by using the prop `draggableOpts`.
+You can pass options directly to the underlying `DraggableCore` instance by using the prop `draggableOpts`.
 See the [demo](/test/TestLayout.jsx) for more on this.
 
+### Installation
+
+Using [npm](https://www.npmjs.com/):
+
+    $ npm install --save react-resizable
 
 ### Usage
 
-```javascript
-var Resizable = require('react-resizable').Resizable; // or,
-var ResizableBox = require('react-resizable').ResizableBox;
+```js
+const Resizable = require('react-resizable').Resizable; // or,
+const ResizableBox = require('react-resizable').ResizableBox;
 
-...
-render: function() {
+// ES6
+import { Resizable, ResizableBox } from 'react-resizable';
+
+// ...
+render() {
   return (
     <ResizableBox width={200} height={200} draggableOpts={{...}}
         minConstraints={[100, 100]} maxConstraints={[300, 300]}>
@@ -33,37 +41,24 @@ render: function() {
 }
 ```
 
-### `<Resizable>` Options
+### Props
+
+These props apply to both `<Resizable>` and `<ResizableBox>`.
 
 ```js
 {
-// Functions
-onResizeStop: React.PropTypes.func,
-onResizeStart: React.PropTypes.func,
-onResize: React.PropTypes.func,
-
-width: React.PropTypes.number.isRequired,
-height: React.PropTypes.number.isRequired,
-// If you change this, be sure to update your css
-handleSize: React.PropTypes.array,
-// These will be passed wholesale to react-draggable
-draggableOpts: React.PropTypes.object
-}
-```
-
-### `<ResizableBox>` Options
-
-```js
-{
-lockAspectRatio: React.PropTypes.bool, // Preserves aspect
-
-// Constaints coords, pass [x,y]
-minConstraints: React.PropTypes.arrayOf(React.PropTypes.number),
-maxConstraints: React.PropTypes.arrayOf(React.PropTypes.number),
-
-// Initial width/height - otherwise use CSS
-height: React.PropTypes.number,
-width: React.PropTypes.number
-}
-```
+  children: React.Element<any>,
+  width: number,
+  height: number,
+  // If you change this, be sure to update your css
+  handleSize: [number, number] = [10, 10],
+  lockAspectRatio: boolean = false,
+  axis: 'both' | 'x' | 'y' | 'none' = 'both',
+  minConstraints: [number, number] = [10, 10],
+  maxConstraints: [number, number] = [Infinity, Infinity],
+  onResizeStop?: ?(e: SyntheticEvent, data: ResizeCallbackData) => any,
+  onResizeStart?: ?(e: SyntheticEvent, data: ResizeCallbackData) => any,
+  onResize?: ?(e: SyntheticEvent, data: ResizeCallbackData) => any,
+  draggableOpts?: ?Object
+};
 ```
