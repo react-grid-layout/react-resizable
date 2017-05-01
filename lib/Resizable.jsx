@@ -7,6 +7,7 @@ export type Props = {
   children: React.Element<any>,
   width: number,
   height: number,
+  zoomLevel: number,
   handleSize: [number, number],
   lockAspectRatio: boolean,
   axis: Axis,
@@ -24,7 +25,8 @@ type Position = {
 type State = {
   resizing: boolean,
   width: number, height: number,
-  slackW: number, slackH: number
+  slackW: number, slackH: number,
+  zoomLevel: number
 };
 type DragCallbackData = {
   node: HTMLElement,
@@ -58,6 +60,9 @@ export default class Resizable extends React.Component {
     // If you change this, be sure to update your css
     handleSize: PropTypes.array,
 
+    // Zoom defaults to 1
+    zoomLevel: PropTypes.number,
+
     // If true, will only allow width/height to move in lockstep
     lockAspectRatio: PropTypes.bool,
 
@@ -87,13 +92,15 @@ export default class Resizable extends React.Component {
     lockAspectRatio: false,
     axis: 'both',
     minConstraints: [20, 20],
-    maxConstraints: [Infinity, Infinity]
+    maxConstraints: [Infinity, Infinity],
+    zoomLevel: 1
   };
 
   state: State = {
     resizing: false,
     width: this.props.width, height: this.props.height,
-    slackW: 0, slackH: 0
+    slackW: 0, slackH: 0,
+    zoomLevel: this.props.zoomLevel
   };
 
   componentWillReceiveProps(nextProps: Object) {
@@ -166,9 +173,11 @@ export default class Resizable extends React.Component {
       const canDragX = this.props.axis === 'both' || this.props.axis === 'x';
       const canDragY = this.props.axis === 'both' || this.props.axis === 'y';
 
+      let zoomMultiplier = 1/this.state.zoomLevel;
+
       // Update w/h
-      let width = this.state.width + (canDragX ? deltaX : 0);
-      let height = this.state.height + (canDragY ? deltaY : 0);
+      let width = this.state.width + (canDragX ? deltaX*zoomMultiplier : 0);
+      let height = this.state.height + (canDragY ? deltaY*zoomMultiplier : 0);
 
       // Early return if no change
       const widthChanged = width !== this.state.width, heightChanged = height !== this.state.height;
