@@ -46,7 +46,6 @@
     "flow-bin": "^0.45.0",
     "lodash": "^4.3.0",
     "pre-commit": "^1.1.2",
-    "prop-types": "^15.5.8",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "style-loader": "^0.17.0",
@@ -54,6 +53,7 @@
     "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
+    "prop-types": "^15.5.8",
     "react-draggable": "^2.2.6"
   },
   "peerDependencies": {
