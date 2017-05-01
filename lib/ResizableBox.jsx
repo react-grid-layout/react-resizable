@@ -1,5 +1,6 @@
 // @flow
-import {default as React, PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Resizable from './Resizable';
 import type {Props as ResizableProps} from './Resizable';
 
