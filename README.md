@@ -13,7 +13,7 @@ Make sure you use the associated styles in [/css/styles.css](/css/styles.css), a
 problems with handle placement and visibility.
 
 You can pass options directly to the underlying `DraggableCore` instance by using the prop `draggableOpts`.
-See the [demo](/test/TestLayout.jsx) for more on this.
+See the [demo](/test/TestLayout.js) for more on this.
 
 ### Installation
 
