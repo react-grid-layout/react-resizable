@@ -419,40 +419,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-/*:: type Axis = 'both' | 'x' | 'y' | 'none';*/
-/*:: type Position = {
-
-};*/
-/*:: type State = {
-  resizing: boolean,
-  width: number, height: number,
-  slackW: number, slackH: number
-};*/
-/*:: type DragCallbackData = {
-  node: HTMLElement,
-  x: number, y: number,
-  deltaX: number, deltaY: number,
-  lastX: number, lastY: number
-};*/
-/*:: type ResizeCallbackData = {
-  node: HTMLElement,
-  size: {width: number, height: number}
-};*/
-/*:: export type Props = {
-  children: React.Element<any>,
-  width: number,
-  height: number,
-  handleSize: [number, number],
-  lockAspectRatio: boolean,
-  axis: Axis,
-  minConstraints: [number, number],
-  maxConstraints: [number, number],
-  onResizeStop?: ?(e: SyntheticEvent, data: ResizeCallbackData) => any,
-  onResizeStart?: ?(e: SyntheticEvent, data: ResizeCallbackData) => any,
-  onResize?: ?(e: SyntheticEvent, data: ResizeCallbackData) => any,
-  draggableOpts?: ?Object
-};*/
-
 var Resizable = function (_React$Component) {
   _inherits(Resizable, _React$Component);
 
@@ -472,7 +438,7 @@ var Resizable = function (_React$Component) {
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
-  Resizable.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps /*: Object*/) {
+  Resizable.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
     // If parent changes height/width, set that in our state.
     if (!this.state.resizing && (nextProps.width !== this.props.width || nextProps.height !== this.props.height)) {
       this.setState({
@@ -482,7 +448,7 @@ var Resizable = function (_React$Component) {
     }
   };
 
-  Resizable.prototype.lockAspectRatio = function lockAspectRatio(width /*: number*/, height /*: number*/, aspectRatio /*: number*/) /*: [number, number]*/ {
+  Resizable.prototype.lockAspectRatio = function lockAspectRatio(width, height, aspectRatio) {
     height = width / aspectRatio;
     width = height * aspectRatio;
     return [width, height];
@@ -491,7 +457,7 @@ var Resizable = function (_React$Component) {
   // If you do this, be careful of constraints
 
 
-  Resizable.prototype.runConstraints = function runConstraints(width /*: number*/, height /*: number*/) /*: [number, number]*/ {
+  Resizable.prototype.runConstraints = function runConstraints(width, height) {
     var _ref = [this.props.minConstraints, this.props.maxConstraints],
         min = _ref[0],
         max = _ref[1];
@@ -546,10 +512,10 @@ var Resizable = function (_React$Component) {
    */
 
 
-  Resizable.prototype.resizeHandler = function resizeHandler(handlerName /*: string*/) /*: Function*/ {
+  Resizable.prototype.resizeHandler = function resizeHandler(handlerName) {
     var _this2 = this;
 
-    return function (e /*: SyntheticEvent | MouseEvent*/, _ref2) {
+    return function (e, _ref2) {
       var node = _ref2.node,
           deltaX = _ref2.deltaX,
           deltaY = _ref2.deltaY;
@@ -598,7 +564,7 @@ var Resizable = function (_React$Component) {
     };
   };
 
-  Resizable.prototype.render = function render() /*: React.Element<any>*/ {
+  Resizable.prototype.render = function render() {
     // eslint-disable-next-line no-unused-vars
     var _props = this.props,
         children = _props.children,
@@ -1028,14 +994,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-/*:: import type {Props as ResizableProps} from './Resizable';*/
-/*:: type State = {width: number, height: number};*/
-/*:: type Size = {width: number, height: number};*/
-
-
 // An example use of Resizable.
-/*:: type ResizeData = {element: Element, size: Size};*/
-
 var ResizableBox = function (_React$Component) {
   _inherits(ResizableBox, _React$Component);
 
@@ -1051,7 +1010,7 @@ var ResizableBox = function (_React$Component) {
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.state = {
       width: _this.props.width,
       height: _this.props.height
-    }, _this.onResize = function (e /*: Event*/, _ref) {
+    }, _this.onResize = function (e, _ref) {
       var element = _ref.element,
           size = _ref.size;
       var width = size.width,
@@ -1069,7 +1028,7 @@ var ResizableBox = function (_React$Component) {
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
-  ResizableBox.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps /*: ResizableProps*/) {
+  ResizableBox.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
     if (nextProps.width !== this.props.width || nextProps.height !== this.props.height) {
       this.setState({
         width: nextProps.width,
@@ -1078,7 +1037,7 @@ var ResizableBox = function (_React$Component) {
     }
   };
 
-  ResizableBox.prototype.render = function render() /*: React.Element<any>*/ {
+  ResizableBox.prototype.render = function render() {
     // Basic wrapper around a Resizable instance.
     // If you use Resizable directly, you are responsible for updating the child component
     // with a new width and height.
@@ -1143,7 +1102,7 @@ var _react2 = _interopRequireDefault(_react);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // React.addons.cloneWithProps look-alike that merges style & className.
-module.exports = function cloneElement(element /*: React.Element<any>*/, props /*: Object*/) /*: React.Element<any>*/ {
+module.exports = function cloneElement(element, props) {
   if (props.style && element.props.style) {
     props.style = _extends({}, element.props.style, props.style);
   }
