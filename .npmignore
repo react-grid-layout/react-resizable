@@ -3,3 +3,4 @@ test/
 lib/
 build.sh
 *.config.js
+yarn.lock
