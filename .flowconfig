@@ -1,22 +1,27 @@
 [ignore]
-.*/node_modules/react/.*
 .*/node_modules/babel.*
 .*/node_modules/fbjs/.*
 .*/node_modules/express/.*
 .*/node_modules/serve-index/.*
-.*test
 
 [include]
-./lib
-index.js
 
 [libs]
 
 [options]
-suppress_comment=.*\\\\s*$FlowFixMe.*
-suppress_comment=.*\\\\s*$FlowBug.*
-suppress_comment=.*\\\\s*$FlowIgnore.*
-suppress_comment=\\(.\\|\n\\)*\\$FlowNewLine.*
-suppress_comment=\\(.\\|\n\\)*\\$FlowIssue
-esproposal.class_instance_fields=ignore
-esproposal.class_static_fields=ignore
+suppress_comment=\\(.\\|\n\\)*\\s*\\$FlowFixMe.*
+suppress_comment=\\(.\\|\n\\)*\\s*\\$FlowBug.*
+suppress_comment=\\(.\\|\n\\)*\\s*\\$FlowIgnore.*
+suppress_comment=\\(.\\|\n\\)*\\s*\\$FlowNewLine.*
+suppress_comment=\\(.\\|\n\\)*\\s*\\$FlowIssue
+suppress_type=$FlowFixMe
+esproposal.class_static_fields=enable
+esproposal.class_instance_fields=enable
+esproposal.decorators=ignore
+esproposal.export_star_as=enable
+experimental.strict_call_arity=true
+module.system.node.resolve_dirname=node_modules
+module.system.node.resolve_dirname=.
+module.use_strict=true
+server.max_workers=6
+unsafe.enable_getters_and_setters=true
