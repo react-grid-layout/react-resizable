@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.7.1 (May 23, 2017)
+
+- Bugfix: Some flow types were improperly specified.
+
 ### 1.7.0 (May 1, 2017)
 
 - Deprecation: `React.PropTypes` now deprecated in React 15.5, moved to `prop-types` package
