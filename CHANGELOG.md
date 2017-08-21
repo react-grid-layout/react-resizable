@@ -1,5 +1,10 @@
 # Changelog
 
+### 1.7.2 (Aug 21, 2017)
+
+- Pkg: Add `react-draggable@3.0.0` to version range.
+  - This package is compatible with both `@2` and `@3` versions.
+
 ### 1.7.1 (May 23, 2017)
 
 - Bugfix: Some flow types were improperly specified.
