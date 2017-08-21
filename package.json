@@ -10,8 +10,8 @@
     "build-example": "webpack",
     "dev": "webpack-dev-server --open --open-page=examples/1.html",
     "watch": "webpack --progress --watch",
-    "prepublish": "npm run build",
-    "validate": "yarn list",
+    "prepare": "npm run build",
+    "validate": "yarn check",
     "preversion": "npm run lint",
     "version": "git add CHANGELOG.md",
     "postversion": "git push && git push --tags"
