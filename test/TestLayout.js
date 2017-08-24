@@ -45,15 +45,28 @@ export default class TestLayout extends React.Component<{}, {width: number, heig
           <ResizableBox className="box" width={200} height={200} axis="x">
             <span className="text">Only resizable by "x" axis.</span>
           </ResizableBox>
+          <ResizableBox className="box" width={200} height={200} axis="x" resizer="x">
+            <span className="text">Only resizable by "x" axis with x resizer.</span>
+          </ResizableBox>
           <ResizableBox className="box" width={200} height={200} axis="y">
             <span className="text">Only resizable by "y" axis.</span>
+          </ResizableBox>
+          <ResizableBox className="box" width={200} height={200} axis="y" resizer="y">
+            <span className="text">Only resizable by "y" axis with x resizer.</span>
           </ResizableBox>
           <ResizableBox className="box" width={200} height={200} axis="both">
             <span className="text">Resizable ("both" axis).</span>
           </ResizableBox>
+          <ResizableBox className="box" width={200} height={200} axis="both" resizer="both">
+            <span className="text">Resizable ("both" axis with "both" resizer).</span>
+          </ResizableBox>
+          <ResizableBox className="box" width={200} height={200} axis="both" resizer="all">
+            <span className="text">Resizable ("both" axis with "all" resizer).</span>
+          </ResizableBox>
           <ResizableBox className="box" width={200} height={200} axis="none">
             <span className="text">Not resizable ("none" axis).</span>
           </ResizableBox>
+
         </div>
       </div>
     );
