@@ -1,5 +1,10 @@
 # Changelog
 
+### 1.7.3 (Aug 31, 2017)
+
+- Fix React deprecation warnings from `import *`
+  - https://github.com/facebook/react/issues/10583
+
 ### 1.7.2 (Aug 21, 2017)
 
 - Pkg: Add `react-draggable@3.0.0` to version range.
