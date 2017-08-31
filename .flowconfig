@@ -3,6 +3,7 @@
 .*/node_modules/fbjs/.*
 .*/node_modules/express/.*
 .*/node_modules/serve-index/.*
+<PROJECT_ROOT>/build/.*
 
 [include]
 

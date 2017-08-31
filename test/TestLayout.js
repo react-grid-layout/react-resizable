@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Resizable from '../lib/Resizable';
 import ResizableBox from '../lib/ResizableBox';
 import 'style-loader!css-loader!../css/styles.css';
