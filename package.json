@@ -14,7 +14,8 @@
     "validate": "yarn check",
     "preversion": "npm run lint",
     "version": "git add CHANGELOG.md",
-    "postversion": "git push && git push --tags"
+    "postversion": "git push && git push --tags",
+    "flow": "flow"
   },
   "repository": {
     "type": "git",
@@ -41,10 +42,10 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "cross-env": "^5.0.5",
-    "css-loader": "^0.28.5",
-    "eslint": "^4.5.0",
-    "eslint-plugin-react": "^7.2.1",
-    "flow-bin": "^0.53.1",
+    "css-loader": "^0.28.7",
+    "eslint": "^4.6.1",
+    "eslint-plugin-react": "^7.3.0",
+    "flow-bin": "^0.54.0",
     "lodash": "^4.3.0",
     "pre-commit": "^1.1.2",
     "react": "^15.6.1",
@@ -55,7 +56,7 @@
   },
   "dependencies": {
     "prop-types": "^15.5.8",
-    "react-draggable": "^2.2.6 || ^3.0.0"
+    "react-draggable": "^2.2.6 || ^3.0.3"
   },
   "peerDependencies": {
     "react": "^0.14.0 || ^15.0.0",

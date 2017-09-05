@@ -1,3 +1,6 @@
+[version]
+0.54.0
+
 [ignore]
 .*/node_modules/babel.*
 .*/node_modules/fbjs/.*
