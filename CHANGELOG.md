@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.7.4 (Sep 5, 2017)
+
+- Minor Flow & dependency updates.
+
 ### 1.7.3 (Aug 31, 2017)
 
 - Fix React deprecation warnings from `import *`
