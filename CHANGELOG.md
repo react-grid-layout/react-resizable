@@ -1,5 +1,10 @@
 # Changelog
 
+### 1.7.5 (Sep 26, 2017)
+
+- Support for React 16 (no changes required, updated `peerDependencies`)
+- Minor dep updates.
+
 ### 1.7.4 (Sep 5, 2017)
 
 - Minor Flow & dependency updates.
