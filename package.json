@@ -35,7 +35,7 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
-    "babel-eslint": "^7.2.3",
+    "babel-eslint": "^8.0.1",
     "babel-loader": "^7.1.2",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
@@ -43,24 +43,24 @@
     "babel-preset-react": "^6.24.1",
     "cross-env": "^5.0.5",
     "css-loader": "^0.28.7",
-    "eslint": "^4.6.1",
-    "eslint-plugin-react": "^7.3.0",
-    "flow-bin": "^0.54.0",
+    "eslint": "^4.7.2",
+    "eslint-plugin-react": "^7.4.0",
+    "flow-bin": "^0.55.0",
     "lodash": "^4.3.0",
     "pre-commit": "^1.1.2",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
     "style-loader": "^0.18.2",
-    "webpack": "^3.5.5",
-    "webpack-dev-server": "^2.7.1"
+    "webpack": "^3.6.0",
+    "webpack-dev-server": "^2.8.2"
   },
   "dependencies": {
-    "prop-types": "^15.5.8",
+    "prop-types": "15.x",
     "react-draggable": "^2.2.6 || ^3.0.3"
   },
   "peerDependencies": {
-    "react": "^0.14.0 || ^15.0.0",
-    "react-dom": "^0.14.0 || ^15.0.0"
+    "react": "0.14.x || 15.x || 16.x",
+    "react-dom": "0.14.x || 15.x || 16.x"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
