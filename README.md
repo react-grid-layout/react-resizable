@@ -62,3 +62,18 @@ These props apply to both `<Resizable>` and `<ResizableBox>`.
   draggableOpts?: ?Object
 };
 ```
+
+### Drag and resize
+
+This library already implements [react-draggable](https://github.com/mzabriskie/react-draggable) for handling the resizing.
+If you want to use a `react-resizable` box inside a `react-draggable` control, you should wrap the resizable control around a `div`:
+
+```
+<Draggable>
+  <div>
+    <ResizableBox>
+      <span>Resizable and draggable</span>
+    </ResizableBox>
+  </div>
+</Draggable>
+```
