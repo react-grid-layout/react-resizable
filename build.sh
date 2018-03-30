@@ -1,8 +1,10 @@
 #!/bin/bash -ex
 rm -rf ./build
+rm -rf ./dist
 
 # Simple babel run
 ./node_modules/.bin/babel --out-dir ./build ./lib
+./node_modules/.bin/rollup -c
 
 # Gen flow configs
 # When https://github.com/facebook/flow/issues/2830 et al are fixed we can use this, but not until then

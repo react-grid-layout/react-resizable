@@ -1,0 +1,18 @@
+{
+  "dist/react-resizable.umd.js": {
+    "bundled": 136807,
+    "minified": 44263,
+    "gzipped": 11543
+  },
+  "dist/react-resizable.cjs.js": {
+    "bundled": 13005,
+    "minified": 6200,
+    "gzipped": 2018
+  },
+  "dist/react-resizable.esm.js": {
+    "bundled": 12723,
+    "minified": 5973,
+    "gzipped": 1939,
+    "treeshaked": 5381
+  }
+}
