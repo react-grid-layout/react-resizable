@@ -59,6 +59,7 @@ These props apply to both `<Resizable>` and `<ResizableBox>`.
   onResizeStop?: ?(e: SyntheticEvent, data: ResizeCallbackData) => any,
   onResizeStart?: ?(e: SyntheticEvent, data: ResizeCallbackData) => any,
   onResize?: ?(e: SyntheticEvent, data: ResizeCallbackData) => any,
-  draggableOpts?: ?Object
+  draggableOpts?: ?Object,
+  disable: boolean = false
 };
 ```
