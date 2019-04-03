@@ -19,5 +19,5 @@ OS:
 #### Reproduction
 
 If this is a bug report, please provide a reproduction of the issue by going to
-http://www.webpackbin.com/41YFBvekG.
+https://codesandbox.io/s/9229wz40yo?fontsize=14.
 Paste a link here to your working reproduction.
