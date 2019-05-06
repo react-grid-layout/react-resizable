@@ -19,9 +19,9 @@ export default class TestLayout extends React.Component<{}, {width: number, heig
       <div>
         <button onClick={this.onClick} style={{'marginBottom': '10px'}}>Reset first element's width/height</button>
         <div className="layoutRoot">
-          <Resizable className="box" height={this.state.height} width={this.state.width} onResize={this.onResize}>
+          <Resizable className="box" height={this.state.height} width={this.state.width} onResize={this.onResize} resizeHandles={['sw', 'se', 'nw', 'ne', 'w', 'e', 'n', 's']}>
             <div className="box" style={{width: this.state.width + 'px', height: this.state.height + 'px'}}>
-              <span className="text">{"Raw use of <Resizable> element. 200x200, no constraints."}</span>
+              <span className="text">{"Raw use of <Resizable> element. 200x200, all Resize Handles."}</span>
             </div>
           </Resizable>
           <ResizableBox className="box" width={200} height={200}>
