@@ -2,6 +2,7 @@ import React from 'react';
 import Resizable from '../lib/Resizable';
 import ResizableBox from '../lib/ResizableBox';
 import 'style-loader!css-loader!../css/styles.css';
+import 'style-loader!css-loader!./test.css';
 
 export default class TestLayout extends React.Component<{}, {width: number, height: number}> {
   state = {width: 200, height: 200};
@@ -10,7 +11,8 @@ export default class TestLayout extends React.Component<{}, {width: number, heig
     this.setState({width: 200, height: 200});
   };
 
-  onResize = (event, {element, size}) => {
+  onResize = (event, {element, size, handle}) => {
+    console.log(handle);
     this.setState({width: size.width, height: size.height});
   };
 
@@ -26,6 +28,23 @@ export default class TestLayout extends React.Component<{}, {width: number, heig
           </Resizable>
           <ResizableBox className="box" width={200} height={200}>
             <span className="text">{"<ResizableBox>, same as above."}</span>
+          </ResizableBox>
+          <ResizableBox
+            className="custom-box box"
+            width={200}
+            height={200}
+            handle={<span className="custom-handle custom-handle-se" />}
+            handleSize={[8, 8]}>
+            <span className="text">{"<ResizableBox> with custom handle in SE corner."}</span>
+          </ResizableBox>
+          <ResizableBox
+            className="custom-box box"
+            width={200}
+            height={200}
+            handle={(h) => <span className={`custom-handle custom-handle-${h}`} />}
+            handleSize={[8, 8]}
+            resizeHandles={['sw', 'se', 'nw', 'ne', 'w', 'e', 'n', 's']}>
+            <span className="text">{"<ResizableBox> with custom handles in all locations."}</span>
           </ResizableBox>
           <ResizableBox className="box" width={200} height={200} draggableOpts={{grid: [25, 25]}}>
             <span className="text">Resizable box that snaps to even intervals of 25px.</span>
