@@ -1,5 +1,10 @@
 # Changelog
 
+### 1.8.0 (May 15 2019)
+
+- Added support for custom resize handles (https://github.com/STRML/react-resizable/pull/79)
+- Added support for resize handles on all corners (https://github.com/STRML/react-resizable/pull/191)
+
 ### 1.7.5 (Sep 26, 2017)
 
 - Support for React 16 (no changes required, updated `peerDependencies`)
