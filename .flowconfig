@@ -1,5 +1,5 @@
 [version]
-0.55.0
+^0.98.0
 
 [ignore]
 .*/node_modules/babel.*
@@ -28,4 +28,3 @@ module.system.node.resolve_dirname=node_modules
 module.system.node.resolve_dirname=.
 module.use_strict=true
 server.max_workers=6
-unsafe.enable_getters_and_setters=true
