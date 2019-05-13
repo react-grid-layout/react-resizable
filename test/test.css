@@ -1,0 +1,55 @@
+.custom-box {
+  overflow: visible;
+}
+.custom-handle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: #1153aa;
+  opacity: 0.75;
+  border-radius: 4px;
+}
+.custom-handle-sw {
+  bottom: -4px;
+  left: -4px;
+  cursor: sw-resize;
+}
+.custom-handle-se {
+  bottom: -4px;
+  right: -4px;
+  cursor: se-resize;
+}
+.custom-handle-nw {
+  top: -4px;
+  left: -4px;
+  cursor: nw-resize;
+}
+.custom-handle-ne {
+  top: -4px;
+  right: -4px;
+  cursor: ne-resize;
+}
+.custom-handle-w,
+.custom-handle-e {
+  top: 50%;
+  margin-top: -4px;
+  cursor: ew-resize;
+}
+.custom-handle-w {
+  left: -4px;
+}
+.custom-handle-e {
+  right: -4px;
+}
+.custom-handle-n,
+.custom-handle-s {
+  left: 50%;
+  margin-left: -4px;
+  cursor: ns-resize;
+}
+.custom-handle-n {
+  top: -4px;
+}
+.custom-handle-s {
+  bottom: -4px;
+}
