@@ -12,7 +12,6 @@ export default class TestLayout extends React.Component<{}, {width: number, heig
   };
 
   onResize = (event, {element, size, handle}) => {
-    console.log(handle);
     this.setState({width: size.width, height: size.height});
   };
 
