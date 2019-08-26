@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint --ext .js,.jsx lib/ test/; flow",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "bash build.sh",
+    "build": "rm -rf ./build && ./node_modules/.bin/babel --out-dir ./build ./lib && find ./lib -type f -name '*.js' -exec sh -c 'cp $0 build/$(basename $0).flow' {} \\;",
     "build-example": "webpack",
     "dev": "webpack-dev-server --open --open-page=examples/1.html",
     "watch": "webpack --progress --watch",
