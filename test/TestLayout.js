@@ -26,7 +26,7 @@ export default class TestLayout extends React.Component<{}, {width: number, heig
             </div>
           </Resizable>
           <ResizableBox className="box" width={200} height={200}>
-            <span className="text">{"<ResizableBox>, same as above."}</span>
+            <span className="text">{"<ResizableBox>"}</span>
           </ResizableBox>
           <ResizableBox
             className="custom-box box"
