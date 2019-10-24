@@ -1,9 +1,16 @@
 # Changelog
 
-### 1.8.0 (May 15 2019)
+### 1.9.0 (Oct 24, 2019)
 
-- Added support for custom resize handles (https://github.com/STRML/react-resizable/pull/79)
-- Added support for resize handles on all corners (https://github.com/STRML/react-resizable/pull/191)
+- Fix resize with north/south handles when `lockAspectRatio=true` [#106](https://github.com/STRML/react-resizable/pull/106)
+- Remove deprecated React 16.9 lifecycle methods (`componentWillReceiveProps`) (https://github.com/STRML/react-resizable/pull/112/commits/541dee69b8e45d91a533855609472b481634edee)
+- Upgrade to babel 7
+- [Remove unused state inside `<Draggable>`](https://github.com/STRML/react-resizable/pull/112/commits/05693f63d6d221ad652f0f28af024cfb46a5f2df). This has not been needed for quite some time, fixes [some bugs](https://github.com/STRML/react-resizable/issues/99) and improves performance.
+
+### 1.8.0 (May 15, 2019)
+
+- Added support for custom resize handles [#79](https://github.com/STRML/react-resizable/pull/79)
+- Added support for resize handles on all corners [#191](https://github.com/STRML/react-resizable/pull/191)
 
 ### 1.7.5 (Sep 26, 2017)
 
