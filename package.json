@@ -38,6 +38,7 @@
     "@babel/plugin-proposal-class-properties": "^7.0.0",
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
+    "@babel/preset-flow": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",
@@ -53,8 +54,7 @@
     "style-loader": "^1.0.0",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.9",
-    "webpack-dev-server": "^3.8.2",
-    "@babel/preset-flow": "^7.0.0"
+    "webpack-dev-server": "^3.8.2"
   },
   "dependencies": {
     "prop-types": "15.x",
