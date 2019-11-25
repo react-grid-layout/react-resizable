@@ -1,5 +1,10 @@
 # Changelog
 
+### 1.10.0 (Nov 25, 2019)
+
+- Feat: Add `transformScale` prop [#115](https://github.com/STRML/react-resizable/pull/115)
+- Bugfix: Resolve `getDerivedStateFromProps` dev warning [#117](https://github.com/STRML/react-resizable/pull/117)
+
 ### 1.9.0 (Oct 24, 2019)
 
 - Fix resize with north/south handles when `lockAspectRatio=true` [#106](https://github.com/STRML/react-resizable/pull/106)
