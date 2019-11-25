@@ -1,6 +1,8 @@
 # Changelog
 
-### 1.10.0 (Nov 25, 2019)
+### 1.10.1 (Nov 25, 2019)
+
+> Note: 1.10.0 was a mis-publish.
 
 - Feat: Add `transformScale` prop [#115](https://github.com/STRML/react-resizable/pull/115)
 - Bugfix: Resolve `getDerivedStateFromProps` dev warning [#117](https://github.com/STRML/react-resizable/pull/117)
