@@ -18,12 +18,6 @@ exports[`render ResizableBox snapshot default props 1`] = `
     onMouseDown={[Function]}
     onMouseUp={[Function]}
     onTouchEnd={[Function]}
-    onTouchStart={[Function]}
-    style={
-      Object {
-        "touchAction": "none",
-      }
-    }
   />
 </div>
 `;
