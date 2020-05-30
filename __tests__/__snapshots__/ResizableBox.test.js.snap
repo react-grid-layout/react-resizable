@@ -5,8 +5,8 @@ exports[`render ResizableBox snapshot default props 1`] = `
   className="react-resizable"
   style={
     Object {
-      "height": 50,
-      "width": 50,
+      "height": "50px",
+      "width": "50px",
     }
   }
 >

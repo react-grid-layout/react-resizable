@@ -19,21 +19,22 @@ describe('render Resizable', () => {
     transformScale: 1,
     width: 50,
   };
-  const children = <span className={'children'} />;
+  const userChildren = <span className={'children'} />;
+  const resizableBoxChildren =  <div style={{width: '50px', height: '50px'}}>{userChildren}</div>;
 
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   test('snapshot default props', () => {
-    const tree = renderer.create(<Resizable {...props}>{children}</Resizable>).toJSON();
+    const tree = renderer.create(<Resizable {...props}>{resizableBoxChildren}</Resizable>).toJSON();
     expect(tree).toMatchSnapshot();
   });
 
   test('with correct props', () => {
-    const element = shallow(<Resizable {...props}>{children}</Resizable>);
+    const element = shallow(<Resizable {...props}>{resizableBoxChildren}</Resizable>);
+    expect(element.find('.test-classname').find('.children'));
     expect(element.find(DraggableCore)).toHaveLength(2);
-
     const cursorSe = element.find('.react-resizable-handle-se');
     const cursorE = element.find('.react-resizable-handle-e');
     expect(cursorSe).toHaveLength(1);
