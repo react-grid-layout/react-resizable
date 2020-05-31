@@ -33,10 +33,22 @@ describe('render ResizableBox', () => {
 
   test('with correct props', () => {
     const element = shallow(<ResizableBox {...props}>{children}</ResizableBox>);
+    expect(element.state()).toEqual({
+      height: 50,
+      propsHeight: 50,
+      propsWidth: 50,
+      width: 50,
+    });
     const resizable = element.find(Resizable);
     const fakeEvent = {persist: jest.fn()};
     const data = {node: children, size: {width: 30, height: 30}, handle: 'w'};
     resizable.simulate('resize', fakeEvent, data);
+    expect(element.state()).toEqual({
+      height: 30,
+      propsHeight: 50,
+      propsWidth: 50,
+      width: 30,
+    });
     expect(element.find('.children')).toHaveLength(1);
     expect(fakeEvent.persist).toHaveBeenCalledTimes(1);
     expect(props.onResize).toHaveBeenCalledWith(fakeEvent, data);

@@ -40,4 +40,26 @@ describe('render Resizable', () => {
     expect(cursorSe).toHaveLength(1);
     expect(cursorE).toHaveLength(1);
   });
+
+  describe('and pass handle props', () => {
+    test('as component', () => {
+      const customProps = {
+        ...props,
+        resizeHandles: ['se'],
+        handle: <span className={'custom-component'} />
+      };
+      const element = shallow(<Resizable {...customProps}>{resizableBoxChildren}</Resizable>);
+      expect(element.find('.react-resizable-handle-se')).toHaveLength(0);
+      expect(element.find('.custom-component')).toHaveLength(1);
+    });
+    test('as function', () => {
+      const customProps = {
+        ...props,
+        resizeHandles: ['se'],
+        handle: (h) => <span className={`custom-component-${h}`} />
+      };
+      const element = shallow(<Resizable {...customProps}>{resizableBoxChildren}</Resizable>);
+      expect(element.find('.custom-component-se')).toHaveLength(1);
+    });
+  });
 });

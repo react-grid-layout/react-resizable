@@ -3,10 +3,10 @@ const path = require('path');
 module.exports = {
   coverageThreshold: {
     global: {
-      branches: 30, // TODO: > 80
+      branches: 10, // TODO: > 80
       functions: 20, // TODO: > 80
-      lines: 60, // TODO: > 80
-      statements: 30 // TODO: > 80
+      lines: 20, // TODO: > 80
+      statements: 15 // TODO: > 80
     }
   },
   setupFiles: [
