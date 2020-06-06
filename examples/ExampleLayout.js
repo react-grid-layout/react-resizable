@@ -10,12 +10,19 @@ export default class ExampleLayout extends React.Component<{}, {width: number, h
     height: 200,
     fixedWidth: 200,
     fixedHeight: 200,
-    fixedLeft: 100,
-    fixedTop: 500
+    fixedLeft: 27,
+    fixedTop: 920
   };
 
   onClick = () => {
-    this.setState({width: 200, height: 200});
+    this.setState({
+      width: 200,
+      height: 200,
+      fixedWidth: 200,
+      fixedHeight: 200,
+      fixedLeft: 27,
+      fixedTop: 920
+    });
   };
 
   onResize = (event, {element, size, handle}) => {
