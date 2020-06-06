@@ -5,7 +5,14 @@ import 'style-loader!css-loader!../css/styles.css';
 import 'style-loader!css-loader!./test.css';
 
 export default class ExampleLayout extends React.Component<{}, {width: number, height: number}> {
-  state = {width: 200, height: 200};
+  state = {
+    width: 200,
+    height: 200,
+    fixedWidth: 200,
+    fixedHeight: 200,
+    fixedLeft: 100,
+    fixedTop: 500
+  };
 
   onClick = () => {
     this.setState({width: 200, height: 200});
@@ -14,6 +21,26 @@ export default class ExampleLayout extends React.Component<{}, {width: number, h
   onResize = (event, {element, size, handle}) => {
     this.setState({width: size.width, height: size.height});
   };
+  onResizeFixed = (event, {element, size, handle}) => {
+    this.setState((state) => {
+      let newTop = state.fixedTop;
+      let newLeft = state.fixedLeft;
+      if (handle.indexOf('n') > -1) {
+        const deltaHeight = size.height - state.fixedHeight;
+        newTop -= deltaHeight;
+      }
+      if (handle.indexOf('w') > -1) {
+        const deltaWidth = size.width - state.fixedWidth;
+        newLeft -= deltaWidth;
+      }
+      return {
+        fixedWidth: size.width,
+        fixedHeight: size.height,
+        fixedLeft: newLeft,
+        fixedTop: newTop
+      };
+    });
+  }
 
   render() {
     return (
@@ -72,6 +99,19 @@ export default class ExampleLayout extends React.Component<{}, {width: number, h
           <ResizableBox className="box" width={200} height={200} axis="none">
             <span className="text">Not resizable ("none" axis).</span>
           </ResizableBox>
+          <Resizable className="box" height={this.state.fixedHeight} width={this.state.fixedWidth} onResize={this.onResizeFixed} resizeHandles={['sw', 'se', 'nw', 'ne', 'w', 'e', 'n', 's']}>
+            <div
+              className="box"
+              style={{
+                width: this.state.fixedWidth + 'px',
+                height: this.state.fixedHeight + 'px',
+                position: 'absolute',
+                left: this.state.fixedLeft,
+                top: this.state.fixedTop,
+              }}>
+              <span className="text">{"Absolutely positioned <Resizable> element. Resize in all directions."}</span>
+            </div>
+          </Resizable>
         </div>
       </div>
     );
