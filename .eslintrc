@@ -29,8 +29,8 @@
   },
   "globals": {
     // For Flow
-    "ReactElement",
-    "ReactClass",
-    "SyntheticEvent"
+    "ReactElement": false,
+    "ReactClass": false,
+    "SyntheticEvent": false
   }
 }
