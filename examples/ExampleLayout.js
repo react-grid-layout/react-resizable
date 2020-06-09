@@ -4,7 +4,7 @@ import ResizableBox from '../lib/ResizableBox';
 import 'style-loader!css-loader!../css/styles.css';
 import 'style-loader!css-loader!./test.css';
 
-export default class TestLayout extends React.Component<{}, {width: number, height: number}> {
+export default class ExampleLayout extends React.Component<{}, {width: number, height: number}> {
   state = {width: 200, height: 200};
 
   onClick = () => {

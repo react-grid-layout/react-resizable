@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render Resizable snapshot default props 1`] = `
+<div
+  className="test-classname react-resizable"
+  style={
+    Object {
+      "height": "50px",
+      "width": "50px",
+    }
+  }
+>
+  <span
+    className="children"
+  />
+  <span
+    className="react-resizable-handle react-resizable-handle-se"
+    onMouseDown={[Function]}
+    onMouseUp={[Function]}
+    onTouchEnd={[Function]}
+  />
+  <span
+    className="react-resizable-handle react-resizable-handle-e"
+    onMouseDown={[Function]}
+    onMouseUp={[Function]}
+    onTouchEnd={[Function]}
+  />
+</div>
+`;

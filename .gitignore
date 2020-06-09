@@ -1,4 +1,22 @@
-node_modules
+# See https://help.github.com/ignore-files/ for more about ignoring files.
+
 dist
-npm-debug.log
-build/
+build
+
+# dependencies
+/node_modules
+package-lock.json
+
+# testing
+/coverage/
+
+# misc
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ide
+.vscode
+.idea
+

@@ -1,5 +1,9 @@
 # Changelog
 
+### Unreleased
+
+- 🐛 Bugfix: remove unknown Prop `handle` from div children in Resizable React.CloneElement [124](https://github.com/STRML/react-resizable/issues/124)
+
 ### 1.10.1 (Nov 25, 2019)
 
 > Note: 1.10.0 was a mis-publish.

@@ -6,14 +6,14 @@ A simple widget that can be resized via one or more handles.
 
 You can either use the `<Resizable>` element directly, or use the much simpler `<ResizableBox>` element.
 
-See the example and associated code in [TestLayout](/test/TestLayout.js) and
+See the example and associated code in [TestLayout](/examples/TestLayout.js) and
 [ResizableBox](/lib/ResizableBox.js) for more details.
 
 Make sure you use the associated styles in [/css/styles.css](/css/styles.css), as without them, you will have
 problems with handle placement and visibility.
 
 You can pass options directly to the underlying `DraggableCore` instance by using the prop `draggableOpts`.
-See the [demo](/test/TestLayout.js) for more on this.
+See the [demo](/examples/TestLayout.js) for more on this.
 
 ### Installation
 

@@ -4,7 +4,9 @@
   "plugins": [
     "react"
   ],
-  "extends": "eslint:recommended",
+  "extends": [
+    "eslint:recommended"
+  ],
   "rules": {
     "strict": 0,
     "quotes": [0, "single"],
@@ -20,9 +22,10 @@
     "react/jsx-uses-vars": 1,
     "semi": [1, "always"]
   },
-  env: {
+  "env": {
     "browser": true,
-    "node": true
+    "node": true,
+    "jest": true
   },
   "globals": {
     // For Flow
