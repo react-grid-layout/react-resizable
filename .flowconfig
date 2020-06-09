@@ -1,5 +1,5 @@
 [version]
-^0.110.0
+^0.126.0
 
 [ignore]
 .*/node_modules/@babel.*
@@ -10,6 +10,10 @@
 [include]
 
 [libs]
+
+[lints]
+all=warn
+implicit-inexact-object=error
 
 [options]
 suppress_comment=\\(.\\|\n\\)*\\s*\\$FlowFixMe.*
@@ -23,7 +27,7 @@ esproposal.class_instance_fields=enable
 esproposal.decorators=ignore
 esproposal.export_star_as=enable
 experimental.strict_call_arity=true
-module.system.node.resolve_dirname=node_modules
-module.system.node.resolve_dirname=.
+module.system.node.allow_root_relative=true
 module.use_strict=true
 server.max_workers=6
+exact_by_default=true
