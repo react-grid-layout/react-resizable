@@ -63,4 +63,35 @@ describe('render Resizable', () => {
       expect(element.find('.custom-component-se')).toHaveLength(1);
     });
   });
+
+  test('onResize callback after modified position', () => {
+    const customProps = {
+      ...props,
+      resizeHandles: ['nw', 'sw' ,'nw', 'se', 'n', 's', 'w', 'e'],
+    };
+    const eventTarget = {
+      top: 0,
+      left: 0,
+    };
+    const mockEvent = { target: eventTarget };
+    const element = shallow(<Resizable {...customProps}>{resizableBoxChildren}</Resizable>);
+    expect(props.onResize).not.toHaveBeenCalled();
+    element.find('DraggableCore').first().prop('onDrag')(
+      mockEvent,
+      {
+        node: null,
+        deltaX: 5,
+        deltaY: 10,
+      }
+    );
+    expect(props.onResize).lastCalledWith(
+      mockEvent,
+      expect.objectContaining({
+        size: {
+          height: 40,
+          width: 45,
+        },
+      })
+    );
+  });
 });
