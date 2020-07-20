@@ -6,7 +6,7 @@ A simple widget that can be resized via one or more handles.
 
 You can either use the `<Resizable>` element directly, or use the much simpler `<ResizableBox>` element.
 
-See the example and associated code in [TestLayout](/examples/TestLayout.js) and
+See the example and associated code in [ExampleLayout](/examples/ExampleLayout.js) and
 [ResizableBox](/lib/ResizableBox.js) for more details.
 
 Make sure you use the associated styles in [/css/styles.css](/css/styles.css), as without them, you will have
