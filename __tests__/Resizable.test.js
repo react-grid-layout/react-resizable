@@ -73,16 +73,16 @@ describe('render Resizable', () => {
       left: 0,
       top: 0,
     };
-    const eventTarget = document.createElement('div');
+    const node = document.createElement('div');
     // $FlowIgnore need to override to have control over dummy dom element
-    eventTarget.getBoundingClientRect = () => ({ ...mockClientRect });
-    const mockEvent = { target: eventTarget };
+    node.getBoundingClientRect = () => ({ ...mockClientRect });
+    const mockEvent = { };
     const element = shallow(<Resizable {...customProps}>{resizableBoxChildren}</Resizable>);
     const nwHandle = element.find('DraggableCore').first();
 
     test('Gradual resizing without movement between does not modify callback', () => {
       expect(props.onResize).not.toHaveBeenCalled();
-      nwHandle.prop('onDrag')(mockEvent, { node: null, deltaX: 5, deltaY: 10 });
+      nwHandle.prop('onDrag')(mockEvent, { node, deltaX: 5, deltaY: 10 });
       expect(props.onResize).lastCalledWith(
         mockEvent,
         expect.objectContaining({
@@ -98,7 +98,7 @@ describe('render Resizable', () => {
       expect(props.onResize).not.toHaveBeenCalled();
 
       mockClientRect.top = -10; // Object moves between callbacks
-      nwHandle.prop('onDrag')(mockEvent, { node: null, deltaX: 5, deltaY: 10 });
+      nwHandle.prop('onDrag')(mockEvent, { node, deltaX: 5, deltaY: 10 });
       expect(props.onResize).lastCalledWith(
         mockEvent,
         expect.objectContaining({
@@ -110,7 +110,7 @@ describe('render Resizable', () => {
       );
 
       mockClientRect.left = 20; // Object moves between callbacks
-      nwHandle.prop('onDrag')(mockEvent, { node: null, deltaX: 5, deltaY: 10 });
+      nwHandle.prop('onDrag')(mockEvent, { node, deltaX: 5, deltaY: 10 });
       expect(props.onResize).lastCalledWith(
         mockEvent,
         expect.objectContaining({
@@ -124,13 +124,13 @@ describe('render Resizable', () => {
       props.onResize.mockClear();
       mockClientRect.left -= 10; // Object moves between callbacks
       mockClientRect.top -= 10; // Object moves between callbacks
-      nwHandle.prop('onDrag')(mockEvent, { node: null, deltaX: 10, deltaY: 10 });
+      nwHandle.prop('onDrag')(mockEvent, { node, deltaX: 10, deltaY: 10 });
       expect(props.onResize).not.toHaveBeenCalled();
 
       mockClientRect.left -= 10; // Object moves between callbacks
       mockClientRect.top -= 10; // Object moves between callbacks
       const swHandle = element.find('DraggableCore').at(1);
-      swHandle.prop('onDrag')(mockEvent, { node: null, deltaX: 10, deltaY: 10 });
+      swHandle.prop('onDrag')(mockEvent, { node, deltaX: 10, deltaY: 10 });
       expect(props.onResize).lastCalledWith(
         mockEvent,
         expect.objectContaining({
@@ -144,7 +144,7 @@ describe('render Resizable', () => {
       mockClientRect.left -= 10; // Object moves between callbacks
       mockClientRect.top -= 10; // Object moves between callbacks
       const neHandle = element.find('DraggableCore').at(2);
-      neHandle.prop('onDrag')(mockEvent, { node: null, deltaX: 10, deltaY: 10 });
+      neHandle.prop('onDrag')(mockEvent, { node, deltaX: 10, deltaY: 10 });
       expect(props.onResize).lastCalledWith(
         mockEvent,
         expect.objectContaining({
@@ -158,7 +158,7 @@ describe('render Resizable', () => {
       mockClientRect.left -= 10; // Object moves between callbacks
       mockClientRect.top -= 10; // Object moves between callbacks
       const seHandle = element.find('DraggableCore').at(3);
-      seHandle.prop('onDrag')(mockEvent, { node: null, deltaX: 10, deltaY: 10 });
+      seHandle.prop('onDrag')(mockEvent, { node, deltaX: 10, deltaY: 10 });
       expect(props.onResize).lastCalledWith(
         mockEvent,
         expect.objectContaining({
