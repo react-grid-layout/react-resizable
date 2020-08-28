@@ -2,17 +2,49 @@ import React from 'react';
 import Resizable from '../lib/Resizable';
 import ResizableBox from '../lib/ResizableBox';
 import 'style-loader!css-loader!../css/styles.css';
-import 'style-loader!css-loader!./test.css';
+import 'style-loader!css-loader!./example.css';
 
 export default class ExampleLayout extends React.Component<{}, {width: number, height: number}> {
-  state = {width: 200, height: 200};
+  state = {
+    width: 200,
+    height: 200,
+    absoluteWidth: 200,
+    absoluteHeight: 200,
+    absoluteLeft: 0,
+    absoluteTop: 0,
+  };
 
   onClick = () => {
-    this.setState({width: 200, height: 200});
+    this.setState({ width: 200, height: 200, absoluteWidth: 200, absoluteHeight: 200 });
   };
 
   onResize = (event, {element, size, handle}) => {
     this.setState({width: size.width, height: size.height});
+  };
+  onResizeAbsolute = (event, {element, size, handle}) => {
+    this.setState((state) => {
+      let newLeft = state.absoluteLeft;
+      let newTop = state.absoluteTop;
+      const deltaHeight = size.height - state.absoluteHeight;
+      const deltaWidth = size.width - state.absoluteWidth;
+      if (handle[0] === 'n') {
+        newTop -= deltaHeight / 2;
+      } else if (handle[0] === 's') {
+        newTop += deltaHeight / 2;
+      }
+      if (handle[handle.length - 1] === 'w') {
+        newLeft -= deltaWidth / 2;
+      } else if (handle[handle.length - 1] === 'e') {
+        newLeft += deltaWidth / 2;
+      }
+
+      return {
+        absoluteWidth: size.width,
+        absoluteHeight: size.height,
+        absoluteLeft: newLeft,
+        absoluteTop: newTop,
+      };
+    });
   };
 
   render() {
@@ -71,6 +103,38 @@ export default class ExampleLayout extends React.Component<{}, {width: number, h
           </ResizableBox>
           <ResizableBox className="box" width={200} height={200} axis="none">
             <span className="text">Not resizable ("none" axis).</span>
+          </ResizableBox>
+        </div>
+        <div className="layoutRoot absoluteLayout">
+          <ResizableBox className="box absolutely-positioned top-aligned left-aligned" height={200} width={200} resizeHandles={['se', 'e', 's']}>
+            <span className="text">{"Top-left Aligned"}</span>
+          </ResizableBox>
+          <ResizableBox className="box absolutely-positioned bottom-aligned left-aligned" height={200} width={200} resizeHandles={['ne', 'e', 'n']}>
+            <span className="text">{"Bottom-left Aligned"}</span>
+          </ResizableBox>
+          <Resizable
+            className="box absolutely-positioned center-aligned"
+            height={this.state.absoluteHeight}
+            width={this.state.absoluteWidth}
+            onResize={this.onResizeAbsolute}
+            resizeHandles={['sw', 'se', 'nw', 'ne', 'w', 'e', 'n', 's']}
+          >
+            <div
+              className="box"
+              style={{
+                width: this.state.absoluteWidth,
+                height: this.state.absoluteHeight,
+                margin: `${this.state.absoluteTop} 0 0 ${this.state.absoluteLeft}`,
+              }}
+            >
+              <span className="text">{"Raw use of <Resizable> element with controlled position. Resize and reposition in all directions"}</span>
+            </div>
+          </Resizable>
+          <ResizableBox className="box absolutely-positioned top-aligned right-aligned" height={200} width={200} resizeHandles={['sw', 'w', 's']}>
+            <span className="text">{"Top-right Aligned"}</span>
+          </ResizableBox>
+          <ResizableBox className="box absolutely-positioned bottom-aligned right-aligned" height={200} width={200} resizeHandles={['nw', 'w', 'n']}>
+            <span className="text">{"Bottom-right Aligned"}</span>
           </ResizableBox>
         </div>
       </div>

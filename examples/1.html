@@ -7,12 +7,19 @@
       }
       #content {
         width: 100%;
-        background: #eee;
-        padding-bottom: 200px;
+        padding-bottom: 250px;
       }
       .layoutRoot {
         display: flex;
+        background: #eee;
+        margin-bottom: 20px;
         flex-wrap: wrap;
+      }
+      .absoluteLayout {
+        height: 600px;
+        position: relative;
+        justify-content: center;
+        align-items: center
       }
       .box {
         display: inline-block;
@@ -41,6 +48,24 @@
       }
       .box3:hover .react-resizable-handle {
         display: block;
+      }
+      .absolutely-positioned {
+        position: absolute !important;
+      }
+      .center-aligned {
+        margin: auto;
+      }
+      .left-aligned {
+        left: 0;
+      }
+      .right-aligned {
+        right: 0;
+      }
+      .top-aligned {
+        top: 0;
+      }
+      .bottom-aligned {
+        bottom: 0;
       }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.1/react.min.js"></script>
