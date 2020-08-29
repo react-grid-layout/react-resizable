@@ -31,6 +31,7 @@
     // For Flow
     "ReactElement": false,
     "ReactClass": false,
-    "SyntheticEvent": false
+    "SyntheticEvent": false,
+    "ClientRect": false
   }
 }
