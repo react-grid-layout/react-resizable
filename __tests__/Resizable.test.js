@@ -169,5 +169,51 @@ describe('render Resizable', () => {
         })
       );
     });
+
+    test('use of < 1 transformScale', () => {
+      const element = shallow(<Resizable {...customProps} transformScale={0.5}>{resizableBoxChildren}</Resizable>);
+      const nwHandle = element.find('DraggableCore').first();
+      expect(props.onResize).not.toHaveBeenCalled();
+      nwHandle.prop('onDrag')(mockEvent, { node, deltaX: 5, deltaY: 10 });
+      expect(props.onResize).lastCalledWith(
+        mockEvent,
+        expect.objectContaining({
+          size: {
+            // Should be doubled
+            height: 30,
+            width: 40,
+          },
+        })
+      );
+
+      mockClientRect.left = 20; // Object moves between callbacks
+      nwHandle.prop('onDrag')(mockEvent, { node, deltaX: 5, deltaY: 10 });
+      expect(props.onResize).lastCalledWith(
+        mockEvent,
+        expect.objectContaining({
+          size: {
+            height: 30, // Height decreased as deltaY increases - no further top position change since last
+            width: 20, // Width decreased 10 from deltaX and 20 from changing position
+          },
+        })
+      );
+    });
+
+    test('use of > 1 transformScale', () => {
+      const element = shallow(<Resizable {...customProps} transformScale={2}>{resizableBoxChildren}</Resizable>);
+      const nwHandle = element.find('DraggableCore').first();
+      expect(props.onResize).not.toHaveBeenCalled();
+      nwHandle.prop('onDrag')(mockEvent, { node, deltaX: 5, deltaY: 10 });
+      expect(props.onResize).lastCalledWith(
+        mockEvent,
+        expect.objectContaining({
+          size: {
+            // Should be halved
+            height: 45,
+            width: 47.5,
+          },
+        })
+      );
+    });
   });
 });
