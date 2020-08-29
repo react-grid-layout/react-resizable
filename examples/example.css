@@ -10,6 +10,12 @@
   justify-content: center;
   align-items: center;
 }
+.scaledLayout {
+  width: 125%;
+  left: -12.5%;
+  transform: scale(0.75);
+  margin-top: -7.5%;
+}
 
 .box {
   display: flex;

@@ -111,12 +111,12 @@ export default class ExampleLayout extends React.Component<{}, {width: number, h
           </ResizableBox>
         </div>
 
-        <h3>Absolutely Positioned layout</h3>
+        <h3>Absolutely Positioned Layout</h3>
         <div className="layoutRoot absoluteLayout">
-          <ResizableBox className="box absolutely-positioned top-aligned left-aligned" height={200} width={200} resizeHandles={['se', 'e', 's']}>
+          <ResizableBox className="box absolutely-positioned top-aligned left-aligned" height={200} width={200} resizeHandles={['sw', 'se', 'nw', 'ne', 'w', 'e', 'n', 's']}>
             <span className="text">Top-left Aligned</span>
           </ResizableBox>
-          <ResizableBox className="box absolutely-positioned bottom-aligned left-aligned" height={200} width={200} resizeHandles={['ne', 'e', 'n']}>
+          <ResizableBox className="box absolutely-positioned bottom-aligned left-aligned" height={200} width={200} resizeHandles={['sw', 'se', 'nw', 'ne', 'w', 'e', 'n', 's']}>
             <span className="text">Bottom-left Aligned</span>
           </ResizableBox>
           {/* See implementation of `onResizeAbsolute` for how this can be moved around its container */}
@@ -137,11 +137,58 @@ export default class ExampleLayout extends React.Component<{}, {width: number, h
               <span className="text">{"Raw use of <Resizable> element with controlled position. Resize and reposition in all directions."}</span>
             </div>
           </Resizable>
-          <ResizableBox className="box absolutely-positioned top-aligned right-aligned" height={200} width={200} resizeHandles={['sw', 'w', 's']}>
+          <ResizableBox className="box absolutely-positioned top-aligned right-aligned" height={200} width={200} resizeHandles={['sw', 'se', 'nw', 'ne', 'w', 'e', 'n', 's']}>
             <span className="text">Top-right Aligned</span>
           </ResizableBox>
-          <ResizableBox className="box absolutely-positioned bottom-aligned right-aligned" height={200} width={200} resizeHandles={['nw', 'w', 'n']}>
+          <ResizableBox className="box absolutely-positioned bottom-aligned right-aligned" height={200} width={200} resizeHandles={['sw', 'se', 'nw', 'ne', 'w', 'e', 'n', 's']}>
             <span className="text">Bottom-right Aligned</span>
+          </ResizableBox>
+        </div>
+
+        <h3>Scaled Absolute Layout</h3>
+        <div>
+          <small>
+            If you are nesting Resizables in an element with <code>transform: scale(n)</code>, be sure to pass the same <code>n</code>&nbsp;
+            as the <code>transformScale</code> property.
+            <br />
+            This box has scale 0.75.
+          </small>
+        </div>
+        <div className="layoutRoot absoluteLayout scaledLayout">
+          <ResizableBox className="box absolutely-positioned top-aligned left-aligned" width={200} height={200} resizeHandles={['sw', 'se', 'nw', 'ne', 'w', 'e', 'n', 's']}>
+            <span className="text">{"<ResizableBox> with incorrect scale 1"}</span>
+          </ResizableBox>
+
+          <ResizableBox className="box absolutely-positioned bottom-aligned left-aligned" width={200} height={200} transformScale={0.75} resizeHandles={['sw', 'se', 'nw', 'ne', 'w', 'e', 'n', 's']}>
+            <span className="text">{"<ResizableBox> with correct scale 0.75"}</span>
+          </ResizableBox>
+
+          {/* See implementation of `onResizeAbsolute` for how this can be moved around its container */}
+          <Resizable
+            className="box absolutely-positioned"
+            height={this.state.absoluteHeight}
+            width={this.state.absoluteWidth}
+            onResize={this.onResizeAbsolute}
+            transformScale={0.75}
+            resizeHandles={['sw', 'se', 'nw', 'ne', 'w', 'e', 'n', 's']}
+          >
+            <div
+              style={{
+                width: this.state.absoluteWidth,
+                height: this.state.absoluteHeight,
+                margin: `${this.state.absoluteTop} 0 0 ${this.state.absoluteLeft}`,
+              }}
+            >
+              <span className="text">{"Raw use of <Resizable> element with controlled position. Resize and reposition in all directions."}</span>
+            </div>
+          </Resizable>
+
+          <ResizableBox className="box absolutely-positioned top-aligned right-aligned" width={200} height={200} transformScale={0.75} resizeHandles={['sw', 'se', 'nw', 'ne', 'w', 'e', 'n', 's']}>
+            <span className="text">{"<ResizableBox> with correct scale 0.75"}</span>
+          </ResizableBox>
+
+          <ResizableBox className="box absolutely-positioned bottom-aligned right-aligned" width={200} height={200} transformScale={0.75} resizeHandles={['sw', 'se', 'nw', 'ne', 'w', 'e', 'n', 's']}>
+            <span className="text">{"<ResizableBox> with correct scale 0.75"}</span>
           </ResizableBox>
         </div>
 
