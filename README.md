@@ -65,3 +65,13 @@ These props apply to both `<Resizable>` and `<ResizableBox>`.
   resizeHandles?: ?Array<'s' | 'w' | 'e' | 'n' | 'sw' | 'nw' | 'se' | 'ne'> = ['se']
 };
 ```
+
+The following props can also be used on `<ResizableBox>`:
+
+```js
+{
+  style?: Object
+}
+```
+
+If a `width` or `height` is passed to `<ResizableBox>`'s `style` prop, it will be ignored as it is required for internal function.

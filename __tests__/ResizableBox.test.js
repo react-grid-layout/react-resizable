@@ -21,7 +21,7 @@ describe('render ResizableBox', () => {
     resizeHandles: ['w'],
     width: 50,
   };
-  const children = <span className={'children'} />;
+  const children = <span className="children" />;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -59,5 +59,22 @@ describe('render ResizableBox', () => {
 
     resizable.simulate('resizeStop', fakeEvent, data);
     expect(props.onResizeStop).toHaveBeenCalledWith(fakeEvent, data);
+  });
+
+  test('style prop', () => {
+    const element = shallow(<ResizableBox {...props} style={{backgroundColor: 'red'}}>{children}</ResizableBox>);
+    expect(element.find('div').at(0).prop('style')).toEqual({
+      width: '50px',
+      height: '50px',
+      backgroundColor: 'red'
+    });
+  });
+
+  test('style prop width and height ignored', () => {
+    const element = shallow(<ResizableBox {...props} style={{width: 10, height: 10}}>{children}</ResizableBox>);
+    expect(element.find('div').at(0).prop('style')).toEqual({
+      width: '50px',
+      height: '50px',
+    });
   });
 });
