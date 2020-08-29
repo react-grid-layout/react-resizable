@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint lib/ __tests__/ setupTests/; flow",
-    "test": "jest --coverage --runInBand",
-    "unit": "jest --watch",
+    "test": "jest --coverage",
+    "unit": "jest --watch --verbose",
     "build": "bash build.sh",
     "build-example": "webpack",
     "dev": "webpack-dev-server --open --open-page=examples/1.html",
@@ -74,6 +74,7 @@
   },
   "pre-commit": [
     "lint",
-    "validate"
+    "validate",
+    "test"
   ]
 }
