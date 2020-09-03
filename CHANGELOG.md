@@ -1,23 +1,15 @@
 # Changelog
 
-### 2.0.0
+### 1.11.0 (Sep 3, 2020)
 
-- ⚠ Breaking Change!
-  - `<Resizable>` used to pass unknown props onto its child. For example:
-    ```js
-    <Resizable foo="bar"><div /></Resizable>
-    ```
-    In this example, when `<Resizable>` wrapped its child `div`, it would pass on `foo="bar"`. This has been removed.
-  - I do not expect meaningful breakage in the wild from this change, as the behavior in 1.x was unexpected and not generally useful.
-  - If this change breaks your use case, please pass props directly to the child component rather than expecting `<Resizable>` to pass it downward.
-  - See [#133](https://github.com/STRML/react-resizable/pull/133) for more details.
+- ⚠ Important Notice!
+  - React-Resizable 2.0.0 was published due to a breaking change in `props` handling. This change ended up actually completely breaking certain workflows, for the dubious benefit of making the code slightly simpler to add to. The breaking change has been reverted, 2.0.0 is now deprecated, and we will continue on the 1.x branch. Future breaking changes to `react-resizable` will upgrade the major version to `3`.
 - ➕ Feature: `<ResizableBox>` now takes a `style` prop which will be applied on the wrapping `<div>`. `width` and `height` in this prop are ignored.
 - 🐛 Bugfix: remove unknown Prop `handle` from div children in Resizable `React.cloneElement`. [#124](https://github.com/STRML/react-resizable/issues/124)
 - 🐛 Bugfix: Fix top and left resizing jerkiness. Thanks @conor-kelleher. [#136](https://github.com/STRML/react-resizable/pull/136)
 - ✏ Chore: Improved test suite. Please contribute tests for your use cases if you have the time, I would really appreciate it! Thanks very much, @Danielecina
 - ✏ Chore: Minor internal refactors and additional tests.
 - ✏ Chore: Additional examples.
-
 
 ### 1.10.1 (Nov 25, 2019)
 
