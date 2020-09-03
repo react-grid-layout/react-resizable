@@ -1,5 +1,5 @@
 [version]
-^0.126.0
+^0.133.0
 
 [ignore]
 .*/node_modules/@babel.*
@@ -17,11 +17,6 @@ all=warn
 implicit-inexact-object=error
 
 [options]
-suppress_comment=\\(.\\|\n\\)*\\s*\\$FlowFixMe.*
-suppress_comment=\\(.\\|\n\\)*\\s*\\$FlowBug.*
-suppress_comment=\\(.\\|\n\\)*\\s*\\$FlowIgnore.*
-suppress_comment=\\(.\\|\n\\)*\\s*\\$FlowNewLine.*
-suppress_comment=\\(.\\|\n\\)*\\s*\\$FlowIssue
 suppress_type=$FlowFixMe
 esproposal.class_static_fields=enable
 esproposal.class_instance_fields=enable
