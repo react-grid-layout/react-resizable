@@ -10,12 +10,15 @@ describe('render Resizable', () => {
   const props = {
     axis: 'both',
     className: 'test-classname',
+    draggableOpts: {},
     handleSize: [20, 20],
     height: 50,
     lockAspectRatio: false,
     maxConstraints: [Infinity, Infinity],
     minConstraints: [20, 20],
     onResize: jest.fn(),
+    onResizeStart: jest.fn(),
+    onResizeStop: jest.fn(),
     resizeHandles: ['se', 'e'],
     transformScale: 1,
     width: 50,
@@ -61,6 +64,29 @@ describe('render Resizable', () => {
       };
       const element = shallow(<Resizable {...customProps}>{resizableBoxChildren}</Resizable>);
       expect(element.find('.custom-component-se')).toHaveLength(1);
+    });
+  });
+
+  describe('<Resizable> props filtering', () => {
+    const allProps = {
+      ...props,
+      draggableOpts: {},
+      handle: <div />,
+    };
+
+    // Ensure everything in propTypes is represented here. Otherwise the next two tests are not valid
+    test('all intended props are in our allProps object', () => {
+      expect(['children', ...Object.keys(allProps)].sort()).toEqual(Object.keys(Resizable.propTypes).sort());
+    });
+
+    test('none of these props leak down to the child', () => {
+      const element = shallow(<Resizable {...allProps}><div className="foo" /></Resizable>);
+      expect(Object.keys(element.find('.foo').props())).toEqual(['className', 'children']);
+    });
+
+    test('className is constructed properly', () => {
+      const element = shallow(<Resizable {...allProps}><div className="foo" /></Resizable>);
+      expect(element.find('.foo').props().className).toEqual(`foo ${allProps.className} react-resizable`);
     });
   });
 

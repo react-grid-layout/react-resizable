@@ -9,6 +9,7 @@ import Resizable from "../lib/Resizable";
 describe('render ResizableBox', () => {
   const props = {
     axis: 'x',
+    draggableOpts: {},
     handle: jest.fn(resizeHandle => <span className={`test-class-${resizeHandle}`} />),
     handleSize: [20, 20],
     height: 50,
@@ -19,6 +20,7 @@ describe('render ResizableBox', () => {
     onResizeStart: jest.fn(),
     onResizeStop: jest.fn(),
     resizeHandles: ['w'],
+    transformScale: 1,
     width: 50,
   };
   const children = <span className="children" />;
@@ -59,6 +61,23 @@ describe('render ResizableBox', () => {
 
     resizable.simulate('resizeStop', fakeEvent, data);
     expect(props.onResizeStop).toHaveBeenCalledWith(fakeEvent, data);
+  });
+
+  describe('<Resizable> props filtering', () => {
+    // Ensure everything in propTypes is represented here. Otherwise the next two tests are not valid
+    test('all intended props are in our props object', () => {
+      expect(['children', 'className', ...Object.keys(props)].sort()).toEqual(Object.keys(Resizable.propTypes).sort());
+    });
+
+    test('none of these props leak down to the child', () => {
+      const element = shallow(<ResizableBox {...props} />);
+      expect(Object.keys(element.find('div').props())).toEqual(['style']);
+    });
+
+    test('className is constructed properly', () => {
+      const element = shallow(<ResizableBox {...props} className='foo' />);
+      expect(element.find('div').props().className).toEqual(`foo`);
+    });
   });
 
   test('style prop', () => {

@@ -43,7 +43,7 @@ render() {
 
 ### Props
 
-These props apply to both `<Resizable>` and `<ResizableBox>`.
+These props apply to both `<Resizable>` and `<ResizableBox>`. Unknown props that are not in the list below will be passed to the child component.
 
 ```js
 {
