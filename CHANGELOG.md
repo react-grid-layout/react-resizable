@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.11.1 (Mar 5, 2021)
+
+- Added React 17 to peerDependencies.
+
 ### 1.11.0 (Sep 3, 2020)
 
 - ⚠ Important Notice!
