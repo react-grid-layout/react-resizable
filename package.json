@@ -1,6 +1,6 @@
 {
   "name": "react-resizable",
-  "version": "1.11.0",
+  "version": "1.11.1",
   "description": "A component that is resizable with handles.",
   "main": "index.js",
   "scripts": {
