@@ -1,5 +1,9 @@
 # Changelog
 
+### 3.0.1 (May 10, 2021)
+
+- Reduce package size through `.npmignore`.
+
 ### 3.0.0 (May 10, 2021)
 
 #### Breaking
