@@ -1,5 +1,5 @@
 [version]
-^0.133.0
+^0.150.1
 
 [ignore]
 .*/node_modules/@babel.*
@@ -18,10 +18,6 @@ implicit-inexact-object=error
 
 [options]
 suppress_type=$FlowFixMe
-esproposal.class_static_fields=enable
-esproposal.class_instance_fields=enable
-esproposal.decorators=ignore
-esproposal.export_star_as=enable
 experimental.strict_call_arity=true
 module.system.node.allow_root_relative=true
 module.use_strict=true
