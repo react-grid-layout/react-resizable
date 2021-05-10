@@ -19,7 +19,7 @@ export default class ExampleLayout extends React.Component<{}, {width: number, h
   };
 
   // On top layout
-  onResize = (event, {element, size, handle}) => {
+  onFirstBoxResize = (event, {element, size, handle}) => {
     this.setState({width: size.width, height: size.height});
   };
 
@@ -56,8 +56,8 @@ export default class ExampleLayout extends React.Component<{}, {width: number, h
 
         <h3>Statically Positioned Layout</h3>
         <div className="layoutRoot">
-          <Resizable className="box" height={this.state.height} width={this.state.width} onResize={this.onResize} resizeHandles={['sw', 'se', 'nw', 'ne', 'w', 'e', 'n', 's']}>
-            <div className="box" style={{width: this.state.width + 'px', height: this.state.height + 'px'}}>
+          <Resizable className="box" height={this.state.height} width={this.state.width} onResize={this.onFirstBoxResize} resizeHandles={['sw', 'se', 'nw', 'ne', 'w', 'e', 'n', 's']}>
+            <div style={{width: this.state.width + 'px', height: this.state.height + 'px'}}>
               <span className="text">{"Raw use of <Resizable> element. 200x200, all Resize Handles."}</span>
               <button onClick={this.onResetClick} style={{'marginTop': '10px'}}>Reset this element's width/height</button>
             </div>
@@ -77,7 +77,7 @@ export default class ExampleLayout extends React.Component<{}, {width: number, h
             className="custom-box box"
             width={200}
             height={200}
-            handle={(h) => <span className={`custom-handle custom-handle-${h}`} />}
+            handle={(h, ref) => <span className={`custom-handle custom-handle-${h}`} />}
             handleSize={[8, 8]}
             resizeHandles={['sw', 'se', 'nw', 'ne', 'w', 'e', 'n', 's']}>
             <span className="text">{"<ResizableBox> with custom handles in all locations."}</span>

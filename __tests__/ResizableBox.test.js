@@ -10,7 +10,7 @@ describe('render ResizableBox', () => {
   const props = {
     axis: 'x',
     draggableOpts: {},
-    handle: jest.fn(resizeHandle => <span className={`test-class-${resizeHandle}`} />),
+    handle: (jest.fn((resizeHandle, ref) => <span className={`test-class-${resizeHandle}`} ref={ref} />): Function),
     handleSize: [20, 20],
     height: 50,
     lockAspectRatio: false,

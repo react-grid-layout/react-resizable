@@ -23,6 +23,7 @@ describe('render Resizable', () => {
     transformScale: 1,
     width: 50,
   };
+  const handleFn = (axis, ref) => <span className={`custom-handle-${axis}`} ref={ref} />;
   const userChildren = <span className={'children'} />;
   const resizableBoxChildren =  <div style={{width: '50px', height: '50px'}}>{userChildren}</div>;
 
@@ -41,6 +42,21 @@ describe('render Resizable', () => {
     expect(element.find(DraggableCore)).toHaveLength(2);
     const cursorSe = element.find('.react-resizable-handle-se');
     const cursorE = element.find('.react-resizable-handle-e');
+    expect(cursorSe).toHaveLength(1);
+    expect(cursorE).toHaveLength(1);
+  });
+
+  test('with handle function', () => {
+    const handleFn = (axis, ref) => {
+      expect(axis).toMatch(/(se|e)/);
+      expect(ref).toMatchObject({current: null}); // ReactRef
+      return <span className={`custom-handle-${axis}`} ref={ref} />;
+    };
+    const element = shallow(<Resizable {...props} handle={handleFn}>{resizableBoxChildren}</Resizable>);
+    expect(element.find('.test-classname').find('.children'));
+    expect(element.find(DraggableCore)).toHaveLength(2);
+    const cursorSe = element.find('.custom-handle-se');
+    const cursorE = element.find('.custom-handle-e');
     expect(cursorSe).toHaveLength(1);
     expect(cursorE).toHaveLength(1);
   });
