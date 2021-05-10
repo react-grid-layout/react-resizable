@@ -66,8 +66,7 @@
     "react-draggable": "^4.0.3"
   },
   "peerDependencies": {
-    "react": "0.14.x || 15.x || 16.x || 17.x",
-    "react-dom": "0.14.x || 15.x || 16.x || 17.x"
+    "react": ">= 16.3"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"

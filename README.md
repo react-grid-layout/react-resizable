@@ -17,27 +17,72 @@ See the [demo](/examples/TestLayout.js) for more on this.
 
 ### Installation
 
-Using [npm](https://www.npmjs.com/):
-
     $ npm install --save react-resizable
+
+### Compatibility
+
+[React-Resizable 3.x](/CHANGELOG.md#3.0.0) is compatible with React `>= 16.3`.
+React-Resizable 2.x has been skipped.
+[React-Resizable 1.x](/CHANGELOG.md#1.11.1) is compatible with React `14-17`.
 
 ### Usage
 
+This package has two major exports:
+
+* [`<Resizable>`](/lib/Resizable.js): A raw component that does not have state. Use as a building block for larger components, by listening to its
+  callbacks and setting its props.
+* [`<ResizableBox>`](/lib/ResizableBox.js): A simple `<div {...props} />` element that manages basic state. Convenient for simple use-cases.
+
+
+#### `<Resizable>`
 ```js
-const Resizable = require('react-resizable').Resizable; // or,
-const ResizableBox = require('react-resizable').ResizableBox;
+const {Resizable} = require('react-resizable');
 
 // ES6
-import { Resizable, ResizableBox } from 'react-resizable';
+import { Resizable } from 'react-resizable';
 
 // ...
-render() {
-  return (
-    <ResizableBox width={200} height={200} draggableOpts={{...}}
-        minConstraints={[100, 100]} maxConstraints={[300, 300]}>
-      <span>Contents</span>
-    </ResizableBox>
-  );
+class Example extends React.Component {
+  state = {
+    width: 200,
+    height: 200,
+  };
+
+  // On top layout
+  onResize = (event, {element, size, handle}) => {
+    this.setState({width: size.width, height: size.height});
+  };
+
+  render() {
+    return (
+      <Resizable height={this.state.height} width={this.state.width} onResize={this.onResize}>
+        <div className="box" style={{width: this.state.width + 'px', height: this.state.height + 'px'}}>
+          <span>Contents</span>
+        </div>
+      </Resizable>
+    );
+  }
+}
+
+```
+
+
+#### `<ResizableBox>`
+```js
+const {ResizableBox} = require('react-resizable');
+
+// ES6
+import { ResizableBox } from 'react-resizable';
+
+class Example extends React.Component {
+  render() {
+    return (
+      <ResizableBox width={200} height={200} draggableOpts={{...}}
+          minConstraints={[100, 100]} maxConstraints={[300, 300]}>
+        <span>Contents</span>
+      </ResizableBox>
+    );
+  }
 }
 ```
 
@@ -46,12 +91,20 @@ render() {
 These props apply to both `<Resizable>` and `<ResizableBox>`. Unknown props that are not in the list below will be passed to the child component.
 
 ```js
+type ResizeCallbackData = {
+  node: HTMLElement,
+  size: {width: number, height: number},
+  handle: ResizeHandleAxis
+};
+type ResizeHandleAxis = 's' | 'w' | 'e' | 'n' | 'sw' | 'nw' | 'se' | 'ne';
+
+type ResizableProps =
 {
   children: React.Element<any>,
   width: number,
   height: number,
   // Either a ReactElement to be used as handle, or a function returning an element that is fed the handle's location as its first argument.
-  handle: ReactElement<any> | (resizeHandle: 's' | 'w' | 'e' | 'n' | 'sw' | 'nw' | 'se' | 'ne') => ReactElement<any>,
+  handle: ReactElement<any> | (resizeHandle: ResizeHandleAxis, ref: ReactRef<HTMLElement>) => ReactElement<any>,
   // If you change this, be sure to update your css
   handleSize: [number, number] = [10, 10],
   lockAspectRatio: boolean = false,
@@ -70,7 +123,7 @@ The following props can also be used on `<ResizableBox>`:
 
 ```js
 {
-  style?: Object
+  style?: Object // styles the returned <div />
 }
 ```
 
