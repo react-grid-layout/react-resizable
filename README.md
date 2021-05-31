@@ -147,14 +147,14 @@ This requires no special treatment.
 
 ##### Custom React Component
 
-You must [forward the ref](https://reactjs.org/docs/forwarding-refs.html) to the underlying DOM element.
+You must [forward the ref](https://reactjs.org/docs/forwarding-refs.html) and props to the underlying DOM element.
 
 ###### Class Components
 
 ```js
 class MyHandleComponent extends React.Component {
   render() {
-    return <div ref={this.props.innerRef} className="foo" />
+    return <div ref={this.props.innerRef} className="foo" {...this.props} />
   }
 }
 const MyHandle = React.forwardRef((props, ref) => <MyHandleComponent innerRef={ref} {...props} />);
@@ -166,7 +166,7 @@ const MyHandle = React.forwardRef((props, ref) => <MyHandleComponent innerRef={r
 
 ```js
 const MyHandle = React.forwardRef((props, ref) => {
-  return <div ref={ref} className="foo" />;
+  return <div ref={ref} className="foo" {...props} />;
 });
 
 <Resizable handle={<MyHandle />} />
@@ -178,7 +178,7 @@ You can define a function as a handle, which will simply receive props and ref. 
 
 ```js
 const MyHandle = (props) => {
-  return <div ref={props.innerRef} className="foo" />;
+  return <div ref={props.innerRef} className="foo" {...props} />;
 };
 
 <Resizable handle={(props, ref) => <MyHandle innerRef={ref} {...props} />} />

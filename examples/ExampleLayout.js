@@ -4,6 +4,16 @@ import ResizableBox from '../lib/ResizableBox';
 import 'style-loader!css-loader!../css/styles.css';
 import 'style-loader!css-loader!./example.css';
 
+const CustomResizeHandle = React.forwardRef((props, ref) => {
+  return (
+    <div
+      className="custom-handle custom-handle-se custom-resize-handle-component"
+      ref={ref}
+      {...props}
+    ></div>
+  )
+})
+
 export default class ExampleLayout extends React.Component<{}, {width: number, height: number}> {
   state = {
     width: 200,
@@ -77,7 +87,15 @@ export default class ExampleLayout extends React.Component<{}, {width: number, h
             className="custom-box box"
             width={200}
             height={200}
-            handle={(h, ref) => <span className={`custom-handle custom-handle-${h}`} />}
+            handle={<CustomResizeHandle />}
+            handleSize={[8, 8]}>
+            <span className="text">{"<ResizableBox> with a custom resize handle component."}</span>
+          </ResizableBox>
+          <ResizableBox
+            className="custom-box box"
+            width={200}
+            height={200}
+            handle={(h, ref) => <span className={`custom-handle custom-handle-${h}`} ref={ref} />}
             handleSize={[8, 8]}
             resizeHandles={['sw', 'se', 'nw', 'ne', 'w', 'e', 'n', 's']}>
             <span className="text">{"<ResizableBox> with custom handles in all locations."}</span>
