@@ -128,3 +128,58 @@ The following props can also be used on `<ResizableBox>`:
 ```
 
 If a `width` or `height` is passed to `<ResizableBox>`'s `style` prop, it will be ignored as it is required for internal function.
+
+#### Resize Handle
+
+If you override the resize handle, we expect that any `ref` passed to your new handle with represent the underlying DOM element.
+
+This is required, as `react-resizable` must be able to access the underlying DOM node to attach handlers and measure position deltas.
+
+There are a few ways to do this:
+
+##### Native DOM Element
+
+This requires no special treatment.
+
+```js
+<Resizable handle={<div className="foo" />} />
+```
+
+##### Custom React Component
+
+You must [forward the ref](https://reactjs.org/docs/forwarding-refs.html) to the underlying DOM element.
+
+###### Class Components
+
+```js
+class MyHandleComponent extends React.Component {
+  render() {
+    return <div ref={this.props.innerRef} className="foo" />
+  }
+}
+const MyHandle = React.forwardRef((props, ref) => <MyHandleComponent innerRef={ref} {...props} />);
+
+<Resizable handle={<MyHandle />} />
+```
+
+###### Functional Components
+
+```js
+const MyHandle = React.forwardRef((props, ref) => {
+  return <div ref={ref} className="foo" />;
+});
+
+<Resizable handle={<MyHandle />} />
+```
+
+##### Custom Function
+
+You can define a function as a handle, which will simply receive props and ref. This may be more clear to read, depending on your coding style.
+
+```js
+const MyHandle = (props) => {
+  return <div ref={props.innerRef} className="foo" />;
+};
+
+<Resizable handle={(props, ref) => <MyHandle innerRef={ref} {...props} />} />
+```
