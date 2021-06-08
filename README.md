@@ -115,7 +115,7 @@ type ResizableProps =
   onResizeStart?: ?(e: SyntheticEvent, data: ResizeCallbackData) => any,
   onResize?: ?(e: SyntheticEvent, data: ResizeCallbackData) => any,
   draggableOpts?: ?Object,
-  resizeHandles?: ?Array<'s' | 'w' | 'e' | 'n' | 'sw' | 'nw' | 'se' | 'ne'> = ['se']
+  resizeHandles?: ?Array<ResizeHandleAxis> = ['se']
 };
 ```
 
@@ -154,7 +154,8 @@ You must [forward the ref](https://reactjs.org/docs/forwarding-refs.html) and pr
 ```js
 class MyHandleComponent extends React.Component {
   render() {
-    return <div ref={this.props.innerRef} className="foo" {...this.props} />
+    const {handleAxis, innerRef, ...props} = this.props;
+    return <div ref={innerRef} className={`foo handle-${handleAxis}`} {...props} />
   }
 }
 const MyHandle = React.forwardRef((props, ref) => <MyHandleComponent innerRef={ref} {...props} />);
@@ -166,7 +167,8 @@ const MyHandle = React.forwardRef((props, ref) => <MyHandleComponent innerRef={r
 
 ```js
 const MyHandle = React.forwardRef((props, ref) => {
-  return <div ref={ref} className="foo" {...props} />;
+  const {handleAxis, ...restProps} = props;
+  return <div ref={ref} className={`foo handle-${handleAxis}`} {...restProps} />;
 });
 
 <Resizable handle={<MyHandle />} />
@@ -174,12 +176,12 @@ const MyHandle = React.forwardRef((props, ref) => {
 
 ##### Custom Function
 
-You can define a function as a handle, which will simply receive props and ref. This may be more clear to read, depending on your coding style.
+You can define a function as a handle, which will simply receive an axis (see above `ResizeHandleAxis` type) and ref. This may be more clear to read, depending on your coding style.
 
 ```js
 const MyHandle = (props) => {
   return <div ref={props.innerRef} className="foo" {...props} />;
 };
 
-<Resizable handle={(props, ref) => <MyHandle innerRef={ref} {...props} />} />
+<Resizable handle={(handleAxis, ref) => <MyHandle innerRef={ref} className={`foo handle-${handleAxis}`} {...props} />} />
 ```

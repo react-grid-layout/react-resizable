@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import renderer from 'react-test-renderer';
-import {shallow} from 'enzyme';
+import {shallow, mount} from 'enzyme';
 import {DraggableCore} from "react-draggable";
 
 import Resizable from '../lib/Resizable';
@@ -23,7 +23,6 @@ describe('render Resizable', () => {
     transformScale: 1,
     width: 50,
   };
-  const handleFn = (axis, ref) => <span className={`custom-handle-${axis}`} ref={ref} />;
   const userChildren = <span className={'children'} />;
   const resizableBoxChildren =  <div style={{width: '50px', height: '50px'}}>{userChildren}</div>;
 
@@ -46,40 +45,65 @@ describe('render Resizable', () => {
     expect(cursorE).toHaveLength(1);
   });
 
-  test('with handle function', () => {
-    const handleFn = (axis, ref) => {
-      expect(axis).toMatch(/(se|e)/);
-      expect(ref).toMatchObject({current: null}); // ReactRef
-      return <span className={`custom-handle-${axis}`} ref={ref} />;
-    };
-    const element = shallow(<Resizable {...props} handle={handleFn}>{resizableBoxChildren}</Resizable>);
-    expect(element.find('.test-classname').find('.children'));
-    expect(element.find(DraggableCore)).toHaveLength(2);
-    const cursorSe = element.find('.custom-handle-se');
-    const cursorE = element.find('.custom-handle-e');
-    expect(cursorSe).toHaveLength(1);
-    expect(cursorE).toHaveLength(1);
-  });
+  describe('Handles', () => {
+    test('with handle function', () => {
+      const handleFn = (axis, ref) => {
+        expect(axis).toMatch(/(se|e)/);
+        expect(ref).toMatchObject({current: null}); // ReactRef
+        return <span className={`custom-handle-${axis}`} ref={ref} />;
+      };
+      const element = shallow(<Resizable {...props} handle={handleFn}>{resizableBoxChildren}</Resizable>);
 
-  describe('and pass handle props', () => {
-    test('as component', () => {
-      const customProps = {
-        ...props,
-        resizeHandles: ['se'],
-        handle: <span className={'custom-component'} />
-      };
-      const element = shallow(<Resizable {...customProps}>{resizableBoxChildren}</Resizable>);
-      expect(element.find('.react-resizable-handle-se')).toHaveLength(0);
-      expect(element.find('.custom-component')).toHaveLength(1);
+      expect(element.find('.test-classname').find('.children'));
+      expect(element.find(DraggableCore)).toHaveLength(2);
+      const cursorSe = element.find('.custom-handle-se');
+      const cursorE = element.find('.custom-handle-e');
+      expect(cursorSe).toHaveLength(1);
+      expect(cursorE).toHaveLength(1);
     });
-    test('as function', () => {
-      const customProps = {
-        ...props,
-        resizeHandles: ['se'],
-        handle: (h) => <span className={`custom-component-${h}`} />
-      };
-      const element = shallow(<Resizable {...customProps}>{resizableBoxChildren}</Resizable>);
-      expect(element.find('.custom-component-se')).toHaveLength(1);
+
+    test.only('with handle component', () => {
+      const ResizeHandle = React.forwardRef((props, ref) => {
+        // $FlowIgnore doens't know this is cloned and has handleAxis
+        const {handleAxis, ...restProps} = props;
+        return (
+          <div
+            ref={ref}
+            className={`react-resizable-handle element-handle-${handleAxis}`}
+            {...restProps}
+          />
+        );
+      });
+      const element = mount(<Resizable {...props} handle={<ResizeHandle />}>{resizableBoxChildren}</Resizable>);
+
+      expect(element.find('.test-classname').find('.children'));
+      expect(element.find(DraggableCore)).toHaveLength(2);
+      const cursorSe = element.find('.element-handle-se');
+      const cursorE = element.find('.element-handle-e');
+      expect(cursorSe).toHaveLength(1);
+      expect(cursorE).toHaveLength(1);
+    });
+
+    describe('and pass handle props', () => {
+      test('as component', () => {
+        const customProps = {
+          ...props,
+          resizeHandles: ['se'],
+          handle: <span className={'custom-component'} />
+        };
+        const element = shallow(<Resizable {...customProps}>{resizableBoxChildren}</Resizable>);
+        expect(element.find('.react-resizable-handle-se')).toHaveLength(0);
+        expect(element.find('.custom-component')).toHaveLength(1);
+      });
+      test('as function', () => {
+        const customProps = {
+          ...props,
+          resizeHandles: ['se'],
+          handle: (h) => <span className={`custom-component-${h}`} />
+        };
+        const element = shallow(<Resizable {...customProps}>{resizableBoxChildren}</Resizable>);
+        expect(element.find('.custom-component-se')).toHaveLength(1);
+      });
     });
   });
 
