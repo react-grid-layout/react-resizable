@@ -5,7 +5,8 @@
     "react"
   ],
   "extends": [
-    "eslint:recommended"
+    "eslint:recommended",
+    "plugin:jest/recommended"
   ],
   "rules": {
     "strict": 0,

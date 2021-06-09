@@ -37,7 +37,7 @@ describe('render Resizable', () => {
 
   test('with correct props', () => {
     const element = shallow(<Resizable {...props}>{resizableBoxChildren}</Resizable>);
-    expect(element.find('.test-classname').find('.children'));
+    expect(element.find('.test-classname').find('.children')).toHaveLength(1);
     expect(element.find(DraggableCore)).toHaveLength(2);
     const cursorSe = element.find('.react-resizable-handle-se');
     const cursorE = element.find('.react-resizable-handle-e');
@@ -54,7 +54,7 @@ describe('render Resizable', () => {
       };
       const element = shallow(<Resizable {...props} handle={handleFn}>{resizableBoxChildren}</Resizable>);
 
-      expect(element.find('.test-classname').find('.children'));
+      expect(element.find('.test-classname').find('.children')).toHaveLength(1);
       expect(element.find(DraggableCore)).toHaveLength(2);
       const cursorSe = element.find('.custom-handle-se');
       const cursorE = element.find('.custom-handle-e');
@@ -62,7 +62,7 @@ describe('render Resizable', () => {
       expect(cursorE).toHaveLength(1);
     });
 
-    test.only('with handle component', () => {
+    test('with handle component', () => {
       const ResizeHandle = React.forwardRef((props, ref) => {
         // $FlowIgnore doens't know this is cloned and has handleAxis
         const {handleAxis, ...restProps} = props;
@@ -76,7 +76,7 @@ describe('render Resizable', () => {
       });
       const element = mount(<Resizable {...props} handle={<ResizeHandle />}>{resizableBoxChildren}</Resizable>);
 
-      expect(element.find('.test-classname').find('.children'));
+      expect(element.find('.test-classname').find('.children')).toHaveLength(1);
       expect(element.find(DraggableCore)).toHaveLength(2);
       const cursorSe = element.find('.element-handle-se');
       const cursorE = element.find('.element-handle-e');

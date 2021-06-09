@@ -1,6 +1,7 @@
 const path = require('path');
 
 module.exports = {
+  testEnvironment: 'jsdom',
   coverageThreshold: {
     global: {
       branches: 70, // TODO: > 80
