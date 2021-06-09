@@ -1,5 +1,10 @@
 # Changelog
 
+### 3.0.2 (Jun 8, 2021)
+
+- Add documentation for resize handles and fix a mistake where the `handleAxis` prop was not being passed to custom components.
+  - See [Resize Handles](README.md#resize-handle)
+
 ### 3.0.1 (May 10, 2021)
 
 - Reduce package size through `.npmignore`.
