@@ -144,17 +144,20 @@ describe('render Resizable', () => {
     node.getBoundingClientRect = () => ({ ...mockClientRect });
     const mockEvent = { };
     const element = shallow(<Resizable {...customProps}>{resizableBoxChildren}</Resizable>);
-    const nwHandle = element.find('DraggableCore').first();
+    function findHandle(element, axis) {
+      return element.find(`.react-resizable-handle-${axis}`).parent();
+    }
 
     test('Gradual resizing without movement between does not modify callback', () => {
       expect(props.onResize).not.toHaveBeenCalled();
-      nwHandle.prop('onDrag')(mockEvent, { node, deltaX: 5, deltaY: 10 });
+      const seHandle = element.find('.react-resizable-handle-se').parent();
+      seHandle.prop('onDrag')(mockEvent, { node, deltaX: 5, deltaY: 10 });
       expect(props.onResize).lastCalledWith(
         mockEvent,
         expect.objectContaining({
           size: {
-            height: 40,
-            width: 45,
+            height: 60,
+            width: 55,
           },
         })
       );
@@ -163,6 +166,7 @@ describe('render Resizable', () => {
     test('Movement between callbacks modifies response values', () => {
       expect(props.onResize).not.toHaveBeenCalled();
 
+      const nwHandle = findHandle(element, 'nw');
       mockClientRect.top = -10; // Object moves between callbacks
       nwHandle.prop('onDrag')(mockEvent, { node, deltaX: 5, deltaY: 10 });
       expect(props.onResize).lastCalledWith(
@@ -195,7 +199,7 @@ describe('render Resizable', () => {
 
       mockClientRect.left -= 10; // Object moves between callbacks
       mockClientRect.top -= 10; // Object moves between callbacks
-      const swHandle = element.find('DraggableCore').at(1);
+      const swHandle = findHandle(element, 'sw');
       swHandle.prop('onDrag')(mockEvent, { node, deltaX: 10, deltaY: 10 });
       expect(props.onResize).lastCalledWith(
         mockEvent,
@@ -209,7 +213,7 @@ describe('render Resizable', () => {
 
       mockClientRect.left -= 10; // Object moves between callbacks
       mockClientRect.top -= 10; // Object moves between callbacks
-      const neHandle = element.find('DraggableCore').at(2);
+      const neHandle = findHandle(element, 'ne');
       neHandle.prop('onDrag')(mockEvent, { node, deltaX: 10, deltaY: 10 });
       expect(props.onResize).lastCalledWith(
         mockEvent,
@@ -238,8 +242,8 @@ describe('render Resizable', () => {
 
     test('use of < 1 transformScale', () => {
       const element = shallow(<Resizable {...customProps} transformScale={0.5}>{resizableBoxChildren}</Resizable>);
-      const nwHandle = element.find('DraggableCore').first();
       expect(props.onResize).not.toHaveBeenCalled();
+      const nwHandle = findHandle(element, 'nw');
       nwHandle.prop('onDrag')(mockEvent, { node, deltaX: 5, deltaY: 10 });
       expect(props.onResize).lastCalledWith(
         mockEvent,
@@ -267,8 +271,8 @@ describe('render Resizable', () => {
 
     test('use of > 1 transformScale', () => {
       const element = shallow(<Resizable {...customProps} transformScale={2}>{resizableBoxChildren}</Resizable>);
-      const nwHandle = element.find('DraggableCore').first();
       expect(props.onResize).not.toHaveBeenCalled();
+      const nwHandle = findHandle(element, 'nw');
       nwHandle.prop('onDrag')(mockEvent, { node, deltaX: 5, deltaY: 10 });
       expect(props.onResize).lastCalledWith(
         mockEvent,
@@ -280,6 +284,27 @@ describe('render Resizable', () => {
           },
         })
       );
+    });
+
+    describe('lockAspectRatio', () => {
+
+      [[5, 0], [0, 5]].forEach(([w, h]) => {
+        test(`drags with aspect ratio preserved w:${w} h:${h}`, () => {
+          const element = shallow(<Resizable {...customProps} lockAspectRatio={true}>{resizableBoxChildren}</Resizable>);
+          expect(props.onResize).not.toHaveBeenCalled();
+          const seHandle = findHandle(element, 'se');
+          seHandle.prop('onDrag')(mockEvent, { node, deltaX: w, deltaY: h });
+          expect(props.onResize).lastCalledWith(
+            mockEvent,
+            expect.objectContaining({
+              size: {
+                height: 50 + Math.max(w, h),
+                width: 50 + Math.max(w, h),
+              },
+            })
+          );
+        });
+      });
     });
   });
 });
