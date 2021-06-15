@@ -1,5 +1,10 @@
 # Changelog
 
+### 3.0.3 (Jun 14, 2021)
+
+- Fix unknown prop `handleAxis` making it to DOM elements, causing a warning in dev.
+- Rewrote `lockAspectRatio` logic to be more accurate and shorter.
+
 ### 3.0.2 (Jun 8, 2021)
 
 - Add documentation for resize handles and fix a mistake where the `handleAxis` prop was not being passed to custom components.
