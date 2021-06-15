@@ -1,30 +1,36 @@
 # Changelog
 
+### 3.0.4 (Jun 15, 2021)
+
+- 🐛 Bugfix: Fix incorrect fix for `handleAxis` on DOM elements. [#175](https://github.com/react-grid-layout/react-resizable/issues/175)
+- ✏ Chore:Upgrade dependencies.
+
 ### 3.0.3 (Jun 14, 2021)
 
-- Fix unknown prop `handleAxis` making it to DOM elements, causing a warning in dev.
-- Rewrote `lockAspectRatio` logic to be more accurate and shorter.
+- 🐛 Bugfix: Remove unknown prop `handleAxis` making it to DOM elements, causing a warning in dev.
+- ✏ Chore:Rewrote `lockAspectRatio` logic to be more accurate and shorter.
 
 ### 3.0.2 (Jun 8, 2021)
 
-- Add documentation for resize handles and fix a mistake where the `handleAxis` prop was not being passed to custom components.
+- ✏ Chore:Add documentation for resize handles and fix a mistake where the `handleAxis` prop was not being passed to custom components.
   - See [Resize Handles](README.md#resize-handle)
 
 ### 3.0.1 (May 10, 2021)
 
-- Reduce package size through `.npmignore`.
+- ✏ Chore:Reduce package size through `.npmignore`.
 
 ### 3.0.0 (May 10, 2021)
 
 #### Breaking
-- Fixed handling of the `nodeRef` that needs to be passed to `<DraggableCore>` to avoid use of ReactDOM. This means that vanilla usage of `react-resizable` no longer requires ReactDOM. No code changes are needed in the usual case, except:
+
+- 🐛 Bugfix: Fixed handling of the `nodeRef` that needs to be passed to `<DraggableCore>` to avoid use of ReactDOM. This means that vanilla usage of `react-resizable` no longer requires ReactDOM. No code changes are needed in the usual case, except:
   * React `>= 16.3` is required due to use of `React.createRef()`, and
   * The `handle` prop now sends a `ReactRef<HTMLElement>` as its second argument and expects it to be used on your returned component.
     * If you do not attach the `ref`, you will receive the following error: `"<DraggableCore> not mounted on DragStart!"` This is due to the ref being present but not attached to any node.
 
 ### 1.11.1 (Mar 5, 2021)
 
-- Added React 17 to peerDependencies.
+- ✏ Chore: Added React 17 to peerDependencies.
 
 ### 1.11.0 (Sep 3, 2020)
 
