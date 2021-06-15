@@ -109,10 +109,10 @@ export default class ExampleLayout extends React.Component<{}, {width: number, h
           <ResizableBox className="box hover-handles" width={200} height={200} minConstraints={[150, 150]} maxConstraints={[500, 300]}>
             <span className="text">Resizable box with a handle that only appears on hover.</span>
           </ResizableBox>
-          <ResizableBox className="box" width={200} height={200} lockAspectRatio={true}>
+          <ResizableBox className="box" width={200} height={200} lockAspectRatio={true} resizeHandles={['sw', 'se', 'nw', 'ne', 'w', 'e', 'n', 's']}>
             <span className="text">Resizable square with a locked aspect ratio.</span>
           </ResizableBox>
-          <ResizableBox className="box" width={200} height={120} lockAspectRatio={true}>
+          <ResizableBox className="box" width={200} height={120} lockAspectRatio={true} resizeHandles={['sw', 'se', 'nw', 'ne', 'w', 'e', 'n', 's']}>
             <span className="text">Resizable rectangle with a locked aspect ratio.</span>
           </ResizableBox>
           <ResizableBox className="box" width={200} height={200} axis="x">

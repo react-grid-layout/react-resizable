@@ -288,7 +288,7 @@ describe('render Resizable', () => {
 
     describe('lockAspectRatio', () => {
 
-      [[5, 0], [0, 5]].forEach(([w, h]) => {
+      [[5, 0], [0, 5], [10, 5], [5, 10], [50, 51]].forEach(([w, h]) => {
         test(`drags with aspect ratio preserved w:${w} h:${h}`, () => {
           const element = shallow(<Resizable {...customProps} lockAspectRatio={true}>{resizableBoxChildren}</Resizable>);
           expect(props.onResize).not.toHaveBeenCalled();
