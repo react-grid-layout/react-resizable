@@ -5,14 +5,15 @@ import 'style-loader!css-loader!../css/styles.css';
 import 'style-loader!css-loader!./example.css';
 
 const CustomResizeHandle = React.forwardRef((props, ref) => {
+  const {handleAxis, ...restProps} = props;
   return (
     <div
-      className="custom-handle custom-handle-se custom-resize-handle-component"
+      className={`custom-handle custom-handle-${handleAxis} custom-resize-handle-component`}
       ref={ref}
-      {...props}
+      {...restProps}
     ></div>
-  )
-})
+  );
+});
 
 export default class ExampleLayout extends React.Component<{}, {width: number, height: number}> {
   state = {
