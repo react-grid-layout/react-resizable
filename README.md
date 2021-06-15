@@ -1,6 +1,6 @@
 ### React-Resizable
 
-[View the Demo](https://react-grid-layout.github.io/react-resizable/examples/1.html)
+[View the Demo](https://react-grid-layout.github.io/react-resizable/index.html)
 
 A simple widget that can be resized via one or more handles.
 

@@ -1,7 +1,12 @@
 const webpack = require('webpack');
 const path = require('path');
 
+const isProduction = process.env.NODE_ENV === 'production';
+const isDevelopment = !isProduction;
+
 module.exports = {
+  mode: isProduction ? 'production' : 'development',
+  bail: isProduction,
   context: __dirname,
   entry: {
     test: "./examples/example.js",
@@ -13,6 +18,7 @@ module.exports = {
     library: 'ReactResizable',
     libraryTarget: 'umd'
   },
+  target: 'web', // Work around https://github.com/webpack/webpack-dev-server/issues/2758
   externals: {
     'react': {
       'commonjs': 'react',
@@ -30,16 +36,17 @@ module.exports = {
   },
   module: {
     rules: [
-      {test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader?cacheDirectory=true'},
+      {test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader', options: {cacheDirectory: true}},
     ]
   },
   resolve: {
     extensions: [".js"]
   },
   devServer: {
-    contentBase: __dirname,
+    contentBase: path.join(__dirname, 'examples'),
     compress: true,
     port: 4003,
+    hot: true,
   },
   plugins: [
     // Scope hoisting
