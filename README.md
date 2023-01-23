@@ -49,7 +49,7 @@ class Example extends React.Component {
   };
 
   // On top layout
-  onResize = (event, {element, size, handle}) => {
+  onResize = (event, {node, size, handle}) => {
     this.setState({width: size.width, height: size.height});
   };
 
