@@ -12,9 +12,9 @@
 }
 .scaledLayout {
   width: 125%;
-  left: -12.5%;
+  left: -12.5vw;
   transform: scale(0.75);
-  margin-top: -7.5%;
+  margin-top: -7.5vh;
 }
 
 .box {

@@ -43,7 +43,7 @@ module.exports = {
     extensions: [".js"]
   },
   devServer: {
-    contentBase: path.join(__dirname, 'examples'),
+    static: path.join(__dirname, 'examples'),
     compress: true,
     port: 4003,
     hot: true,

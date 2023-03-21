@@ -4,7 +4,7 @@ exports[`render Resizable snapshot default props 1`] = `
 <div
   className="test-classname react-resizable"
   style={
-    Object {
+    {
       "height": "50px",
       "width": "50px",
     }
