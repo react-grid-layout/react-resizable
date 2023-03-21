@@ -1,5 +1,11 @@
 # Changelog
 
+### 3.0.5 (Mar 21, 2023)
+
+- 🐛 Bugfix: Make `width` and `height` conditionally required if an `axis` is set. See [#196](https://github.com/react-grid-layout/react-resizable/issues/196)
+- ✏ Chore: Minor dependency upgrades.
+- ✏ Chore: Fix documentation of `onResize` callback arity.
+
 ### 3.0.4 (Jun 15, 2021)
 
 - 🐛 Bugfix: Fix incorrect fix for `handleAxis` on DOM elements. [#175](https://github.com/react-grid-layout/react-resizable/issues/175)
@@ -8,16 +14,16 @@
 ### 3.0.3 (Jun 14, 2021)
 
 - 🐛 Bugfix: Remove unknown prop `handleAxis` making it to DOM elements, causing a warning in dev.
-- ✏ Chore:Rewrote `lockAspectRatio` logic to be more accurate and shorter.
+- ✏ Chore: Rewrote `lockAspectRatio` logic to be more accurate and shorter.
 
 ### 3.0.2 (Jun 8, 2021)
 
-- ✏ Chore:Add documentation for resize handles and fix a mistake where the `handleAxis` prop was not being passed to custom components.
+- ✏ Chore: Add documentation for resize handles and fix a mistake where the `handleAxis` prop was not being passed to custom components.
   - See [Resize Handles](README.md#resize-handle)
 
 ### 3.0.1 (May 10, 2021)
 
-- ✏ Chore:Reduce package size through `.npmignore`.
+- ✏ Chore: Reduce package size through `.npmignore`.
 
 ### 3.0.0 (May 10, 2021)
 
