@@ -3,8 +3,7 @@
 
 [ignore]
 .*/node_modules/@babel.*
-.*/node_modules/express/.*
-.*/node_modules/serve-index/.*
+.*/node_modules/.*/malformed_package_json/.*
 <PROJECT_ROOT>/build/.*
 
 [include]

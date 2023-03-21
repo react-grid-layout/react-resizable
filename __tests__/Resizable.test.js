@@ -152,7 +152,7 @@ describe('render Resizable', () => {
       expect(props.onResize).not.toHaveBeenCalled();
       const seHandle = element.find('.react-resizable-handle-se').parent();
       seHandle.prop('onDrag')(mockEvent, { node, deltaX: 5, deltaY: 10 });
-      expect(props.onResize).lastCalledWith(
+      expect(props.onResize).toHaveBeenLastCalledWith(
         mockEvent,
         expect.objectContaining({
           size: {
@@ -169,7 +169,7 @@ describe('render Resizable', () => {
       const nwHandle = findHandle(element, 'nw');
       mockClientRect.top = -10; // Object moves between callbacks
       nwHandle.prop('onDrag')(mockEvent, { node, deltaX: 5, deltaY: 10 });
-      expect(props.onResize).lastCalledWith(
+      expect(props.onResize).toHaveBeenLastCalledWith(
         mockEvent,
         expect.objectContaining({
           size: {
@@ -181,7 +181,7 @@ describe('render Resizable', () => {
 
       mockClientRect.left = 20; // Object moves between callbacks
       nwHandle.prop('onDrag')(mockEvent, { node, deltaX: 5, deltaY: 10 });
-      expect(props.onResize).lastCalledWith(
+      expect(props.onResize).toHaveBeenLastCalledWith(
         mockEvent,
         expect.objectContaining({
           size: {
@@ -201,7 +201,7 @@ describe('render Resizable', () => {
       mockClientRect.top -= 10; // Object moves between callbacks
       const swHandle = findHandle(element, 'sw');
       swHandle.prop('onDrag')(mockEvent, { node, deltaX: 10, deltaY: 10 });
-      expect(props.onResize).lastCalledWith(
+      expect(props.onResize).toHaveBeenLastCalledWith(
         mockEvent,
         expect.objectContaining({
           size: {
@@ -215,7 +215,7 @@ describe('render Resizable', () => {
       mockClientRect.top -= 10; // Object moves between callbacks
       const neHandle = findHandle(element, 'ne');
       neHandle.prop('onDrag')(mockEvent, { node, deltaX: 10, deltaY: 10 });
-      expect(props.onResize).lastCalledWith(
+      expect(props.onResize).toHaveBeenLastCalledWith(
         mockEvent,
         expect.objectContaining({
           size: {
@@ -229,7 +229,7 @@ describe('render Resizable', () => {
       mockClientRect.top -= 10; // Object moves between callbacks
       const seHandle = element.find('DraggableCore').at(3);
       seHandle.prop('onDrag')(mockEvent, { node, deltaX: 10, deltaY: 10 });
-      expect(props.onResize).lastCalledWith(
+      expect(props.onResize).toHaveBeenLastCalledWith(
         mockEvent,
         expect.objectContaining({
           size: {
@@ -245,7 +245,7 @@ describe('render Resizable', () => {
       expect(props.onResize).not.toHaveBeenCalled();
       const nwHandle = findHandle(element, 'nw');
       nwHandle.prop('onDrag')(mockEvent, { node, deltaX: 5, deltaY: 10 });
-      expect(props.onResize).lastCalledWith(
+      expect(props.onResize).toHaveBeenLastCalledWith(
         mockEvent,
         expect.objectContaining({
           size: {
@@ -258,7 +258,7 @@ describe('render Resizable', () => {
 
       mockClientRect.left = 20; // Object moves between callbacks
       nwHandle.prop('onDrag')(mockEvent, { node, deltaX: 5, deltaY: 10 });
-      expect(props.onResize).lastCalledWith(
+      expect(props.onResize).toHaveBeenLastCalledWith(
         mockEvent,
         expect.objectContaining({
           size: {
@@ -274,7 +274,7 @@ describe('render Resizable', () => {
       expect(props.onResize).not.toHaveBeenCalled();
       const nwHandle = findHandle(element, 'nw');
       nwHandle.prop('onDrag')(mockEvent, { node, deltaX: 5, deltaY: 10 });
-      expect(props.onResize).lastCalledWith(
+      expect(props.onResize).toHaveBeenLastCalledWith(
         mockEvent,
         expect.objectContaining({
           size: {
@@ -294,7 +294,7 @@ describe('render Resizable', () => {
           expect(props.onResize).not.toHaveBeenCalled();
           const seHandle = findHandle(element, 'se');
           seHandle.prop('onDrag')(mockEvent, { node, deltaX: w, deltaY: h });
-          expect(props.onResize).lastCalledWith(
+          expect(props.onResize).toHaveBeenLastCalledWith(
             mockEvent,
             expect.objectContaining({
               size: {
