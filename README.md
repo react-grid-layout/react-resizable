@@ -77,7 +77,7 @@ import { ResizableBox } from 'react-resizable';
 class Example extends React.Component {
   render() {
     return (
-      <ResizableBox width={200} height={200} draggableOpts={{...}}
+      <ResizableBox width={200} height={200} draggableOpts={{grid: [25, 25]}}
           minConstraints={[100, 100]} maxConstraints={[300, 300]}>
         <span>Contents</span>
       </ResizableBox>
