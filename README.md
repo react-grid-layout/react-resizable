@@ -29,6 +29,7 @@ const ResizableBox = require('react-resizable').ResizableBox;
 
 // ES6
 import { Resizable, ResizableBox } from 'react-resizable';
+//""use client" if your are using Nextjs
 
 // ...
 render() {
