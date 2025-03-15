@@ -1,5 +1,5 @@
 {
-  "name": "react-resizable",
+  "name": "@passionfruit/react-resizable",
   "version": "3.0.5",
   "description": "A component that is resizable with handles.",
   "main": "index.js",
