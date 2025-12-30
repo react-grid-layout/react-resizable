@@ -10,8 +10,8 @@ module.exports = {
       statements: 75 // TODO: > 80
     }
   },
-  setupFiles: [
-    path.join(__dirname, '/setupTests/enzyme')
+  setupFilesAfterEnv: [
+    path.join(__dirname, '/setupTests/rtl')
   ],
   coveragePathIgnorePatterns: [
     '<rootDir>/build/',
