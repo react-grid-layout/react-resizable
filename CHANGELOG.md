@@ -1,5 +1,13 @@
 # Changelog
 
+### 3.1.0 (Dec 30, 2025)
+
+- 🐛 Bugfix: Fix `onResizeStop` reporting stale size data due to React's batched state updates. The callback now uses the stored size from the last `onResize` call. [#250](https://github.com/react-grid-layout/react-resizable/pull/250)
+- ➕ Feature: React 18 support.
+- ✏ Chore: Migrate test suite from Enzyme to React Testing Library. [#249](https://github.com/react-grid-layout/react-resizable/pull/249)
+- ✏ Chore: Update `react-draggable` to ^4.5.0.
+- ✏ Chore: Update `react-test-renderer` to ^18.
+
 ### 3.0.5 (Mar 21, 2023)
 
 - 🐛 Bugfix: Make `width` and `height` conditionally required if an `axis` is set. See [#196](https://github.com/react-grid-layout/react-resizable/issues/196)
