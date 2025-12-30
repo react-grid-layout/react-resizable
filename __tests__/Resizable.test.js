@@ -1,6 +1,5 @@
 import React from 'react';
 import {render, screen} from '@testing-library/react';
-import renderer from 'react-test-renderer';
 import Resizable from '../lib/Resizable';
 
 // Helper to simulate drag events on handle elements
@@ -35,8 +34,8 @@ describe('render Resizable', () => {
   });
 
   test('snapshot default props', () => {
-    const tree = renderer.create(<Resizable {...props}>{resizableBoxChildren}</Resizable>).toJSON();
-    expect(tree).toMatchSnapshot();
+    const {container} = render(<Resizable {...props}>{resizableBoxChildren}</Resizable>);
+    expect(container.firstChild).toMatchSnapshot();
   });
 
   test('with correct props', () => {

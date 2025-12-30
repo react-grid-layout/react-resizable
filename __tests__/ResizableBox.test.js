@@ -1,6 +1,5 @@
 import React from 'react';
 import {render, screen, act} from '@testing-library/react';
-import renderer from 'react-test-renderer';
 
 import ResizableBox from '../lib/ResizableBox';
 import Resizable from "../lib/Resizable";
@@ -33,8 +32,8 @@ describe('render ResizableBox', () => {
   });
 
   test('snapshot default props', () => {
-    const tree = renderer.create(<ResizableBox {...props}>{children}</ResizableBox>).toJSON();
-    expect(tree).toMatchSnapshot();
+    const {container} = render(<ResizableBox {...props}>{children}</ResizableBox>);
+    expect(container.firstChild).toMatchSnapshot();
   });
 
   test('with correct props', () => {
@@ -127,11 +126,8 @@ describe('render ResizableBox', () => {
     const {container} = render(<ResizableBox {...props} style={{backgroundColor: 'red'}}>{children}</ResizableBox>);
     const divElement = container.querySelector('div');
 
-    expect(divElement).toHaveStyle({
-      width: '50px',
-      height: '50px',
-      backgroundColor: 'red'
-    });
+    expect(divElement).toHaveStyle({ width: '50px', height: '50px' });
+    expect(divElement.style.backgroundColor).toBe('red');
   });
 
   test('style prop width and height ignored', () => {
