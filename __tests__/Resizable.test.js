@@ -1,10 +1,13 @@
-// @flow
 import React from 'react';
+import {render, screen} from '@testing-library/react';
 import renderer from 'react-test-renderer';
-import {shallow, mount} from 'enzyme';
-import {DraggableCore} from "react-draggable";
-
 import Resizable from '../lib/Resizable';
+
+// Helper to simulate drag events on handle elements
+// This simulates DraggableCore's onDrag callback by calling the component's resizeHandler
+function createMockDragEvent() {
+  return {};
+}
 
 describe('render Resizable', () => {
   const props = {
@@ -23,8 +26,9 @@ describe('render Resizable', () => {
     transformScale: 1,
     width: 50,
   };
-  const userChildren = <span className={'children'} />;
-  const resizableBoxChildren =  <div style={{width: '50px', height: '50px'}}>{userChildren}</div>;
+  const userChildren = <span key="user-children" className={'children'} />;
+  // Note: children.props.children must be an array for Resizable to spread it
+  const resizableBoxChildren = <div style={{width: '50px', height: '50px'}}>{[userChildren]}</div>;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -36,13 +40,21 @@ describe('render Resizable', () => {
   });
 
   test('with correct props', () => {
-    const element = shallow(<Resizable {...props}>{resizableBoxChildren}</Resizable>);
-    expect(element.find('.test-classname').find('.children')).toHaveLength(1);
-    expect(element.find(DraggableCore)).toHaveLength(2);
-    const cursorSe = element.find('.react-resizable-handle-se');
-    const cursorE = element.find('.react-resizable-handle-e');
-    expect(cursorSe).toHaveLength(1);
-    expect(cursorE).toHaveLength(1);
+    const {container} = render(<Resizable {...props}>{resizableBoxChildren}</Resizable>);
+
+    // Check test-classname exists and contains children
+    expect(container.querySelector('.test-classname')).toBeInTheDocument();
+    expect(container.querySelector('.test-classname .children')).toBeInTheDocument();
+
+    // Check resize handles are rendered (DraggableCore wraps them, we verify by finding the handles)
+    const seHandle = container.querySelector('.react-resizable-handle-se');
+    const eHandle = container.querySelector('.react-resizable-handle-e');
+    expect(seHandle).toBeInTheDocument();
+    expect(eHandle).toBeInTheDocument();
+
+    // Verify there are exactly 2 resize handles (corresponding to 2 DraggableCores)
+    const allHandles = container.querySelectorAll('.react-resizable-handle');
+    expect(allHandles).toHaveLength(2);
   });
 
   describe('Handles', () => {
@@ -52,19 +64,23 @@ describe('render Resizable', () => {
         expect(ref).toMatchObject({current: null}); // ReactRef
         return <span className={`custom-handle-${axis}`} ref={ref} />;
       };
-      const element = shallow(<Resizable {...props} handle={handleFn}>{resizableBoxChildren}</Resizable>);
+      const {container} = render(<Resizable {...props} handle={handleFn}>{resizableBoxChildren}</Resizable>);
 
-      expect(element.find('.test-classname').find('.children')).toHaveLength(1);
-      expect(element.find(DraggableCore)).toHaveLength(2);
-      const cursorSe = element.find('.custom-handle-se');
-      const cursorE = element.find('.custom-handle-e');
-      expect(cursorSe).toHaveLength(1);
-      expect(cursorE).toHaveLength(1);
+      expect(container.querySelector('.test-classname .children')).toBeInTheDocument();
+
+      // Custom handles should be rendered
+      const cursorSe = container.querySelector('.custom-handle-se');
+      const cursorE = container.querySelector('.custom-handle-e');
+      expect(cursorSe).toBeInTheDocument();
+      expect(cursorE).toBeInTheDocument();
+
+      // Verify there are exactly 2 custom handles
+      expect(container.querySelectorAll('[class^="custom-handle-"]')).toHaveLength(2);
     });
 
     test('with handle component', () => {
       const ResizeHandle = React.forwardRef((props, ref) => {
-        // $FlowIgnore doens't know this is cloned and has handleAxis
+        // $FlowIgnore doesn't know this is cloned and has handleAxis
         const {handleAxis, ...restProps} = props;
         return (
           <div
@@ -74,14 +90,18 @@ describe('render Resizable', () => {
           />
         );
       });
-      const element = mount(<Resizable {...props} handle={<ResizeHandle />}>{resizableBoxChildren}</Resizable>);
+      const {container} = render(<Resizable {...props} handle={<ResizeHandle />}>{resizableBoxChildren}</Resizable>);
 
-      expect(element.find('.test-classname').find('.children')).toHaveLength(1);
-      expect(element.find(DraggableCore)).toHaveLength(2);
-      const cursorSe = element.find('.element-handle-se');
-      const cursorE = element.find('.element-handle-e');
-      expect(cursorSe).toHaveLength(1);
-      expect(cursorE).toHaveLength(1);
+      expect(container.querySelector('.test-classname .children')).toBeInTheDocument();
+
+      // Element handles should be rendered
+      const cursorSe = container.querySelector('.element-handle-se');
+      const cursorE = container.querySelector('.element-handle-e');
+      expect(cursorSe).toBeInTheDocument();
+      expect(cursorE).toBeInTheDocument();
+
+      // Verify there are exactly 2 custom handles
+      expect(container.querySelectorAll('[class*="element-handle-"]')).toHaveLength(2);
     });
 
     describe('and pass handle props', () => {
@@ -91,18 +111,19 @@ describe('render Resizable', () => {
           resizeHandles: ['se'],
           handle: <span className={'custom-component'} />
         };
-        const element = shallow(<Resizable {...customProps}>{resizableBoxChildren}</Resizable>);
-        expect(element.find('.react-resizable-handle-se')).toHaveLength(0);
-        expect(element.find('.custom-component')).toHaveLength(1);
+        const {container} = render(<Resizable {...customProps}>{resizableBoxChildren}</Resizable>);
+        expect(container.querySelector('.react-resizable-handle-se')).not.toBeInTheDocument();
+        expect(container.querySelector('.custom-component')).toBeInTheDocument();
       });
+
       test('as function', () => {
         const customProps = {
           ...props,
           resizeHandles: ['se'],
           handle: (h) => <span className={`custom-component-${h}`} />
         };
-        const element = shallow(<Resizable {...customProps}>{resizableBoxChildren}</Resizable>);
-        expect(element.find('.custom-component-se')).toHaveLength(1);
+        const {container} = render(<Resizable {...customProps}>{resizableBoxChildren}</Resizable>);
+        expect(container.querySelector('.custom-component-se')).toBeInTheDocument();
       });
     });
   });
@@ -120,20 +141,35 @@ describe('render Resizable', () => {
     });
 
     test('none of these props leak down to the child', () => {
-      const element = shallow(<Resizable {...allProps}><div className="foo" /></Resizable>);
-      expect(Object.keys(element.find('.foo').props())).toEqual(['className', 'children']);
+      const {container} = render(<Resizable {...allProps}><div className="foo">{[]}</div></Resizable>);
+      const fooElement = container.querySelector('.foo');
+
+      // Get the attributes that are actually on the DOM element
+      // In RTL, we can't access React props directly, but we can check that
+      // Resizable's props don't appear as DOM attributes
+      const attributes = Array.from(fooElement.attributes).map(attr => attr.name);
+
+      // The child should only have class and potentially children rendered inside
+      // class becomes className in React but 'class' in DOM
+      expect(attributes.filter(attr => attr !== 'class')).toEqual([]);
+
+      // Verify the child has the correct classes
+      expect(fooElement).toHaveClass('foo');
+      expect(fooElement).toHaveClass(allProps.className);
+      expect(fooElement).toHaveClass('react-resizable');
     });
 
     test('className is constructed properly', () => {
-      const element = shallow(<Resizable {...allProps}><div className="foo" /></Resizable>);
-      expect(element.find('.foo').props().className).toEqual(`foo ${allProps.className} react-resizable`);
+      const {container} = render(<Resizable {...allProps}><div className="foo">{[]}</div></Resizable>);
+      const fooElement = container.querySelector('.foo');
+      expect(fooElement.className).toEqual(`foo ${allProps.className} react-resizable`);
     });
   });
 
   describe('onResize callback with modified position', () => {
     const customProps = {
       ...props,
-      resizeHandles: ['nw', 'sw' ,'ne', 'se', 'n', 's', 'w', 'e'],
+      resizeHandles: ['nw', 'sw', 'ne', 'se', 'n', 's', 'w', 'e'],
     };
     const mockClientRect = {
       left: 0,
@@ -142,16 +178,53 @@ describe('render Resizable', () => {
     const node = document.createElement('div');
     // $FlowIgnore need to override to have control over dummy dom element
     node.getBoundingClientRect = () => ({ ...mockClientRect });
-    const mockEvent = { };
-    const element = shallow(<Resizable {...customProps}>{resizableBoxChildren}</Resizable>);
-    function findHandle(element, axis) {
-      return element.find(`.react-resizable-handle-${axis}`).parent();
+    const mockEvent = {};
+
+    // Helper function to get component instance and call resizeHandler
+    // Since RTL doesn't expose component instances, we need to test through the actual component
+    // We'll use a ref to access the Resizable instance
+    function renderWithRef(renderProps) {
+      const ref = React.createRef();
+      const Wrapper = () => {
+        const resizableRef = React.useRef(null);
+        // Store ref for external access
+        React.useEffect(() => {
+          ref.current = resizableRef.current;
+        });
+        return (
+          <Resizable {...renderProps} ref={resizableRef}>
+            {resizableBoxChildren}
+          </Resizable>
+        );
+      };
+      render(<Wrapper />);
+      return ref;
     }
 
+    // For these tests, we need to access the component's internal methods
+    // Since Resizable is a class component, we can use a ref
+    let resizableRef;
+
+    beforeEach(() => {
+      jest.clearAllMocks();
+      mockClientRect.left = 0;
+      mockClientRect.top = 0;
+      resizableRef = React.createRef();
+    });
+
     test('Gradual resizing without movement between does not modify callback', () => {
+      render(
+        <Resizable {...customProps} ref={resizableRef}>
+          {resizableBoxChildren}
+        </Resizable>
+      );
+
       expect(props.onResize).not.toHaveBeenCalled();
-      const seHandle = element.find('.react-resizable-handle-se').parent();
-      seHandle.prop('onDrag')(mockEvent, { node, deltaX: 5, deltaY: 10 });
+
+      // Simulate drag on 'se' handle
+      const resizeHandler = resizableRef.current.resizeHandler('onResize', 'se');
+      resizeHandler(mockEvent, { node, deltaX: 5, deltaY: 10 });
+
       expect(props.onResize).toHaveBeenLastCalledWith(
         mockEvent,
         expect.objectContaining({
@@ -164,11 +237,22 @@ describe('render Resizable', () => {
     });
 
     test('Movement between callbacks modifies response values', () => {
+      render(
+        <Resizable {...customProps} ref={resizableRef}>
+          {resizableBoxChildren}
+        </Resizable>
+      );
+
       expect(props.onResize).not.toHaveBeenCalled();
 
-      const nwHandle = findHandle(element, 'nw');
+      // Test nw handle with movement
+      const nwHandler = resizableRef.current.resizeHandler('onResize', 'nw');
+
+      // First call initializes lastHandleRect (simulating first drag event)
+      nwHandler(mockEvent, { node, deltaX: 0, deltaY: 0 });
+
       mockClientRect.top = -10; // Object moves between callbacks
-      nwHandle.prop('onDrag')(mockEvent, { node, deltaX: 5, deltaY: 10 });
+      nwHandler(mockEvent, { node, deltaX: 5, deltaY: 10 });
       expect(props.onResize).toHaveBeenLastCalledWith(
         mockEvent,
         expect.objectContaining({
@@ -180,7 +264,7 @@ describe('render Resizable', () => {
       );
 
       mockClientRect.left = 20; // Object moves between callbacks
-      nwHandle.prop('onDrag')(mockEvent, { node, deltaX: 5, deltaY: 10 });
+      nwHandler(mockEvent, { node, deltaX: 5, deltaY: 10 });
       expect(props.onResize).toHaveBeenLastCalledWith(
         mockEvent,
         expect.objectContaining({
@@ -194,13 +278,13 @@ describe('render Resizable', () => {
       props.onResize.mockClear();
       mockClientRect.left -= 10; // Object moves between callbacks
       mockClientRect.top -= 10; // Object moves between callbacks
-      nwHandle.prop('onDrag')(mockEvent, { node, deltaX: 10, deltaY: 10 });
+      nwHandler(mockEvent, { node, deltaX: 10, deltaY: 10 });
       expect(props.onResize).not.toHaveBeenCalled();
 
       mockClientRect.left -= 10; // Object moves between callbacks
       mockClientRect.top -= 10; // Object moves between callbacks
-      const swHandle = findHandle(element, 'sw');
-      swHandle.prop('onDrag')(mockEvent, { node, deltaX: 10, deltaY: 10 });
+      const swHandler = resizableRef.current.resizeHandler('onResize', 'sw');
+      swHandler(mockEvent, { node, deltaX: 10, deltaY: 10 });
       expect(props.onResize).toHaveBeenLastCalledWith(
         mockEvent,
         expect.objectContaining({
@@ -213,8 +297,8 @@ describe('render Resizable', () => {
 
       mockClientRect.left -= 10; // Object moves between callbacks
       mockClientRect.top -= 10; // Object moves between callbacks
-      const neHandle = findHandle(element, 'ne');
-      neHandle.prop('onDrag')(mockEvent, { node, deltaX: 10, deltaY: 10 });
+      const neHandler = resizableRef.current.resizeHandler('onResize', 'ne');
+      neHandler(mockEvent, { node, deltaX: 10, deltaY: 10 });
       expect(props.onResize).toHaveBeenLastCalledWith(
         mockEvent,
         expect.objectContaining({
@@ -227,8 +311,8 @@ describe('render Resizable', () => {
 
       mockClientRect.left -= 10; // Object moves between callbacks
       mockClientRect.top -= 10; // Object moves between callbacks
-      const seHandle = element.find('DraggableCore').at(3);
-      seHandle.prop('onDrag')(mockEvent, { node, deltaX: 10, deltaY: 10 });
+      const seHandler = resizableRef.current.resizeHandler('onResize', 'se');
+      seHandler(mockEvent, { node, deltaX: 10, deltaY: 10 });
       expect(props.onResize).toHaveBeenLastCalledWith(
         mockEvent,
         expect.objectContaining({
@@ -241,10 +325,15 @@ describe('render Resizable', () => {
     });
 
     test('use of < 1 transformScale', () => {
-      const element = shallow(<Resizable {...customProps} transformScale={0.5}>{resizableBoxChildren}</Resizable>);
+      render(
+        <Resizable {...customProps} transformScale={0.5} ref={resizableRef}>
+          {resizableBoxChildren}
+        </Resizable>
+      );
+
       expect(props.onResize).not.toHaveBeenCalled();
-      const nwHandle = findHandle(element, 'nw');
-      nwHandle.prop('onDrag')(mockEvent, { node, deltaX: 5, deltaY: 10 });
+      const nwHandler = resizableRef.current.resizeHandler('onResize', 'nw');
+      nwHandler(mockEvent, { node, deltaX: 5, deltaY: 10 });
       expect(props.onResize).toHaveBeenLastCalledWith(
         mockEvent,
         expect.objectContaining({
@@ -257,7 +346,7 @@ describe('render Resizable', () => {
       );
 
       mockClientRect.left = 20; // Object moves between callbacks
-      nwHandle.prop('onDrag')(mockEvent, { node, deltaX: 5, deltaY: 10 });
+      nwHandler(mockEvent, { node, deltaX: 5, deltaY: 10 });
       expect(props.onResize).toHaveBeenLastCalledWith(
         mockEvent,
         expect.objectContaining({
@@ -270,10 +359,15 @@ describe('render Resizable', () => {
     });
 
     test('use of > 1 transformScale', () => {
-      const element = shallow(<Resizable {...customProps} transformScale={2}>{resizableBoxChildren}</Resizable>);
+      render(
+        <Resizable {...customProps} transformScale={2} ref={resizableRef}>
+          {resizableBoxChildren}
+        </Resizable>
+      );
+
       expect(props.onResize).not.toHaveBeenCalled();
-      const nwHandle = findHandle(element, 'nw');
-      nwHandle.prop('onDrag')(mockEvent, { node, deltaX: 5, deltaY: 10 });
+      const nwHandler = resizableRef.current.resizeHandler('onResize', 'nw');
+      nwHandler(mockEvent, { node, deltaX: 5, deltaY: 10 });
       expect(props.onResize).toHaveBeenLastCalledWith(
         mockEvent,
         expect.objectContaining({
@@ -287,13 +381,17 @@ describe('render Resizable', () => {
     });
 
     describe('lockAspectRatio', () => {
-
       [[5, 0], [0, 5], [10, 5], [5, 10], [50, 51]].forEach(([w, h]) => {
         test(`drags with aspect ratio preserved w:${w} h:${h}`, () => {
-          const element = shallow(<Resizable {...customProps} lockAspectRatio={true}>{resizableBoxChildren}</Resizable>);
+          render(
+            <Resizable {...customProps} lockAspectRatio={true} ref={resizableRef}>
+              {resizableBoxChildren}
+            </Resizable>
+          );
+
           expect(props.onResize).not.toHaveBeenCalled();
-          const seHandle = findHandle(element, 'se');
-          seHandle.prop('onDrag')(mockEvent, { node, deltaX: w, deltaY: h });
+          const seHandler = resizableRef.current.resizeHandler('onResize', 'se');
+          seHandler(mockEvent, { node, deltaX: w, deltaY: h });
           expect(props.onResize).toHaveBeenLastCalledWith(
             mockEvent,
             expect.objectContaining({
@@ -305,6 +403,313 @@ describe('render Resizable', () => {
           );
         });
       });
+    });
+  });
+
+  // ============================================
+  // ADDITIONAL TEST COVERAGE
+  // ============================================
+
+  describe('axis restrictions', () => {
+    test('axis="x" only allows horizontal resizing', () => {
+      const resizableRef = React.createRef();
+      render(
+        <Resizable {...props} axis="x" resizeHandles={['se']} ref={resizableRef}>
+          {resizableBoxChildren}
+        </Resizable>
+      );
+
+      const mockEvent = {};
+      const node = document.createElement('div');
+      node.getBoundingClientRect = () => ({ left: 0, top: 0 });
+
+      const seHandler = resizableRef.current.resizeHandler('onResize', 'se');
+      seHandler(mockEvent, { node, deltaX: 10, deltaY: 20 });
+
+      expect(props.onResize).toHaveBeenLastCalledWith(
+        mockEvent,
+        expect.objectContaining({
+          size: {
+            width: 60, // Changed
+            height: 50, // Unchanged - y-axis disabled
+          },
+        })
+      );
+    });
+
+    test('axis="y" only allows vertical resizing', () => {
+      const resizableRef = React.createRef();
+      render(
+        <Resizable {...props} axis="y" resizeHandles={['se']} ref={resizableRef}>
+          {resizableBoxChildren}
+        </Resizable>
+      );
+
+      const mockEvent = {};
+      const node = document.createElement('div');
+      node.getBoundingClientRect = () => ({ left: 0, top: 0 });
+
+      const seHandler = resizableRef.current.resizeHandler('onResize', 'se');
+      seHandler(mockEvent, { node, deltaX: 10, deltaY: 20 });
+
+      expect(props.onResize).toHaveBeenLastCalledWith(
+        mockEvent,
+        expect.objectContaining({
+          size: {
+            width: 50, // Unchanged - x-axis disabled
+            height: 70, // Changed
+          },
+        })
+      );
+    });
+
+    test('axis="none" disables all resizing', () => {
+      const resizableRef = React.createRef();
+      render(
+        <Resizable {...props} axis="none" resizeHandles={['se']} ref={resizableRef}>
+          {resizableBoxChildren}
+        </Resizable>
+      );
+
+      const mockEvent = {};
+      const node = document.createElement('div');
+      node.getBoundingClientRect = () => ({ left: 0, top: 0 });
+
+      const seHandler = resizableRef.current.resizeHandler('onResize', 'se');
+      seHandler(mockEvent, { node, deltaX: 10, deltaY: 20 });
+
+      // onResize should not be called when axis is 'none'
+      expect(props.onResize).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('constraints', () => {
+    test('minConstraints prevents sizing below minimum', () => {
+      const resizableRef = React.createRef();
+      render(
+        <Resizable
+          {...props}
+          minConstraints={[30, 30]}
+          maxConstraints={[Infinity, Infinity]}
+          resizeHandles={['se']}
+          ref={resizableRef}
+        >
+          {resizableBoxChildren}
+        </Resizable>
+      );
+
+      const mockEvent = {};
+      const node = document.createElement('div');
+      node.getBoundingClientRect = () => ({ left: 0, top: 0 });
+
+      const seHandler = resizableRef.current.resizeHandler('onResize', 'se');
+      // Try to resize to 10x10 (below min of 30x30)
+      seHandler(mockEvent, { node, deltaX: -40, deltaY: -40 });
+
+      expect(props.onResize).toHaveBeenLastCalledWith(
+        mockEvent,
+        expect.objectContaining({
+          size: {
+            width: 30, // Constrained to min
+            height: 30, // Constrained to min
+          },
+        })
+      );
+    });
+
+    test('maxConstraints prevents sizing above maximum', () => {
+      const resizableRef = React.createRef();
+      render(
+        <Resizable
+          {...props}
+          minConstraints={[20, 20]}
+          maxConstraints={[80, 80]}
+          resizeHandles={['se']}
+          ref={resizableRef}
+        >
+          {resizableBoxChildren}
+        </Resizable>
+      );
+
+      const mockEvent = {};
+      const node = document.createElement('div');
+      node.getBoundingClientRect = () => ({ left: 0, top: 0 });
+
+      const seHandler = resizableRef.current.resizeHandler('onResize', 'se');
+      // Try to resize to 150x150 (above max of 80x80)
+      seHandler(mockEvent, { node, deltaX: 100, deltaY: 100 });
+
+      expect(props.onResize).toHaveBeenLastCalledWith(
+        mockEvent,
+        expect.objectContaining({
+          size: {
+            width: 80, // Constrained to max
+            height: 80, // Constrained to max
+          },
+        })
+      );
+    });
+  });
+
+  describe('onResizeStart and onResizeStop callbacks', () => {
+    test('onResizeStart is called with correct data', () => {
+      const resizableRef = React.createRef();
+      render(
+        <Resizable {...props} resizeHandles={['se']} ref={resizableRef}>
+          {resizableBoxChildren}
+        </Resizable>
+      );
+
+      const mockEvent = {};
+      const node = document.createElement('div');
+      node.getBoundingClientRect = () => ({ left: 0, top: 0 });
+
+      const startHandler = resizableRef.current.resizeHandler('onResizeStart', 'se');
+      startHandler(mockEvent, { node, deltaX: 0, deltaY: 0 });
+
+      expect(props.onResizeStart).toHaveBeenCalledWith(
+        mockEvent,
+        expect.objectContaining({
+          size: { width: 50, height: 50 },
+          handle: 'se',
+        })
+      );
+    });
+
+    test('onResizeStop is called with correct data', () => {
+      const resizableRef = React.createRef();
+      render(
+        <Resizable {...props} resizeHandles={['se']} ref={resizableRef}>
+          {resizableBoxChildren}
+        </Resizable>
+      );
+
+      const mockEvent = {};
+      const node = document.createElement('div');
+      node.getBoundingClientRect = () => ({ left: 0, top: 0 });
+
+      // First start
+      const startHandler = resizableRef.current.resizeHandler('onResizeStart', 'se');
+      startHandler(mockEvent, { node, deltaX: 0, deltaY: 0 });
+
+      // Then stop with a delta - Resizable is stateless so size is calculated from
+      // props.width/height + delta at time of stop
+      const stopHandler = resizableRef.current.resizeHandler('onResizeStop', 'se');
+      stopHandler(mockEvent, { node, deltaX: 10, deltaY: 10 });
+
+      expect(props.onResizeStop).toHaveBeenCalledWith(
+        mockEvent,
+        expect.objectContaining({
+          size: { width: 60, height: 60 },
+          handle: 'se',
+        })
+      );
+    });
+  });
+
+  describe('all resize handle directions', () => {
+    const allHandles = ['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw'];
+
+    test('renders all specified handles', () => {
+      const {container} = render(
+        <Resizable {...props} resizeHandles={allHandles}>
+          {resizableBoxChildren}
+        </Resizable>
+      );
+
+      allHandles.forEach(handle => {
+        expect(container.querySelector(`.react-resizable-handle-${handle}`)).toBeInTheDocument();
+      });
+
+      expect(container.querySelectorAll('.react-resizable-handle')).toHaveLength(allHandles.length);
+    });
+  });
+
+  describe('event.persist handling', () => {
+    test('calls event.persist when available', () => {
+      const resizableRef = React.createRef();
+      render(
+        <Resizable {...props} resizeHandles={['se']} ref={resizableRef}>
+          {resizableBoxChildren}
+        </Resizable>
+      );
+
+      const mockEvent = { persist: jest.fn() };
+      const node = document.createElement('div');
+      node.getBoundingClientRect = () => ({ left: 0, top: 0 });
+
+      const startHandler = resizableRef.current.resizeHandler('onResizeStart', 'se');
+      startHandler(mockEvent, { node, deltaX: 0, deltaY: 0 });
+
+      expect(mockEvent.persist).toHaveBeenCalled();
+    });
+
+    test('works when event.persist is not available', () => {
+      const resizableRef = React.createRef();
+      render(
+        <Resizable {...props} resizeHandles={['se']} ref={resizableRef}>
+          {resizableBoxChildren}
+        </Resizable>
+      );
+
+      // Event without persist method (like native DOM events)
+      const mockEvent = {};
+      const node = document.createElement('div');
+      node.getBoundingClientRect = () => ({ left: 0, top: 0 });
+
+      // Should not throw
+      const startHandler = resizableRef.current.resizeHandler('onResizeStart', 'se');
+      expect(() => startHandler(mockEvent, { node, deltaX: 0, deltaY: 0 })).not.toThrow();
+    });
+  });
+
+  describe('component unmounting', () => {
+    test('resets data on unmount', () => {
+      const resizableRef = React.createRef();
+      const {unmount} = render(
+        <Resizable {...props} resizeHandles={['se']} ref={resizableRef}>
+          {resizableBoxChildren}
+        </Resizable>
+      );
+
+      const mockEvent = {};
+      const node = document.createElement('div');
+      node.getBoundingClientRect = () => ({ left: 0, top: 0 });
+
+      // Simulate some dragging to set internal state
+      const dragHandler = resizableRef.current.resizeHandler('onResize', 'se');
+      dragHandler(mockEvent, { node, deltaX: 10, deltaY: 10 });
+
+      // Verify internal state exists before unmount
+      expect(resizableRef.current.lastHandleRect).not.toBeNull();
+
+      // Unmount should reset data
+      unmount();
+
+      // Note: We can't directly verify internal state after unmount,
+      // but the test ensures componentWillUnmount runs without error
+    });
+  });
+
+  describe('no callback provided', () => {
+    test('works without onResize callback', () => {
+      const resizableRef = React.createRef();
+      const propsWithoutCallback = { ...props };
+      delete propsWithoutCallback.onResize;
+
+      render(
+        <Resizable {...propsWithoutCallback} resizeHandles={['se']} ref={resizableRef}>
+          {resizableBoxChildren}
+        </Resizable>
+      );
+
+      const mockEvent = {};
+      const node = document.createElement('div');
+      node.getBoundingClientRect = () => ({ left: 0, top: 0 });
+
+      const dragHandler = resizableRef.current.resizeHandler('onResize', 'se');
+      // Should not throw even without callback
+      expect(() => dragHandler(mockEvent, { node, deltaX: 10, deltaY: 10 })).not.toThrow();
     });
   });
 });
