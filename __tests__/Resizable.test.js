@@ -404,6 +404,103 @@ describe('render Resizable', () => {
         });
       });
     });
+
+    describe('onResizeStop with stale props', () => {
+      // This tests the fix for a bug where onResizeStop would report stale size data
+      // because React's batched state updates mean props.width/height haven't updated yet
+      // when onResizeStop fires. The fix stores the last size from onResize and uses it
+      // in onResizeStop. See: https://github.com/react-grid-layout/react-grid-layout/pull/2224
+
+      test('onResizeStop reports correct size even when props are stale', () => {
+        // Create a fresh element with fresh mocks for this test
+        const onResizeStop = jest.fn();
+        const onResize = jest.fn();
+        const testProps = {
+          ...customProps,
+          onResize,
+          onResizeStop,
+        };
+        const element = shallow(<Resizable {...testProps}>{resizableBoxChildren}</Resizable>);
+        const seHandle = findHandle(element, 'se');
+
+        // Simulate onResizeStart
+        seHandle.prop('onStart')(mockEvent, { node, deltaX: 0, deltaY: 0 });
+
+        // Simulate dragging - this calls onResize with the new size
+        seHandle.prop('onDrag')(mockEvent, { node, deltaX: 20, deltaY: 30 });
+        expect(onResize).toHaveBeenLastCalledWith(
+          mockEvent,
+          expect.objectContaining({
+            size: { width: 70, height: 80 },
+          })
+        );
+
+        // Now simulate onResizeStop. In a real app, React may not have re-rendered yet,
+        // so props.width/height would still be 50. The deltaX/deltaY from DraggableCore's
+        // onStop is typically 0 or very small since the mouse hasn't moved since the last
+        // drag event. Without the fix, this would incorrectly report size: {width: 50, height: 50}.
+        seHandle.prop('onStop')(mockEvent, { node, deltaX: 0, deltaY: 0 });
+
+        // With the fix, onResizeStop should report the same size as the last onResize
+        expect(onResizeStop).toHaveBeenCalledWith(
+          mockEvent,
+          expect.objectContaining({
+            size: { width: 70, height: 80 },
+          })
+        );
+      });
+
+      test('onResizeStop reports correct size for west handle with stale props', () => {
+        const onResizeStop = jest.fn();
+        const onResize = jest.fn();
+        const testProps = {
+          ...customProps,
+          onResize,
+          onResizeStop,
+        };
+        const testMockClientRect = { left: 0, top: 0 };
+        const testNode = document.createElement('div');
+        // $FlowIgnore
+        testNode.getBoundingClientRect = () => ({ ...testMockClientRect });
+
+        const element = shallow(<Resizable {...testProps}>{resizableBoxChildren}</Resizable>);
+        const wHandle = findHandle(element, 'w');
+
+        // Simulate onResizeStart - this sets lastHandleRect to {left: 0, top: 0}
+        wHandle.prop('onStart')(mockEvent, { node: testNode, deltaX: 0, deltaY: 0 });
+
+        // Simulate dragging west (left)
+        // deltaX = -15 from drag, plus position adjustment of -15 (handle moved from 0 to -15)
+        // Total deltaX = -30, reversed for 'w' = +30, so width = 50 + 30 = 80
+        testMockClientRect.left = -15;
+        wHandle.prop('onDrag')(mockEvent, { node: testNode, deltaX: -15, deltaY: 0 });
+        expect(onResize).toHaveBeenLastCalledWith(
+          mockEvent,
+          expect.objectContaining({
+            size: { width: 80, height: 50 },
+          })
+        );
+
+        // Continue dragging - element moves further left
+        testMockClientRect.left = -25;
+        wHandle.prop('onDrag')(mockEvent, { node: testNode, deltaX: -10, deltaY: 0 });
+        expect(onResize).toHaveBeenLastCalledWith(
+          mockEvent,
+          expect.objectContaining({
+            size: { width: 100, height: 50 },
+          })
+        );
+
+        // onResizeStop with stale props - should use stored lastSize
+        wHandle.prop('onStop')(mockEvent, { node: testNode, deltaX: 0, deltaY: 0 });
+        expect(onResizeStop).toHaveBeenCalledWith(
+          mockEvent,
+          expect.objectContaining({
+            size: { width: 100, height: 50 },
+          })
+        );
+      });
+    });
   });
 
   // ============================================
