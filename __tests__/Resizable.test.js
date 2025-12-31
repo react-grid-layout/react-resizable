@@ -25,9 +25,8 @@ describe('render Resizable', () => {
     transformScale: 1,
     width: 50,
   };
-  const userChildren = <span key="user-children" className={'children'} />;
-  // Note: children.props.children must be an array for Resizable to spread it
-  const resizableBoxChildren = <div style={{width: '50px', height: '50px'}}>{[userChildren]}</div>;
+  const userChildren = <span className={'children'} />;
+  const resizableBoxChildren = <div style={{width: '50px', height: '50px'}}>{userChildren}</div>;
 
   beforeEach(() => {
     jest.clearAllMocks();

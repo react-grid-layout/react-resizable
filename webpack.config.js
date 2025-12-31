@@ -1,7 +1,26 @@
 const webpack = require('webpack');
 const path = require('path');
+const {execFileSync} = require('child_process');
+const pkg = require('./package.json');
 
 const isProduction = process.env.NODE_ENV === 'production';
+
+// Get git info for version display
+function getGitInfo() {
+  try {
+    const commitHash = execFileSync('git', ['rev-parse', '--short', 'HEAD']).toString().trim();
+    let tag = '';
+    try {
+      tag = execFileSync('git', ['describe', '--tags', '--abbrev=0']).toString().trim();
+    } catch (e) {
+      // No tags found
+    }
+    return {commitHash, tag};
+  } catch (e) {
+    return {commitHash: 'unknown', tag: ''};
+  }
+}
+const gitInfo = getGitInfo();
 const isDevelopment = !isProduction;
 
 module.exports = {
@@ -51,5 +70,11 @@ module.exports = {
   plugins: [
     // Scope hoisting
     new webpack.optimize.ModuleConcatenationPlugin(),
+    // Inject version info
+    new webpack.DefinePlugin({
+      __VERSION__: JSON.stringify(pkg.version),
+      __GIT_TAG__: JSON.stringify(gitInfo.tag),
+      __GIT_COMMIT__: JSON.stringify(gitInfo.commitHash),
+    }),
   ]
 };

@@ -21,11 +21,7 @@ describe('render ResizableBox', () => {
     transformScale: 1,
     width: 50,
   };
-  // ResizableBox passes children to its inner div, and Resizable spreads
-  // children.props.children, so we wrap in array for it to be iterable.
-  // Note: This causes a propType warning since ResizableBox expects a single element,
-  // but it's necessary for the tests to work with React Testing Library.
-  const children = [<span key="child" className="children" />];
+  const children = <span className="children" />;
 
   beforeEach(() => {
     jest.clearAllMocks();
