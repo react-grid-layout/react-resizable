@@ -2,9 +2,26 @@ import React from 'react';
 import Resizable from '../lib/Resizable';
 import ResizableBox from '../lib/ResizableBox';
 import 'style-loader!css-loader!../css/styles.css';
-import 'style-loader!css-loader!./example.css';
 
 /* global __VERSION__, __GIT_TAG__, __GIT_COMMIT__ */
+
+// Update the version badge in the header
+function updateVersionBadge() {
+  const badge = document.getElementById('version-badge');
+  if (badge) {
+    const version = __GIT_TAG__ || `v${__VERSION__}`;
+    badge.textContent = version + (__GIT_COMMIT__ ? ` (${__GIT_COMMIT__})` : '');
+    badge.href = `https://github.com/react-grid-layout/react-resizable/releases/tag/${__GIT_TAG__ || __VERSION__}`;
+  }
+}
+
+if (typeof document !== 'undefined') {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', updateVersionBadge);
+  } else {
+    updateVersionBadge();
+  }
+}
 
 const CustomResizeHandle = React.forwardRef((props, ref) => {
   const {handleAxis, ...restProps} = props;
@@ -66,11 +83,6 @@ export default class ExampleLayout extends React.Component<{}, {width: number, h
   render() {
     return (
       <div>
-        <p className="version-info">
-          react-resizable {__GIT_TAG__ || __VERSION__}
-          {__GIT_COMMIT__ && <span> ({__GIT_COMMIT__})</span>}
-        </p>
-
         <h3>Statically Positioned Layout</h3>
         <div className="layoutRoot">
           <Resizable className="box" height={this.state.height} width={this.state.width} onResize={this.onFirstBoxResize} resizeHandles={['sw', 'se', 'nw', 'ne', 'w', 'e', 'n', 's']}>
@@ -174,18 +186,16 @@ export default class ExampleLayout extends React.Component<{}, {width: number, h
         <div style={{marginBottom: '10px'}}>
           <small>
             If you are nesting Resizables in an element with <code>transform: scale(n)</code>, be sure to pass the same <code>n</code>&nbsp;
-            as the <code>transformScale</code> property.
-            <br />
-            This box has scale 0.75.
+            as the <code>transformScale</code> property. This layout has <code>scale(0.75)</code>.
           </small>
         </div>
         <div className="layoutRoot absoluteLayout scaledLayout">
-          <ResizableBox className="box absolutely-positioned top-aligned left-aligned" width={200} height={200} resizeHandles={['sw', 'se', 'nw', 'ne', 'w', 'e', 'n', 's']}>
-            <span className="text">{"<ResizableBox> with incorrect scale 1"}</span>
+          <ResizableBox className="box absolutely-positioned top-aligned left-aligned" width={200} height={200} transformScale={0.75} resizeHandles={['sw', 'se', 'nw', 'ne', 'w', 'e', 'n', 's']}>
+            <span className="text">{"<ResizableBox> with correct transformScale={0.75}"}</span>
           </ResizableBox>
 
           <ResizableBox className="box absolutely-positioned bottom-aligned left-aligned" width={200} height={200} transformScale={0.75} resizeHandles={['sw', 'se', 'nw', 'ne', 'w', 'e', 'n', 's']}>
-            <span className="text">{"<ResizableBox> with correct scale 0.75"}</span>
+            <span className="text">{"<ResizableBox> with correct transformScale={0.75}"}</span>
           </ResizableBox>
 
           {/* See implementation of `onResizeAbsolute` for how this can be moved around its container */}
@@ -209,11 +219,11 @@ export default class ExampleLayout extends React.Component<{}, {width: number, h
           </Resizable>
 
           <ResizableBox className="box absolutely-positioned top-aligned right-aligned" width={200} height={200} transformScale={0.75} resizeHandles={['sw', 'se', 'nw', 'ne', 'w', 'e', 'n', 's']}>
-            <span className="text">{"<ResizableBox> with correct scale 0.75"}</span>
+            <span className="text">{"<ResizableBox> with correct transformScale={0.75}"}</span>
           </ResizableBox>
 
-          <ResizableBox className="box absolutely-positioned bottom-aligned right-aligned" width={200} height={200} transformScale={0.75} resizeHandles={['sw', 'se', 'nw', 'ne', 'w', 'e', 'n', 's']}>
-            <span className="text">{"<ResizableBox> with correct scale 0.75"}</span>
+          <ResizableBox className="box absolutely-positioned bottom-aligned right-aligned" width={200} height={200} resizeHandles={['sw', 'se', 'nw', 'ne', 'w', 'e', 'n', 's']}>
+            <span className="text">{"Without transformScale - notice how the cursor diverges from the handle while dragging"}</span>
           </ResizableBox>
         </div>
 
