@@ -17,10 +17,12 @@ jobs:
         run: |
           yarn
           yarn build-example
+          mkdir -p dist
+          cp -r examples dist/examples
+          cp index.html dist/
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages # The branch the action should deploy to.
-          folder: examples # The folder the action should deploy.
-          target-folder: examples # The destination. Shouldn't touch other folders.
+          folder: dist # The folder the action should deploy.
