@@ -171,7 +171,7 @@ export default class ExampleLayout extends React.Component<{}, {width: number, h
         </div>
 
         <h3>Scaled Absolute Layout</h3>
-        <div>
+        <div style={{marginBottom: '10px'}}>
           <small>
             If you are nesting Resizables in an element with <code>transform: scale(n)</code>, be sure to pass the same <code>n</code>&nbsp;
             as the <code>transformScale</code> property.
