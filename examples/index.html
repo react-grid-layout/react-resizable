@@ -1,28 +1,30 @@
+<!DOCTYPE html>
 <html>
   <head>
-    <style>
-      body {
-        background: white;
-        padding: 20px;
-      }
-      #content {
-        width: 100%;
-        padding-bottom: 250px;
-      }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./example-styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.14.0/umd/react.development.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.14.0/umd/react-dom.development.min.js"></script>
     <script src="./bundle.js"></script>
-    <title>React-Resizable</title>
+    <title>React-Resizable Demo</title>
   </head>
   <body>
-    <h3>React-Resizable Demo</h3>
-    <p>React-resizable is a simple component that you wrap your existing components inside. It
-    gives those components resize handles.
-    </p>
-    <p><a href="https://github.com/react-grid-layout/react-resizable">View project on GitHub</a></p>
-    <p><a href="https://github.com/react-grid-layout/react-resizable/blob/master/examples/ExampleLayout.js">View this page's source</a></p>
-    <hr />
-    <div id="content"></div>
+    <main class="main-content">
+      <header class="main-header">
+        <h3>◢ React-Resizable</h3>
+        <div class="header-links">
+          <a class="rgl-link" href="https://react-grid-layout.github.io/react-grid-layout/examples/00-showcase.html" target="_blank">React-Grid-Layout ⇢</a>
+          <a id="version-badge" class="version-badge" href="https://github.com/react-grid-layout/react-resizable/releases" target="_blank"></a>
+        </div>
+      </header>
+      <ul class="nav-links">
+        <li><a href="https://github.com/react-grid-layout/react-resizable">GitHub</a></li>
+        <li><a href="https://github.com/react-grid-layout/react-resizable/blob/master/examples/ExampleLayout.js">View Source</a></li>
+      </ul>
+      <p>React-Resizable is a simple component that you wrap your existing components inside. It gives those components resize handles.</p>
+      <p>Try it out! Drag the resize handles on the boxes below to resize them.</p>
+      <div id="content"></div>
+    </main>
   </body>
 </html>
