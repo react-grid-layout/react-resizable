@@ -1,5 +1,12 @@
 # Changelog
 
+### 3.1.1 (Dec 30, 2025)
+
+- 🐛 Bugfix: Fix crash when `Resizable` child has a single child element (was not iterable). [#219](https://github.com/react-grid-layout/react-resizable/issues/219)
+- 🐛 Bugfix: Fix `offsetParent` propType from `PropTypes.node` to `PropTypes.instanceOf(Element)`. [#220](https://github.com/react-grid-layout/react-resizable/pull/220)
+- ✏ Chore: Update GitHub Actions workflows to latest versions.
+- ✏ Chore: Add version display to demo page.
+
 ### 3.1.0 (Dec 30, 2025)
 
 - 🐛 Bugfix: Fix `onResizeStop` reporting stale size data due to React's batched state updates. The callback now uses the stored size from the last `onResize` call. [#250](https://github.com/react-grid-layout/react-resizable/pull/250)
