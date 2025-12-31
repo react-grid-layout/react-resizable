@@ -2,6 +2,8 @@
 
 dist
 build
+examples/bundle.js
+examples/bundle.js.map
 
 # dependencies
 /node_modules

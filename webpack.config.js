@@ -31,7 +31,7 @@ module.exports = {
     test: "./examples/example.js",
   },
   output: {
-    path: path.join(__dirname, "dist"),
+    path: path.join(__dirname, "examples"),
     filename: "bundle.js",
     sourceMapFilename: "[file].map",
     library: 'ReactResizable',
