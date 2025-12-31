@@ -4,6 +4,8 @@ import ResizableBox from '../lib/ResizableBox';
 import 'style-loader!css-loader!../css/styles.css';
 import 'style-loader!css-loader!./example.css';
 
+/* global __VERSION__, __GIT_TAG__, __GIT_COMMIT__ */
+
 const CustomResizeHandle = React.forwardRef((props, ref) => {
   const {handleAxis, ...restProps} = props;
   return (
@@ -64,6 +66,10 @@ export default class ExampleLayout extends React.Component<{}, {width: number, h
   render() {
     return (
       <div>
+        <p className="version-info">
+          react-resizable {__GIT_TAG__ || __VERSION__}
+          {__GIT_COMMIT__ && <span> ({__GIT_COMMIT__})</span>}
+        </p>
 
         <h3>Statically Positioned Layout</h3>
         <div className="layoutRoot">

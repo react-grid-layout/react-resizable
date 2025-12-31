@@ -116,3 +116,10 @@
 .custom-resize-handle-component {
   background-color: red;
 }
+
+.version-info {
+  font-family: monospace;
+  font-size: 12px;
+  color: #666;
+  margin: 10px 20px;
+}
