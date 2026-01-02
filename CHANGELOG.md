@@ -1,5 +1,9 @@
 # Changelog
 
+### 3.1.3 (Jan 1, 2026)
+
+- ✏ Chore: Add `files` whitelist to package.json to reduce package size and exclude unnecessary files.
+
 ### 3.1.2 (Jan 1, 2026)
 
 - 🐛 Bugfix: Fix SSR crash where `Element` is not defined in Node.js environments. [#251](https://github.com/react-grid-layout/react-resizable/issues/251)

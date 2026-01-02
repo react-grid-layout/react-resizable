@@ -1,8 +1,13 @@
 {
   "name": "react-resizable",
-  "version": "3.1.2",
+  "version": "3.1.3",
   "description": "A component that is resizable with handles.",
   "main": "index.js",
+  "files": [
+    "build/",
+    "css/",
+    "index.js"
+  ],
   "scripts": {
     "lint": "eslint lib/ __tests__/ setupTests/; flow",
     "test": "jest --coverage",
