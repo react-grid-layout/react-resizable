@@ -1,5 +1,9 @@
 # Changelog
 
+### 3.1.2 (Jan 1, 2026)
+
+- 🐛 Bugfix: Fix SSR crash where `Element` is not defined in Node.js environments. [#251](https://github.com/react-grid-layout/react-resizable/issues/251)
+
 ### 3.1.1 (Dec 30, 2025)
 
 - 🐛 Bugfix: Fix crash when `Resizable` child has a single child element (was not iterable). [#219](https://github.com/react-grid-layout/react-resizable/issues/219)
