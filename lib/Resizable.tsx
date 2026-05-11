@@ -1,30 +1,28 @@
-// @flow
 import * as React from 'react';
-import type {Node as ReactNode} from 'react';
 import {DraggableCore} from 'react-draggable';
 import {cloneElement} from './utils';
-import {resizableProps} from "./propTypes";
-import type {ResizeHandleAxis, DefaultProps, Props, ReactRef, DragCallbackData} from './propTypes';
+import {resizableProps} from './propTypes';
+import type {ResizeHandleAxis, DefaultProps, Props, DragCallbackData} from './propTypes';
 
 // The base <Resizable> component.
 // This component does not have state and relies on the parent to set its props based on callback data.
-export default class Resizable extends React.Component<Props, void> {
+export default class Resizable extends React.Component<Props, {}> {
   static propTypes = resizableProps;
 
-  static defaultProps: DefaultProps =  {
+  static defaultProps: DefaultProps = {
     axis: 'both',
     handleSize: [20, 20],
     lockAspectRatio: false,
     minConstraints: [20, 20],
     maxConstraints: [Infinity, Infinity],
     resizeHandles: ['se'],
-    transformScale: 1
+    transformScale: 1,
   };
 
-  handleRefs: {[key: ResizeHandleAxis]: ReactRef<HTMLElement>} = {};
-  lastHandleRect: ?ClientRect = null;
-  slack: ?[number, number] = null;
-  lastSize: ?{width: number, height: number} = null;
+  handleRefs: {[key in ResizeHandleAxis]?: React.RefObject<HTMLElement>} = {};
+  lastHandleRect: DOMRect | null = null;
+  slack: [number, number] | null = null;
+  lastSize: {width: number; height: number} | null = null;
 
   componentWillUnmount() {
     this.resetData();
@@ -62,7 +60,7 @@ export default class Resizable extends React.Component<Props, void> {
     // Add slack to the values used to calculate bound position. This will ensure that if
     // we start removing slack, the element won't react to it right away until it's been
     // completely removed.
-    let [slackW, slackH] = this.slack || [0, 0];
+    const [slackW, slackH] = this.slack || [0, 0];
     width += slackW;
     height += slackH;
 
@@ -87,8 +85,11 @@ export default class Resizable extends React.Component<Props, void> {
    * @param  {String} handlerName Handler name to wrap.
    * @return {Function}           Handler function.
    */
-  resizeHandler(handlerName: 'onResize' | 'onResizeStart' | 'onResizeStop', axis: ResizeHandleAxis): Function {
-    return (e: SyntheticEvent<>, {node, deltaX, deltaY}: DragCallbackData) => {
+  resizeHandler(
+    handlerName: 'onResize' | 'onResizeStart' | 'onResizeStop',
+    axis: ResizeHandleAxis,
+  ): (e: React.SyntheticEvent, data: DragCallbackData) => void {
+    return (e: React.SyntheticEvent, {node, deltaX, deltaY}: DragCallbackData) => {
       // Reset data in case it was left over somehow (should not be possible)
       if (handlerName === 'onResizeStart') this.resetData();
 
@@ -159,7 +160,7 @@ export default class Resizable extends React.Component<Props, void> {
       // Don't call 'onResize' if dimensions haven't changed.
       const shouldSkipCb = handlerName === 'onResize' && !dimensionsChanged;
       if (cb && !shouldSkipCb) {
-        e.persist?.();
+        (e as any).persist?.();
         cb(e, {node, size: {width, height}, handle: axis});
       }
 
@@ -170,11 +171,14 @@ export default class Resizable extends React.Component<Props, void> {
 
   // Render a resize handle given an axis & DOM ref. Ref *must* be attached for
   // the underlying draggable library to work properly.
-  renderResizeHandle(handleAxis: ResizeHandleAxis, ref: ReactRef<HTMLElement>): ReactNode {
+  renderResizeHandle(
+    handleAxis: ResizeHandleAxis,
+    ref: React.RefObject<HTMLElement>,
+  ): React.ReactNode {
     const {handle} = this.props;
     // No handle provided, make the default
     if (!handle) {
-      return <span className={`react-resizable-handle react-resizable-handle-${handleAxis}`} ref={ref} />;
+      return <span className={`react-resizable-handle react-resizable-handle-${handleAxis}`} ref={ref as React.RefObject<HTMLSpanElement>} />;
     }
     // Handle is a function, such as:
     // `handle={(handleAxis) => <span className={...} />}`
@@ -183,22 +187,22 @@ export default class Resizable extends React.Component<Props, void> {
     }
     // Handle is a React component (composite or DOM).
     const isDOMElement = typeof handle.type === 'string';
-    const props = {
+    const props: Record<string, any> = {
       ref,
       // Add `handleAxis` prop iff this is not a DOM element,
       // otherwise we'll get an unknown property warning
-      ...(isDOMElement ? {} : {handleAxis})
+      ...(isDOMElement ? {} : {handleAxis}),
     };
     return React.cloneElement(handle, props);
-
   }
 
-  render(): ReactNode {
+  render(): React.ReactNode {
     // Pass along only props not meant for the `<Resizable>`.`
-    // eslint-disable-next-line no-unused-vars
-    const {children, className, draggableOpts, width, height, handle, handleSize,
-            lockAspectRatio, axis, minConstraints, maxConstraints, onResize,
-            onResizeStop, onResizeStart, resizeHandles, transformScale, ...p} = this.props;
+    const {
+      children, className, draggableOpts, width, height, handle, handleSize,
+      lockAspectRatio, axis, minConstraints, maxConstraints, onResize,
+      onResizeStop, onResizeStart, resizeHandles, transformScale, ...p
+    } = this.props;
 
     // What we're doing here is getting the child of this element, and cloning it with this element's props.
     // We are then defining its children as:
@@ -208,24 +212,26 @@ export default class Resizable extends React.Component<Props, void> {
       ...p,
       className: `${className ? `${className} ` : ''}react-resizable`,
       children: [
-        ...React.Children.toArray(children.props.children),
+        ...React.Children.toArray((children.props as any).children),
         ...resizeHandles.map((handleAxis) => {
           // Create a ref to the handle so that `<DraggableCore>` doesn't have to use ReactDOM.findDOMNode().
-          const ref = (this.handleRefs[handleAxis]) ?? (this.handleRefs[handleAxis] = React.createRef());
+          const ref =
+            this.handleRefs[handleAxis] ??
+            (this.handleRefs[handleAxis] = React.createRef<HTMLElement>());
           return (
             <DraggableCore
-              {...draggableOpts}
-              nodeRef={ref}
+              {...(draggableOpts as any)}
+              nodeRef={ref as React.RefObject<HTMLElement>}
               key={`resizableHandle-${handleAxis}`}
-              onStop={this.resizeHandler('onResizeStop', handleAxis)}
-              onStart={this.resizeHandler('onResizeStart', handleAxis)}
-              onDrag={this.resizeHandler('onResize', handleAxis)}
+              onStop={this.resizeHandler('onResizeStop', handleAxis) as any}
+              onStart={this.resizeHandler('onResizeStart', handleAxis) as any}
+              onDrag={this.resizeHandler('onResize', handleAxis) as any}
             >
               {this.renderResizeHandle(handleAxis, ref)}
             </DraggableCore>
           );
-        })
-      ]
+        }),
+      ],
     });
   }
 }

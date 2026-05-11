@@ -1,4 +1,5 @@
-const babelParser = require('@babel/eslint-parser');
+const tsParser = require('@typescript-eslint/parser');
+const tsPlugin = require('@typescript-eslint/eslint-plugin');
 const reactPlugin = require('eslint-plugin-react');
 const jestPlugin = require('eslint-plugin-jest');
 const js = require('@eslint/js');
@@ -6,14 +7,32 @@ const js = require('@eslint/js');
 module.exports = [
   js.configs.recommended,
   {
-    files: ['**/*.js', '**/*.jsx'],
+    files: ['**/*.js', '**/*.cjs'],
     languageOptions: {
-      parser: babelParser,
+      globals: {
+        window: 'readonly',
+        document: 'readonly',
+        console: 'readonly',
+        require: 'readonly',
+        module: 'readonly',
+        exports: 'readonly',
+        __dirname: 'readonly',
+        process: 'readonly',
+        global: 'readonly',
+      },
+    },
+    rules: {
+      'no-unused-vars': 'off',
+    },
+  },
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+    languageOptions: {
+      parser: tsParser,
       parserOptions: {
-        requireConfigFile: false,
-        babelOptions: {
-          presets: ['@babel/preset-react', '@babel/preset-flow']
-        }
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        ecmaFeatures: {jsx: true},
       },
       globals: {
         // Browser
@@ -21,6 +40,10 @@ module.exports = [
         document: 'readonly',
         console: 'readonly',
         HTMLElement: 'readonly',
+        HTMLDivElement: 'readonly',
+        HTMLSpanElement: 'readonly',
+        Element: 'readonly',
+        DOMRect: 'readonly',
         // Node
         require: 'readonly',
         module: 'readonly',
@@ -36,16 +59,12 @@ module.exports = [
         beforeEach: 'readonly',
         afterEach: 'readonly',
         it: 'readonly',
-        // Flow
-        ReactElement: 'readonly',
-        ReactClass: 'readonly',
-        SyntheticEvent: 'readonly',
-        ClientRect: 'readonly'
-      }
+      },
     },
     plugins: {
+      '@typescript-eslint': tsPlugin,
       react: reactPlugin,
-      jest: jestPlugin
+      jest: jestPlugin,
     },
     rules: {
       ...jestPlugin.configs.recommended.rules,
@@ -56,12 +75,14 @@ module.exports = [
       'comma-dangle': 'off',
       'dot-notation': 'off',
       'no-console': 'off',
-      'no-use-before-define': ['warn', 'nofunc'],
+      'no-use-before-define': 'off',
       'no-underscore-dangle': 'off',
       'no-unused-vars': 'off',
       'new-cap': 'off',
       'react/jsx-uses-vars': 'warn',
-      'semi': ['warn', 'always']
-    }
-  }
+      'semi': ['warn', 'always'],
+      '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+    },
+  },
 ];
