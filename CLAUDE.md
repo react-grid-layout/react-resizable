@@ -63,9 +63,9 @@ This is a React component library providing resizable functionality via two main
 - `transformScale` prop adjusts deltas when parent has CSS transform scaling
 - **Delta base is `lastSize`, not `props.width/height`** (see PR #255). Between consecutive `onResize` calls, the parent may not have re-rendered yet, so `this.props.width` is stale. The component accumulates from `lastSize` to avoid drift. Consequence: `dimensionsChanged` must also be compared against the base (`baseWidth`/`baseHeight`), not props, otherwise zero-delta calls fire spurious callbacks.
 
-## Known Issues
+## Dependency Notes
 
-- **ESLint 10 + `@babel/eslint-parser` 7.28.x are incompatible**: the parser calls `scopeManager.addGlobals` which was removed in ESLint 10 (throws `TypeError: scopeManager.addGlobals is not a function`). ESLint 10 also requires `@eslint/js` to be installed explicitly. If `yarn lint` fails this way, either pin `eslint` back to `^9.x` or wait for a parser release that supports ESLint 10. `yarn test` is unaffected.
+- **ESLint is pinned to `^9.x`**. ESLint 10 removed `scopeManager.addGlobals`, which `@babel/eslint-parser` 7.x still calls (`TypeError: scopeManager.addGlobals is not a function`). The parser fix lives in v8 RCs, but those require Babel core v8 (also pre-release). Stay on ESLint 9 until both stabilize together.
 
 ### Build Output
 
