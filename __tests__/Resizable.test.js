@@ -267,8 +267,8 @@ describe('render Resizable', () => {
         mockEvent,
         expect.objectContaining({
           size: {
-            height: 40, // Height decreased as deltaY increases - no further top position change since last
-            width: 25, // Width decreased 25 - 5 from deltaX and 20 from changing position
+            height: 40, // 50 (previous lastSize) - 10 from deltaY
+            width: 20, // 45 (previous lastSize) - 25 (5 from deltaX + 20 from position shift)
           },
         })
       );
@@ -287,8 +287,8 @@ describe('render Resizable', () => {
         mockEvent,
         expect.objectContaining({
           size: {
-            height: 60, // Changed since resizing from bottom doesn't cause position change
-            width: 50, // No change - movement has caused entire delta
+            height: 50, // 40 (lastSize) + 10 from deltaY ('s' has no position adjustment)
+            width: 20, // 20 (lastSize) + 0 (movement cancels the deltaX)
           },
         })
       );
@@ -301,8 +301,8 @@ describe('render Resizable', () => {
         mockEvent,
         expect.objectContaining({
           size: {
-            height: 50, // No change - movement has caused entire delta
-            width: 60, // Changed since resizing from right doesn't cause position change
+            height: 50, // 50 (lastSize) + 0 (movement cancels deltaY for 'n')
+            width: 30, // 20 (lastSize) + 10 from deltaX ('e' has no position adjustment)
           },
         })
       );
@@ -315,8 +315,8 @@ describe('render Resizable', () => {
         mockEvent,
         expect.objectContaining({
           size: {
-            height: 60, // Changed since resizing from right doesn't cause position change
-            width: 60, // Changed since resizing from right doesn't cause position change
+            height: 60, // 50 (lastSize) + 10 from deltaY
+            width: 40, // 30 (lastSize) + 10 from deltaX ('se' has no position adjustment)
           },
         })
       );
@@ -349,8 +349,8 @@ describe('render Resizable', () => {
         mockEvent,
         expect.objectContaining({
           size: {
-            height: 30, // Height decreased as deltaY increases - no further top position change since last
-            width: 20, // Width decreased 10 from deltaX and 20 from changing position
+            height: 20, // 30 (lastSize) - 20 (deltaY=-10 / scale=0.5), clamped by minConstraints=20
+            width: 20, // 40 (lastSize) - 50, clamped by minConstraints=20
           },
         })
       );
@@ -482,23 +482,23 @@ describe('render Resizable', () => {
 
         // Continue dragging - element moves further left
         // position adjustment: -25 - (-15) = -10, deltaX becomes -10 + (-10) = -20
-        // reversed for 'w' = +20, width = 50 + 20 = 70
+        // reversed for 'w' = +20. Base is lastSize.width=80 (accumulated), so width = 80 + 20 = 100.
         testMockClientRect.left = -25;
         dragHandler(mockEvent, { node: testNode, deltaX: -10, deltaY: 0 });
         expect(onResize).toHaveBeenLastCalledWith(
           mockEvent,
           expect.objectContaining({
-            size: { width: 70, height: 50 },
+            size: { width: 100, height: 50 },
           })
         );
 
-        // onResizeStop with stale props - should use stored lastSize (70x50 from last onResize)
+        // onResizeStop with stale props - should use stored lastSize (100x50 from last onResize)
         const stopHandler = resizableRef.current.resizeHandler('onResizeStop', 'w');
         stopHandler(mockEvent, { node: testNode, deltaX: 0, deltaY: 0 });
         expect(onResizeStop).toHaveBeenCalledWith(
           mockEvent,
           expect.objectContaining({
-            size: { width: 70, height: 50 },
+            size: { width: 100, height: 50 },
           })
         );
       });
