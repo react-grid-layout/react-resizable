@@ -16,9 +16,9 @@ module.exports = {
   coveragePathIgnorePatterns: [
     '<rootDir>/build/',
     '<rootDir>/dist/',
-    '<rootDir>/flow-typed/',
   ],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   collectCoverageFrom: [
-    'lib/*.{js,jsx}',
+    'lib/*.{ts,tsx}',
   ]
 };

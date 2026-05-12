@@ -1,17 +1,17 @@
-// @flow
 import * as React from 'react';
-import type {Node as ReactNode, Element as ReactElement} from 'react';
 import PropTypes from 'prop-types';
 
 import Resizable from './Resizable';
-import {resizableProps} from "./propTypes";
-import type {ResizeCallbackData, ResizableBoxState} from './propTypes';
+import {resizableProps} from './propTypes';
+import type {Props as ResizableProps, ResizeCallbackData, ResizableBoxState} from './propTypes';
 
-// ElementConfig gives us an object type where all items present in `defaultProps` are made optional.
-// <ResizableBox> does not have defaultProps, so we can use this type to tell Flow that we don't
-// care about that and will handle it in <Resizable> instead.
-// A <ResizableBox> can also have a `style` property.
-type ResizableBoxProps = {|...React.ElementConfig<typeof Resizable>, style?: Object, children?: ReactElement<any>|};
+// <ResizableBox> does not have defaultProps, so we make all of <Resizable>'s defaults optional here
+// and add an optional `style` property.
+type ResizableBoxProps = Omit<ResizableProps, 'children'> & {
+  style?: React.CSSProperties;
+  children?: React.ReactElement<any>;
+  className?: string | null;
+};
 
 export default class ResizableBox extends React.Component<ResizableBoxProps, ResizableBoxState> {
 
@@ -28,7 +28,10 @@ export default class ResizableBox extends React.Component<ResizableBoxProps, Res
     propsHeight: this.props.height,
   };
 
-  static getDerivedStateFromProps(props: ResizableBoxProps, state: ResizableBoxState): ?ResizableBoxState {
+  static getDerivedStateFromProps(
+    props: ResizableBoxProps,
+    state: ResizableBoxState,
+  ): ResizableBoxState | null {
     // If parent changes height/width, set that in our state.
     if (state.propsWidth !== props.width || state.propsHeight !== props.height) {
       return {
@@ -41,7 +44,7 @@ export default class ResizableBox extends React.Component<ResizableBoxProps, Res
     return null;
   }
 
-  onResize: (e: SyntheticEvent<>, data: ResizeCallbackData) => void = (e, data) => {
+  onResize = (e: React.SyntheticEvent, data: ResizeCallbackData): void => {
     const {size} = data;
     if (this.props.onResize) {
       e.persist?.();
@@ -51,7 +54,7 @@ export default class ResizableBox extends React.Component<ResizableBoxProps, Res
     }
   };
 
-  render(): ReactNode {
+  render(): React.ReactNode {
     // Basic wrapper around a Resizable instance.
     // If you use Resizable directly, you are responsible for updating the child component
     // with a new width and height.
@@ -91,7 +94,10 @@ export default class ResizableBox extends React.Component<ResizableBoxProps, Res
         transformScale={transformScale}
         width={this.state.width}
       >
-        <div {...props} style={{...style, width: this.state.width + 'px', height: this.state.height + 'px'}} />
+        <div
+          {...(props as React.HTMLAttributes<HTMLDivElement>)}
+          style={{...style, width: this.state.width + 'px', height: this.state.height + 'px'}}
+        />
       </Resizable>
     );
   }

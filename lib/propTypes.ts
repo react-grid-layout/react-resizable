@@ -1,59 +1,64 @@
-// @flow
-/* global Element */
 import PropTypes from 'prop-types';
-import {DraggableCore} from "react-draggable";
-import type {Element as ReactElement, ElementConfig} from 'react';
+import type * as React from 'react';
+import type {DraggableCore} from 'react-draggable';
 
-export type ReactRef<T: HTMLElement> = {
-  current: T | null
+export type ReactRef<T extends HTMLElement> = {
+  current: T | null;
 };
 
 export type Axis = 'both' | 'x' | 'y' | 'none';
 export type ResizeHandleAxis = 's' | 'w' | 'e' | 'n' | 'sw' | 'nw' | 'se' | 'ne';
-export type ResizableState = void;
+export type ResizableState = {};
 export type ResizableBoxState = {
-  width: number, height: number,
-  propsWidth: number, propsHeight: number
+  width: number;
+  height: number;
+  propsWidth: number;
+  propsHeight: number;
 };
 export type DragCallbackData = {
-  node: HTMLElement,
-  x: number, y: number,
-  deltaX: number, deltaY: number,
-  lastX: number, lastY: number
+  node: HTMLElement;
+  x: number;
+  y: number;
+  deltaX: number;
+  deltaY: number;
+  lastX: number;
+  lastY: number;
 };
 export type ResizeCallbackData = {
-  node: HTMLElement,
-  size: {width: number, height: number},
-  handle: ResizeHandleAxis
+  node: HTMLElement;
+  size: {width: number; height: number};
+  handle: ResizeHandleAxis;
 };
 
 // <Resizable>
 export type DefaultProps = {
-  axis: Axis,
-  handleSize: [number, number],
-  lockAspectRatio: boolean,
-  minConstraints: [number, number],
-  maxConstraints: [number, number],
-  resizeHandles: ResizeHandleAxis[],
-  transformScale: number,
+  axis: Axis;
+  handleSize: [number, number];
+  lockAspectRatio: boolean;
+  minConstraints: [number, number];
+  maxConstraints: [number, number];
+  resizeHandles: ResizeHandleAxis[];
+  transformScale: number;
 };
 
-export type Props = {
-  ...DefaultProps,
-  children: ReactElement<any>,
-  className?: ?string,
-  draggableOpts?: ?ElementConfig<typeof DraggableCore>,
-  height: number,
-  handle?: ReactElement<any> | (resizeHandleAxis: ResizeHandleAxis, ref: ReactRef<HTMLElement>) => ReactElement<any>,
-  onResizeStop?: ?(e: SyntheticEvent<>, data: ResizeCallbackData) => any,
-  onResizeStart?: ?(e: SyntheticEvent<>, data: ResizeCallbackData) => any,
-  onResize?: ?(e: SyntheticEvent<>, data: ResizeCallbackData) => any,
-  width: number,
+export type ResizeHandleFn = (
+  resizeHandleAxis: ResizeHandleAxis,
+  ref: React.RefObject<HTMLElement>,
+) => React.ReactElement<any>;
+
+export type Props = DefaultProps & {
+  children: React.ReactElement<any>;
+  className?: string | null;
+  draggableOpts?: Partial<React.ComponentProps<typeof DraggableCore>> | null;
+  height: number;
+  handle?: React.ReactElement<any> | ResizeHandleFn;
+  onResizeStop?: ((e: React.SyntheticEvent, data: ResizeCallbackData) => any) | null;
+  onResizeStart?: ((e: React.SyntheticEvent, data: ResizeCallbackData) => any) | null;
+  onResize?: ((e: React.SyntheticEvent, data: ResizeCallbackData) => any) | null;
+  width: number;
 };
 
-
-
-export const resizableProps: Object = {
+export const resizableProps: {[key: string]: any} = {
   /*
   * Restricts resizing to a particular axis (default: 'both')
   * 'both' - allows resizing by width or height
@@ -90,20 +95,20 @@ export const resizableProps: Object = {
   /*
   * Initial height
   * */
-  height: (...args) => {
+  height: (...args: any[]) => {
     const [props] = args;
     // Required if resizing height or both
     if (props.axis === 'both' || props.axis === 'y') {
-      return PropTypes.number.isRequired(...args);
+      return (PropTypes.number.isRequired as any)(...args);
     }
-    return PropTypes.number(...args);
+    return (PropTypes.number as any)(...args);
   },
   /*
   * Customize cursor resize handle
   * */
   handle: PropTypes.oneOfType([
     PropTypes.node,
-    PropTypes.func
+    PropTypes.func,
   ]),
   /*
   * If you change this, be sure to update your css
@@ -150,12 +155,12 @@ export const resizableProps: Object = {
   /*
    * Initial width
    */
-  width: (...args) => {
+  width: (...args: any[]) => {
     const [props] = args;
     // Required if resizing width or both
     if (props.axis === 'both' || props.axis === 'x') {
-      return PropTypes.number.isRequired(...args);
+      return (PropTypes.number.isRequired as any)(...args);
     }
-    return PropTypes.number(...args);
+    return (PropTypes.number as any)(...args);
   },
 };

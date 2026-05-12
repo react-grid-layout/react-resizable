@@ -11,11 +11,12 @@ A simple widget that can be resized via one or more handles.
 You can either use the `<Resizable>` element directly, or use the much simpler `<ResizableBox>` element.
 
 See the example and associated code in [ExampleLayout](https://github.com/react-grid-layout/react-resizable/blob/master/examples/ExampleLayout.js) and
-[ResizableBox](https://github.com/react-grid-layout/react-resizable/blob/master/lib/ResizableBox.js) for more details.
+[ResizableBox](https://github.com/react-grid-layout/react-resizable/blob/master/lib/ResizableBox.tsx) for more details.
 
 ## Table of Contents
 
 - [Installation](#installation)
+- [TypeScript](#typescript)
 - [Compatibility](#compatibility)
 - [Usage](#usage)
   - [Resizable](#resizable)
@@ -47,20 +48,59 @@ Or import it in your CSS:
 
 If you're using a bundler that doesn't support CSS imports, you can find the styles at `node_modules/react-resizable/css/styles.css` and include them manually.
 
+## TypeScript
+
+As of `4.0.0`, the library is authored in TypeScript and ships bundled type
+declarations in `build/*.d.ts`. You **do not** need to install
+`@types/react-resizable`; if you previously installed it, remove it so the
+bundled types take precedence:
+
+```bash
+npm uninstall @types/react-resizable
+# or
+yarn remove @types/react-resizable
+```
+
+Public types are re-exported from the package root:
+
+```ts
+import {
+  Resizable,
+  ResizableBox,
+  // types
+  type ResizeCallbackData,
+  type ResizeHandleAxis,
+  type Axis,
+  type Props as ResizableProps,
+} from 'react-resizable';
+```
+
+### Flow
+
+Flow is no longer supported as of `4.0.0`. Earlier versions shipped
+`*.js.flow` sidecar files generated from the Flow-annotated source; those
+have been removed.
+
+If you still need Flow types, you can vendor the last Flow-annotated source
+locally from the [`3.2.0` tag](https://github.com/react-grid-layout/react-resizable/tree/db2e37eda85fb21b1864e36b01c4922452f28418/lib).
+They will not be updated to reflect changes landing after `4.0.0`. The
+official recommendation is to migrate to TypeScript.
+
 ## Compatibility
 
-| Version | React Version |
-|---------|---------------|
-| [3.x](https://github.com/react-grid-layout/react-resizable/blob/master/CHANGELOG.md#300-may-10-2021) | `>= 16.3` |
-| 2.x | Skipped |
-| [1.x](https://github.com/react-grid-layout/react-resizable/blob/master/CHANGELOG.md#1111-mar-5-2021) | `14 - 17` |
+| Version | React Version | Types          |
+|---------|---------------|----------------|
+| [4.x](https://github.com/react-grid-layout/react-resizable/blob/master/CHANGELOG.md#400-may-12-2026) | `>= 16.3` | TypeScript (bundled) |
+| [3.x](https://github.com/react-grid-layout/react-resizable/blob/master/CHANGELOG.md#300-may-10-2021) | `>= 16.3` | Flow (`*.js.flow`) |
+| 2.x | Skipped | — |
+| [1.x](https://github.com/react-grid-layout/react-resizable/blob/master/CHANGELOG.md#1111-mar-5-2021) | `14 - 17` | Flow |
 
 ## Usage
 
 This package has two major exports:
 
-* [`<Resizable>`](https://github.com/react-grid-layout/react-resizable/blob/master/lib/Resizable.js): A raw component that does not have state. Use as a building block for larger components, by listening to its callbacks and setting its props.
-* [`<ResizableBox>`](https://github.com/react-grid-layout/react-resizable/blob/master/lib/ResizableBox.js): A simple `<div {...props} />` element that manages basic state. Convenient for simple use-cases.
+* [`<Resizable>`](https://github.com/react-grid-layout/react-resizable/blob/master/lib/Resizable.tsx): A raw component that does not have state. Use as a building block for larger components, by listening to its callbacks and setting its props.
+* [`<ResizableBox>`](https://github.com/react-grid-layout/react-resizable/blob/master/lib/ResizableBox.tsx): A simple `<div {...props} />` element that manages basic state. Convenient for simple use-cases.
 
 ### `<Resizable>`
 
@@ -124,43 +164,46 @@ class Example extends React.Component {
 
 These props apply to both `<Resizable>` and `<ResizableBox>`. Unknown props that are not in the list below will be passed to the child component.
 
-```js
+```ts
 type ResizeCallbackData = {
-  node: HTMLElement,
-  size: {width: number, height: number},
-  handle: ResizeHandleAxis
+  node: HTMLElement;
+  size: {width: number; height: number};
+  handle: ResizeHandleAxis;
 };
 
 type ResizeHandleAxis = 's' | 'w' | 'e' | 'n' | 'sw' | 'nw' | 'se' | 'ne';
 
 type ResizableProps = {
-  children: React.Element<any>,
-  width: number,
-  height: number,
+  children: React.ReactElement<any>;
+  width: number;
+  height: number;
   // Either a ReactElement to be used as handle, or a function
   // returning an element that is fed the handle's location as its first argument.
-  handle: ReactElement<any> | (resizeHandle: ResizeHandleAxis, ref: ReactRef<HTMLElement>) => ReactElement<any>,
-  // If you change this, be sure to update your css
-  handleSize: [number, number] = [10, 10],
-  lockAspectRatio: boolean = false,
-  axis: 'both' | 'x' | 'y' | 'none' = 'both',
-  minConstraints: [number, number] = [10, 10],
-  maxConstraints: [number, number] = [Infinity, Infinity],
-  onResizeStop?: ?(e: SyntheticEvent, data: ResizeCallbackData) => any,
-  onResizeStart?: ?(e: SyntheticEvent, data: ResizeCallbackData) => any,
-  onResize?: ?(e: SyntheticEvent, data: ResizeCallbackData) => any,
-  draggableOpts?: ?Object,
-  resizeHandles?: ?Array<ResizeHandleAxis> = ['se'],
+  handle?:
+    | React.ReactElement<any>
+    | ((resizeHandle: ResizeHandleAxis, ref: React.RefObject<HTMLElement>) => React.ReactElement<any>);
+  // If you change this, be sure to update your css. Default: [20, 20].
+  handleSize?: [number, number];
+  lockAspectRatio?: boolean;                       // default: false
+  axis?: 'both' | 'x' | 'y' | 'none';              // default: 'both'
+  minConstraints?: [number, number];               // default: [20, 20]
+  maxConstraints?: [number, number];               // default: [Infinity, Infinity]
+  onResizeStop?:  (e: React.SyntheticEvent, data: ResizeCallbackData) => any;
+  onResizeStart?: (e: React.SyntheticEvent, data: ResizeCallbackData) => any;
+  onResize?:      (e: React.SyntheticEvent, data: ResizeCallbackData) => any;
+  // Forwarded to react-draggable's <DraggableCore>.
+  draggableOpts?: Partial<React.ComponentProps<typeof import('react-draggable').DraggableCore>>;
+  resizeHandles?: ResizeHandleAxis[];              // default: ['se']
   // If `transform: scale(n)` is set on the parent, this should be set to `n`.
-  transformScale?: number = 1
+  transformScale?: number;                         // default: 1
 };
 ```
 
 The following props can also be used on `<ResizableBox>`:
 
-```js
+```ts
 {
-  style?: Object // styles the returned <div />
+  style?: React.CSSProperties; // styles the returned <div />
 }
 ```
 

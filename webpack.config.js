@@ -55,11 +55,11 @@ module.exports = {
   },
   module: {
     rules: [
-      {test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader', options: {cacheDirectory: true}},
+      {test: /\.(ts|tsx|js|jsx)$/, exclude: /node_modules/, loader: 'babel-loader', options: {cacheDirectory: true}},
     ]
   },
   resolve: {
-    extensions: [".js"]
+    extensions: [".tsx", ".ts", ".js"]
   },
   devServer: {
     static: path.join(__dirname, 'examples'),
