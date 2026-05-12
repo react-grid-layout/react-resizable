@@ -95,7 +95,7 @@ export const resizableProps: {[key: string]: any} = {
   /*
   * Initial height
   * */
-  height: (...args: [Record<string, any>, string, string, any, any, any]) => {
+  height: (...args: any[]) => {
     const [props] = args;
     // Required if resizing height or both
     if (props.axis === 'both' || props.axis === 'y') {
@@ -155,7 +155,7 @@ export const resizableProps: {[key: string]: any} = {
   /*
    * Initial width
    */
-  width: (...args: [Record<string, any>, string, string, any, any, any]) => {
+  width: (...args: any[]) => {
     const [props] = args;
     // Required if resizing width or both
     if (props.axis === 'both' || props.axis === 'x') {

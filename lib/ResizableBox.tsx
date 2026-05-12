@@ -47,7 +47,7 @@ export default class ResizableBox extends React.Component<ResizableBoxProps, Res
   onResize = (e: React.SyntheticEvent, data: ResizeCallbackData): void => {
     const {size} = data;
     if (this.props.onResize) {
-      (e as any).persist?.();
+      e.persist?.();
       this.setState(size, () => this.props.onResize && this.props.onResize(e, data));
     } else {
       this.setState(size);
@@ -79,19 +79,19 @@ export default class ResizableBox extends React.Component<ResizableBoxProps, Res
 
     return (
       <Resizable
-        axis={axis as any}
+        axis={axis}
         draggableOpts={draggableOpts}
         handle={handle}
-        handleSize={handleSize as any}
+        handleSize={handleSize}
         height={this.state.height}
-        lockAspectRatio={lockAspectRatio as any}
-        maxConstraints={maxConstraints as any}
-        minConstraints={minConstraints as any}
+        lockAspectRatio={lockAspectRatio}
+        maxConstraints={maxConstraints}
+        minConstraints={minConstraints}
         onResizeStart={onResizeStart}
         onResize={this.onResize}
         onResizeStop={onResizeStop}
-        resizeHandles={resizeHandles as any}
-        transformScale={transformScale as any}
+        resizeHandles={resizeHandles}
+        transformScale={transformScale}
         width={this.state.width}
       >
         <div
