@@ -13,15 +13,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: 24
+          cache: yarn
 
       - name: Install Node.js dependencies
-        run: yarn
+        run: yarn install --frozen-lockfile
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Type-check
+        run: yarn typecheck
 
       - name: Run tests
         run: yarn test
+
+      - name: Build (verify .d.ts emission)
+        run: yarn build
+
+      - name: Smoke-test built artifact
+        run: node ./__tests__/integration/smoke.cjs

@@ -1,5 +1,60 @@
 # Changelog
 
+### 4.0.0 (May 12, 2026)
+
+This release converts the library from Flow to TypeScript and ships bundled
+type declarations. The runtime API and on-screen behavior are unchanged. The
+major version bump is to flag two things consumers may need to act on.
+
+**Breaking — types delivery**
+
+- The library is now authored in TypeScript. Bundled type declarations ship
+  in `build/*.d.ts` and are resolved via the `"types"` field in
+  `package.json`. No `@types/react-resizable` install is needed; if you have
+  one installed, remove it — TypeScript prefers the bundled types and the
+  DefinitelyTyped package is no longer required.
+- The `*.js.flow` shims previously emitted by `build.sh` have been removed.
+  Flow is no longer supported.
+
+  Flow users who still need types can copy the last Flow-annotated source
+  from the `3.2.0` tag:
+  [`react-grid-layout/react-resizable@db2e37e/lib`](https://github.com/react-grid-layout/react-resizable/tree/db2e37eda85fb21b1864e36b01c4922452f28418/lib)
+  ([`lib/Resizable.js`](https://github.com/react-grid-layout/react-resizable/blob/db2e37eda85fb21b1864e36b01c4922452f28418/lib/Resizable.js),
+  [`lib/ResizableBox.js`](https://github.com/react-grid-layout/react-resizable/blob/db2e37eda85fb21b1864e36b01c4922452f28418/lib/ResizableBox.js),
+  [`lib/propTypes.js`](https://github.com/react-grid-layout/react-resizable/blob/db2e37eda85fb21b1864e36b01c4922452f28418/lib/propTypes.js),
+  [`lib/utils.js`](https://github.com/react-grid-layout/react-resizable/blob/db2e37eda85fb21b1864e36b01c4922452f28418/lib/utils.js)).
+  These files were the input to the published `.js.flow` artifacts in
+  `react-resizable@3.2.0` on npm; you can vendor them as a local Flow shim.
+  They will not be updated, and any fix landing on `master` after `4.0.0`
+  will not be backported into a Flow form.
+
+**Internal**
+
+- ✏ Chore: Migrate `lib/` and `__tests__/` from Flow to TypeScript
+  (`*.ts`/`*.tsx`). Public runtime API unchanged.
+- ✏ Chore: Replace `@babel/preset-flow` with `@babel/preset-typescript`;
+  drop `flow-bin`, `flow-typed/`, `.flowconfig`.
+- ✏ Chore: Add `tsconfig.json` (typecheck), `tsconfig.build.json`
+  (declaration emit), `tsconfig.test.json`.
+- ✏ Chore: `build.sh` now runs `babel` for the JS transform and
+  `tsc --emitDeclarationOnly` for the `.d.ts` files.
+- ✏ Chore: ESLint now uses `@typescript-eslint/parser`.
+- ✏ Chore: CI now runs `yarn lint`, `yarn typecheck`, `yarn test`, and a
+  build-artifact smoke test on every push and PR.
+- ✏ Chore: Add an integration smoke test that imports the built CJS entry
+  point and asserts the public surface (`Resizable`, `ResizableBox`).
+
+### 3.2.0 (May 11, 2026)
+
+- 🐛 Bugfix: Prevent resize drift caused by stale props between renders.
+  The component now accumulates deltas from `lastSize` rather than
+  `this.props.width/height`, and `dimensionsChanged` is compared against
+  that same base so zero-delta callbacks are still suppressed correctly.
+  [#255](https://github.com/react-grid-layout/react-resizable/pull/255)
+- ✏ Chore: Pin ESLint to `^9.x`. ESLint 10 removes `scopeManager.addGlobals`,
+  which `@babel/eslint-parser` 7.x still calls; the parser fix is only
+  available in unreleased v8 RCs that require an unreleased Babel core v8.
+
 ### 3.1.3 (Jan 1, 2026)
 
 - ✏ Chore: Add `files` whitelist to package.json to reduce package size and exclude unnecessary files.
