@@ -390,12 +390,13 @@ describe('render Resizable', () => {
           expect(props.onResize).not.toHaveBeenCalled();
           const seHandler = resizableRef.current.resizeHandler('onResize', 'se');
           seHandler(mockEvent, { node, deltaX: w, deltaY: h });
+          const expected = 50 + (w + h) / 2;
           expect(props.onResize).toHaveBeenLastCalledWith(
             mockEvent,
             expect.objectContaining({
               size: {
-                height: 50 + Math.max(w, h),
-                width: 50 + Math.max(w, h),
+                height: expected,
+                width: expected,
               },
             })
           );
