@@ -41,18 +41,12 @@ export default class Resizable extends React.Component<Props, {}> {
     // If constraining to min and max, we need to also fit width and height to aspect ratio.
     if (lockAspectRatio) {
       const ratio = this.props.width / this.props.height;
-      const deltaW = width - this.props.width;
-      const deltaH = height - this.props.height;
 
-      // Find which coordinate was greater and should push the other toward it.
-      // E.g.:
-      // ratio = 1, deltaW = 10, deltaH = 5, deltaH should become 10.
-      // ratio = 2, deltaW = 10, deltaH = 6, deltaW should become 12.
-      if (Math.abs(deltaW) > Math.abs(deltaH * ratio)) {
-        height = width / ratio;
-      } else {
-        width = height * ratio;
-      }
+      // Project (width, height) onto the line w = ratio * h.
+      // Distributes tracking error across both axes instead of forcing one to overshoot.
+      // t = (w * ratio + h) / (ratio^2 + 1),  new_w = t * ratio,  new_h = t
+      height = (width * ratio + height) / (ratio * ratio + 1);
+      width = height * ratio;
     }
 
     const [oldW, oldH] = [width, height];

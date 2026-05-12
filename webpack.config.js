@@ -28,7 +28,7 @@ module.exports = {
   bail: isProduction,
   context: __dirname,
   entry: {
-    test: "./examples/example.js",
+    test: "./examples/example.tsx",
   },
   output: {
     path: path.join(__dirname, "examples"),
