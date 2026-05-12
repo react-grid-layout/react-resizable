@@ -1,9 +1,12 @@
 import React from 'react';
 import Resizable from '../lib/Resizable';
 import ResizableBox from '../lib/ResizableBox';
+import type {ResizeCallbackData} from '../lib/propTypes';
 import 'style-loader!css-loader!../css/styles.css';
 
-/* global __VERSION__, __GIT_TAG__, __GIT_COMMIT__ */
+declare const __VERSION__: string;
+declare const __GIT_TAG__: string;
+declare const __GIT_COMMIT__: string;
 
 // Update the version badge in the header
 function updateVersionBadge() {
@@ -23,7 +26,7 @@ if (typeof document !== 'undefined') {
   }
 }
 
-const CustomResizeHandle = React.forwardRef((props, ref) => {
+const CustomResizeHandle = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & {handleAxis?: string}>((props, ref) => {
   const {handleAxis, ...restProps} = props;
   return (
     <div
@@ -34,8 +37,17 @@ const CustomResizeHandle = React.forwardRef((props, ref) => {
   );
 });
 
-export default class ExampleLayout extends React.Component<{}, {width: number, height: number}> {
-  state = {
+type State = {
+  width: number;
+  height: number;
+  absoluteWidth: number;
+  absoluteHeight: number;
+  absoluteLeft: number;
+  absoluteTop: number;
+};
+
+export default class ExampleLayout extends React.Component<{}, State> {
+  state: State = {
     width: 200,
     height: 200,
     absoluteWidth: 200,
@@ -49,12 +61,12 @@ export default class ExampleLayout extends React.Component<{}, {width: number, h
   };
 
   // On top layout
-  onFirstBoxResize = (event, {element, size, handle}) => {
+  onFirstBoxResize = (_event: React.SyntheticEvent, {size}: ResizeCallbackData) => {
     this.setState({width: size.width, height: size.height});
   };
 
   // On bottom layout. Used to resize the center element around its flex parent.
-  onResizeAbsolute = (event, {element, size, handle}) => {
+  onResizeAbsolute = (_event: React.SyntheticEvent, {size, handle}: ResizeCallbackData) => {
     this.setState((state) => {
       let newLeft = state.absoluteLeft;
       let newTop = state.absoluteTop;
