@@ -21,4 +21,5 @@ yarn-error.log*
 # ide
 .vscode
 .idea
+.serena
 

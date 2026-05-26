@@ -1,5 +1,15 @@
 # Changelog
 
+### 4.0.1 (May 26, 2026)
+
+- Locked aspect ratio drags now track the cursor via orthogonal projection
+  onto the `w = ratio·h` line instead of snapping to whichever axis had the
+  larger delta. Closes [#222](https://github.com/react-grid-layout/react-resizable/issues/222).
+- Convert the example app to TypeScript and fix the broken examples build
+  (webpack entry pointed at `examples/example.js` after the 4.0.0 TS
+  conversion). Affects the GitHub Pages demo / `yarn dev` only; the
+  published package was unaffected. ([#261](https://github.com/react-grid-layout/react-resizable/pull/261))
+
 ### 4.0.0 (May 12, 2026)
 
 This release converts the library from Flow to TypeScript and ships bundled
