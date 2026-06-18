@@ -46,7 +46,7 @@ export type ResizeHandleFn = (
   ref: React.RefObject<HTMLElement>,
 ) => React.ReactElement<any>;
 
-export type Props = DefaultProps & {
+export type Props = Partial<DefaultProps> & {
   children: React.ReactElement<any>;
   className?: string | null;
   draggableOpts?: Partial<React.ComponentProps<typeof DraggableCore>> | null;

@@ -263,6 +263,18 @@ describe('render ResizableBox', () => {
     });
   });
 
+  test('renders with only width and height (all DefaultProps optional)', () => {
+    const {container} = render(
+      <ResizableBox width={200} height={100}>
+        <span />
+      </ResizableBox>
+    );
+    const divElement = container.querySelector('div');
+    expect(divElement).toHaveStyle({ width: '200px', height: '100px' });
+    // Default 'se' handle should be present
+    expect(container.querySelector('.react-resizable-handle-se')).toBeInTheDocument();
+  });
+
   describe('DOM updates after resize', () => {
     test('DOM width and height update after resize', async () => {
       const boxRef = React.createRef();
