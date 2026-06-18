@@ -1,5 +1,13 @@
 # Changelog
 
+### 4.0.2 (Jun 18, 2026)
+
+- Fix (types): make `<ResizableBox>`'s default-backed props optional in the
+  TypeScript definitions. `Props` now extends `Partial<DefaultProps>`, so
+  consumers no longer have to pass props that already have defaults. Types
+  only; runtime behavior is unchanged.
+  ([#264](https://github.com/react-grid-layout/react-resizable/pull/264))
+
 ### 4.0.1 (May 26, 2026)
 
 - Locked aspect ratio drags now track the cursor via orthogonal projection
