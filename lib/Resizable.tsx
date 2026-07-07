@@ -149,9 +149,10 @@ export default class Resizable extends React.Component<Props, {}> {
         ({width, height} = this.lastSize);
       }
 
-      // Compare against the starting size to detect actual change.
-      const refWidth = this.startSize?.width ?? this.props.width;
-      const refHeight = this.startSize?.height ?? this.props.height;
+      // Compare against the previous callback size to suppress no-op onResize events
+      // (e.g., when dragging against min/max constraints and the clamped size doesn't change).
+      const refWidth = this.lastSize?.width ?? this.props.width;
+      const refHeight = this.lastSize?.height ?? this.props.height;
       const dimensionsChanged = width !== refWidth || height !== refHeight;
 
       // Store the size for use in onResizeStop. We do this after the onResizeStop check
