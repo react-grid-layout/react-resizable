@@ -18,7 +18,7 @@
     "build-example": "webpack",
     "dev": "webpack serve --open",
     "prepublishOnly": "npm run build",
-    "preversion": "npm run lint && npm run typecheck",
+    "preversion": "npm run lint && npm run typecheck && npm test",
     "version": "git add CHANGELOG.md",
     "postversion": "git push && git push --tags"
   },
