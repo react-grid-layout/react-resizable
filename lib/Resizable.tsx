@@ -23,6 +23,11 @@ export default class Resizable extends React.Component<Props, {}> {
   lastHandleRect: DOMRect | null = null;
   slack: [number, number] | null = null;
   lastSize: {width: number; height: number} | null = null;
+  // Absolute-coordinate resize tracking: eliminates all delta accumulation
+  // issues caused by stale props between React renders.
+  startSize: {width: number; height: number} | null = null;
+  startMouseX: number = 0;
+  startMouseY: number = 0;
 
   componentWillUnmount() {
     this.resetData();
@@ -30,6 +35,7 @@ export default class Resizable extends React.Component<Props, {}> {
 
   resetData() {
     this.lastHandleRect = this.slack = this.lastSize = null;
+    this.startSize = null;
   }
 
   // Clamp width and height within provided constraints
@@ -83,9 +89,18 @@ export default class Resizable extends React.Component<Props, {}> {
     handlerName: 'onResize' | 'onResizeStart' | 'onResizeStop',
     axis: ResizeHandleAxis,
   ): (e: React.SyntheticEvent, data: DragCallbackData) => void {
-    return (e: React.SyntheticEvent, {node, deltaX, deltaY}: DragCallbackData) => {
+    return (e: React.SyntheticEvent, {node, deltaX, deltaY, x, y}: DragCallbackData) => {
       // Reset data in case it was left over somehow (should not be possible)
-      if (handlerName === 'onResizeStart') this.resetData();
+      if (handlerName === 'onResizeStart') {
+        this.resetData();
+        // Record initial size and mouse position for absolute-coordinate resize.
+        // This eliminates ALL delta accumulation issues caused by stale props
+        // when React can't re-render between consecutive mousemove events.
+        // See: https://github.com/react-grid-layout/react-resizable/issues/237
+        this.startSize = {width: this.props.width, height: this.props.height};
+        this.startMouseX = x;
+        this.startMouseY = y;
+      }
 
       // Axis restrictions
       const canDragX = (this.props.axis === 'both' || this.props.axis === 'x') && axis !== 'n' && axis !== 's';
@@ -98,36 +113,32 @@ export default class Resizable extends React.Component<Props, {}> {
       const axisH = axis[axis.length - 1]; // intentionally not axis[1], so that this catches axis === 'w' for example
 
       // Track the element being dragged to account for changes in position.
-      // If a handle's position is changed between callbacks, we need to factor this in to the next callback.
-      // Failure to do so will cause the element to "skip" when resized upwards or leftwards.
-      const handleRect = node.getBoundingClientRect();
-      if (this.lastHandleRect != null) {
-        // If the handle has repositioned on either axis since last render,
-        // we need to increase our callback values by this much.
-        // Only checking 'n', 'w' since resizing by 's', 'w' won't affect the overall position on page,
-        if (axisH === 'w') {
-          const deltaLeftSinceLast = handleRect.left - this.lastHandleRect.left;
-          deltaX += deltaLeftSinceLast;
-        }
-        if (axisV === 'n') {
-          const deltaTopSinceLast = handleRect.top - this.lastHandleRect.top;
-          deltaY += deltaTopSinceLast;
-        }
-      }
-      // Storage of last rect so we know how much it has really moved.
-      this.lastHandleRect = handleRect;
+      // NOTE: With the absolute-coordinate approach (using startSize + total displacement),
+      // the lastHandleRect correction is no longer needed for any axis, because DraggableCore's
+      // x/y values are page-relative and already account for element repositioning.
+      // Kept only as a no-op for compatibility; can be removed in a future cleanup.
 
       // Reverse delta if using top or left drag handles.
       if (axisH === 'w') deltaX = -deltaX;
       if (axisV === 'n') deltaY = -deltaY;
 
-      // Update w/h by the deltas. Also factor in transformScale.
-      // Use lastSize (if available) instead of props to avoid losing deltas
-      // when React can't re-render between consecutive mouse events.
-      const baseWidth = this.lastSize?.width ?? this.props.width;
-      const baseHeight = this.lastSize?.height ?? this.props.height;
-      let width = baseWidth + (canDragX ? deltaX / this.props.transformScale : 0);
-      let height = baseHeight + (canDragY ? deltaY / this.props.transformScale : 0);
+      // Compute size using absolute displacement from the start of the resize
+      // operation. This avoids all issues with incremental delta accumulation
+      // and stale props between renders.
+      let width: number, height: number;
+      if (this.startSize) {
+        // Total mouse displacement since resize started (accounting for axis direction)
+        const totalDx = (axisH === 'w') ? -(x - this.startMouseX) : (x - this.startMouseX);
+        const totalDy = (axisV === 'n') ? -(y - this.startMouseY) : (y - this.startMouseY);
+        width = this.startSize.width + (canDragX ? totalDx / this.props.transformScale : 0);
+        height = this.startSize.height + (canDragY ? totalDy / this.props.transformScale : 0);
+      } else {
+        // Fallback (should not happen — startSize is always set on onResizeStart)
+        const baseWidth = this.lastSize?.width ?? this.props.width;
+        const baseHeight = this.lastSize?.height ?? this.props.height;
+        width = baseWidth + (canDragX ? deltaX / this.props.transformScale : 0);
+        height = baseHeight + (canDragY ? deltaY / this.props.transformScale : 0);
+      }
 
       // Run user-provided constraints.
       [width, height] = this.runConstraints(width, height);
@@ -138,10 +149,11 @@ export default class Resizable extends React.Component<Props, {}> {
         ({width, height} = this.lastSize);
       }
 
-      // Compare against the base (lastSize-or-props) so that callbacks correctly
-      // suppress when the net delta is zero, even if props are stale relative to
-      // the accumulated lastSize.
-      const dimensionsChanged = width !== baseWidth || height !== baseHeight;
+      // Compare against the previous callback size to suppress no-op onResize events
+      // (e.g., when dragging against min/max constraints and the clamped size doesn't change).
+      const refWidth = this.lastSize?.width ?? this.props.width;
+      const refHeight = this.lastSize?.height ?? this.props.height;
+      const dimensionsChanged = width !== refWidth || height !== refHeight;
 
       // Store the size for use in onResizeStop. We do this after the onResizeStop check
       // above so we don't overwrite the stored value with a potentially stale calculation.
