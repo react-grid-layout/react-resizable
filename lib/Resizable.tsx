@@ -35,13 +35,12 @@ export default class Resizable extends React.Component<Props, {}> {
   // Clamp width and height within provided constraints
   runConstraints(width: number, height: number): [number, number] {
     const {minConstraints, maxConstraints, lockAspectRatio} = this.props;
+    const ratio = this.props.width / this.props.height;
     // short circuit
     if (!minConstraints && !maxConstraints && !lockAspectRatio) return [width, height];
 
     // If constraining to min and max, we need to also fit width and height to aspect ratio.
     if (lockAspectRatio) {
-      const ratio = this.props.width / this.props.height;
-
       // Project (width, height) onto the line w = ratio * h.
       // Distributes tracking error across both axes instead of forcing one to overshoot.
       // t = (w * ratio + h) / (ratio^2 + 1),  new_w = t * ratio,  new_h = t
@@ -58,13 +57,23 @@ export default class Resizable extends React.Component<Props, {}> {
     width += slackW;
     height += slackH;
 
-    if (minConstraints) {
-      width = Math.max(minConstraints[0], width);
-      height = Math.max(minConstraints[1], height);
-    }
-    if (maxConstraints) {
-      width = Math.min(maxConstraints[0], width);
-      height = Math.min(maxConstraints[1], height);
+    // Intersect both dimensions' bounds on the aspect-ratio line. Clamping
+    // each dimension independently would change the ratio at either bound.
+    const minWidth = minConstraints ? Math.max(minConstraints[0], minConstraints[1] * ratio) : -Infinity;
+    const maxWidth = maxConstraints ? Math.min(maxConstraints[0], maxConstraints[1] * ratio) : Infinity;
+    if (lockAspectRatio && ratio > 0 && Number.isFinite(ratio) && minWidth <= maxWidth) {
+      width = Math.max(minWidth, Math.min(maxWidth, width));
+      height = width / ratio;
+    } else {
+      // Preserve size-constraint precedence when no size can satisfy the ratio.
+      if (minConstraints) {
+        width = Math.max(minConstraints[0], width);
+        height = Math.max(minConstraints[1], height);
+      }
+      if (maxConstraints) {
+        width = Math.min(maxConstraints[0], width);
+        height = Math.min(maxConstraints[1], height);
+      }
     }
 
     // If the width or height changed, we must have introduced some slack. Record it for the next iteration.
