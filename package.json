@@ -11,9 +11,10 @@
   ],
   "scripts": {
     "lint": "eslint lib/ __tests__/ setupTests/",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && tsc --project tsconfig.golden.json",
     "test": "jest --coverage",
     "unit": "jest --watch --verbose",
+    "golden:update": "cross-env GOLDEN_UPDATE=1 jest __tests__/golden/scenarios --runInBand",
     "build": "bash build.sh",
     "build-example": "webpack",
     "dev": "webpack serve --open",

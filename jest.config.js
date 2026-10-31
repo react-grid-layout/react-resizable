@@ -2,6 +2,7 @@ const path = require('path');
 
 module.exports = {
   testEnvironment: 'jsdom',
+  testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)'],
   coverageThreshold: {
     global: {
       branches: 70, // TODO: > 80
