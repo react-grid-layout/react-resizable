@@ -8,6 +8,15 @@ const webpack = require('webpack');
 const repo = path.resolve(__dirname, '../../..');
 const output = fs.mkdtempSync(path.join(os.tmpdir(), 'react-resizable-browser-'));
 
+// In GitHub Actions, also emit a workflow error command so the first lines of
+// each failure show up as a check annotation, readable without the full log.
+function annotate(title, message) {
+  if (!process.env.GITHUB_ACTIONS) return;
+  const body = String(message).split('\n').slice(0, 40).join('\n')
+    .replace(/%/g, '%25').replace(/\r/g, '%0D').replace(/\n/g, '%0A');
+  process.stdout.write(`::error title=${title}::${body}\n`);
+}
+
 function bundle() {
   return new Promise((resolve, reject) => {
     const compiler = webpack({
@@ -92,6 +101,7 @@ async function main() {
         fs.writeFileSync(path.join(output, `${name}.actual.json`), JSON.stringify(actual, null, 2) + '\n');
         failures.push(name);
         process.stderr.write(`FAIL ${name}\n${error.stack}\n`);
+        annotate(`browser parity: ${name}`, error.message);
       }
       await page.close();
     }
@@ -103,6 +113,7 @@ async function main() {
 }
 
 main().catch(error => {
+  annotate('browser cross-check crashed', error.stack);
   process.stderr.write(`${error.stack}\nBrowser artifacts: ${output}\n`);
   process.exitCode = 1;
 });

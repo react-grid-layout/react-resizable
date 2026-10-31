@@ -20,7 +20,9 @@ export function createRecorder(axes: ResizeHandleAxis[], getContainer: () => HTM
     const rendered = handles();
     return {
       box: box ? {tag: box.tagName.toLowerCase(), className: box.className,
-        width: box.style.width, height: box.style.height,
+        // Every inline style property, not just the size: a refactor that drops
+        // a user's style must change the trace.
+        style: Array.from(box.style).sort().map(prop => [prop, box.style.getPropertyValue(prop)]),
         attrs: Array.from(box.attributes).filter(a => a.name !== 'style' && a.name !== 'class')
           .map(a => [a.name, a.value]).sort(),
         childOrder: Array.from(box.children).map(el => el.hasAttribute('data-content') ? 'content' : `handle:${axes[rendered.indexOf(el as HTMLElement)]}`)} : null,
