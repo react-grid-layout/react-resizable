@@ -32,7 +32,11 @@ The full drifting sequence remains pinned in the jsdom suite.
 
 Every input runs inside an async React `act` scope. The runner waits for the
 commit before recording the DOM, matching jsdom's per-event cadence. A controlled
-animation-frame queue gives selection cleanup its own final checkpoint.
+animation-frame queue drains, unrecorded, before each gesture, and the final
+gesture's selection cleanup gets its own recorded checkpoint. Without the
+between-gesture drain, the native selection left by one drag survives into the
+next mousedown, and Chromium starts a native drag (`dragstart`) instead of
+delivering `mousemove` and `mouseup`.
 
 The comparison includes ordered callbacks, exact sizes, event type and kind,
 handle identity, errors, input steps, and every recorded DOM field including

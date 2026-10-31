@@ -109,6 +109,9 @@ export async function runScenario(scenario: Scenario) {
       }
     };
     for (const axis of s.active ?? s.handles) {
+      // Real frames run between separate gestures: drain the previous gesture's
+      // scheduled cleanup, unrecorded, matching the browser runner's settle().
+      act(() => { for (const callback of frames.splice(0)) callback(0); });
       if (s.cadence === 'batched') {
         act(() => { gesture(axis); recorder.begin({type: 'flush'}); });
         recorder.end();
