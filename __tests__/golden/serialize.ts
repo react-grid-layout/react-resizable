@@ -1,11 +1,19 @@
-// JSON stays valid, but values JSON normally loses retain their identity.
+// JSON stays valid, but values JSON normally loses (undefined, NaN, +/-Infinity,
+// -0, array holes) keep their identity. Ordinary objects with a "$" key are
+// wrapped in {$escaped}, so none collides with a sentinel.
 export function stableValue(value: unknown): any {
   if (value === undefined) return {$undefined: true};
   if (typeof value === 'number' && !Number.isFinite(value)) return {$number: String(value)};
   if (Object.is(value, -0)) return {$number: '-0'};
-  if (Array.isArray(value)) return value.map(stableValue);
+  if (Array.isArray(value)) {
+    return Array.from(value, (entry, i) => (i in value ? stableValue(entry) : {$hole: true}));
+  }
   if (value && typeof value === 'object') {
-    return Object.fromEntries(Object.keys(value).sort().map(key => [key, stableValue(value[key])]));
+    const keys = Object.keys(value).sort();
+    const encoded = Object.fromEntries(keys.map(key => [key, stableValue(value[key])]));
+    // Sentinels are objects with a "$" key, so an ordinary object that has one is
+    // wrapped. That keeps undefined and {$undefined: true} distinct.
+    return keys.some(key => key.startsWith('$')) ? {$escaped: encoded} : encoded;
   }
   return value;
 }
