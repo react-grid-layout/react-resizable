@@ -4,9 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
+Yarn 4, pinned in `package.json` and run through Corepack: run `corepack enable` once, then `yarn install`. Use Node.js 24 (what CI runs). Node.js 25 and later no longer bundle Corepack; there, install it first with `npm install -g corepack`.
+
 ```bash
 # Install dependencies
-yarn
+yarn install
 
 # Run tests with coverage
 yarn test
@@ -14,13 +16,13 @@ yarn test
 # Run tests in watch mode
 yarn unit
 
-# Lint (ESLint + Flow)
+# Lint (ESLint)
 yarn lint
 
-# Type check only
-yarn flow
+# Type check only (tsc --noEmit)
+yarn typecheck
 
-# Build (transpile lib/ to build/)
+# Build (Babel transpile of lib/ to build/, plus .d.ts via tsc)
 yarn build
 
 # Run dev server with examples
@@ -32,7 +34,7 @@ yarn build-example
 
 Run a single test file:
 ```bash
-npx jest __tests__/Resizable.test.js
+npx jest __tests__/Resizable.test.tsx
 ```
 
 Run tests matching a pattern:
@@ -44,15 +46,15 @@ npx jest --testNamePattern="snapshot"
 
 This is a React component library providing resizable functionality via two main components:
 
-### Core Components (`lib/`)
+### Core Components (`lib/`, TypeScript)
 
-- **Resizable.js** - Stateless base component. Wraps a child element with draggable resize handles using `react-draggable`'s `DraggableCore`. Computes size changes from drag deltas, applies constraints, and invokes callbacks. Does not manage state - parent must set `width`/`height` props from callback data.
+- **Resizable.tsx** - Stateless base component. Wraps a child element with draggable resize handles using `react-draggable`'s `DraggableCore`. Computes size changes from drag deltas, applies constraints, and invokes callbacks. Does not manage state - parent must set `width`/`height` props from callback data.
 
-- **ResizableBox.js** - Stateful wrapper around `<Resizable>`. Manages width/height state internally and renders a `<div>` with those dimensions. Simpler API for common use cases.
+- **ResizableBox.tsx** - Stateful wrapper around `<Resizable>`. Manages width/height state internally and renders a `<div>` with those dimensions. Simpler API for common use cases.
 
-- **propTypes.js** - Shared Flow types and PropTypes definitions. Exports `resizableProps` object and types like `ResizeHandleAxis`, `ResizeCallbackData`, etc.
+- **propTypes.ts** - Shared TypeScript types and PropTypes definitions. Exports `resizableProps` object and types like `ResizeHandleAxis`, `ResizeCallbackData`, etc.
 
-- **utils.js** - Helper `cloneElement()` that merges `style` and `className` when cloning React elements.
+- **utils.ts** - Helper `cloneElement()` that merges `style` and `className` when cloning React elements.
 
 ### Key Implementation Details
 
@@ -69,8 +71,8 @@ This is a React component library providing resizable functionality via two main
 
 ### Build Output
 
-`yarn build` transpiles `lib/*.js` to `build/` and copies source files as `*.js.flow` for Flow consumers.
+`yarn build` transpiles `lib/*.{ts,tsx}` to `build/` with Babel and emits `.d.ts` files with `tsc --project tsconfig.build.json`. The build-artifact suite in `__tests__/integration/end-to-end.test.tsx` only runs when `build/` exists, so build before `yarn test` (CI does).
 
 ## Testing
 
-Tests use Jest with Enzyme for shallow/mount rendering. Test files in `__tests__/` mirror the lib structure. Snapshot tests verify render output; unit tests verify resize behavior, constraint handling, and callback data.
+Tests use Jest with `@testing-library/react` (jsdom). Test files are in `__tests__/` (`Resizable.test.tsx`, `ResizableBox.test.tsx`, `ssr.test.ts`, `integration/`). Snapshot tests verify render output; unit tests verify resize behavior, constraint handling, and callback data; the integration tests drive real DOM events through `react-draggable`.

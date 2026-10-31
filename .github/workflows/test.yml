@@ -11,9 +11,18 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      # Corepack goes first so setup-node's yarn cache lookup runs the version
+      # pinned in package.json.
+      - name: Enable Corepack
+        run: corepack enable
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -22,7 +31,7 @@ jobs:
           cache: yarn
 
       - name: Install Node.js dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Lint
         run: yarn lint
@@ -30,11 +39,13 @@ jobs:
       - name: Type-check
         run: yarn typecheck
 
-      - name: Run tests
-        run: yarn test
-
+      # Build before the tests: the build-artifact suite in
+      # __tests__/integration/end-to-end.test.tsx only runs when build/ exists.
       - name: Build (verify .d.ts emission)
         run: yarn build
+
+      - name: Run tests
+        run: yarn test
 
       - name: Smoke-test built artifact
         run: node ./__tests__/integration/smoke.cjs

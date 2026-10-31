@@ -52,5 +52,6 @@ jobs:
           npm-token: ${{ secrets.NPM_TOKEN }}
           provenance: true
           build-command: |
-            yarn
+            corepack enable
+            yarn install --immutable
             yarn build
