@@ -1,0 +1,6 @@
+{
+  "name": "react-resizable-golden-browser",
+  "private": true,
+  "scripts": {"test": "node run.cjs"},
+  "devDependencies": {"playwright": "1.62.1"}
+}
