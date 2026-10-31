@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
-Yarn 4, pinned in `package.json` and run through Corepack: run `corepack enable` once, then `yarn install`.
+Yarn 4, pinned in `package.json` and run through Corepack: run `corepack enable` once, then `yarn install`. Use Node.js 24 (what CI runs). Node.js 25 and later no longer bundle Corepack; there, install it first with `npm install -g corepack`.
 
 ```bash
 # Install dependencies

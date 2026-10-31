@@ -11,9 +11,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       # Corepack goes first so setup-node's yarn cache lookup runs the version
       # pinned in package.json.
