@@ -58,6 +58,12 @@ function inputs(axis: string): Input[] {
     initial = recorder.dom();
     return (scenario.active ?? scenario.handles).map(axis => ({axis, inputs: inputs(axis)}));
   },
+  // Real frames run between separate gestures. Drain the previous gesture's
+  // scheduled cleanup, unrecorded, so its native selection cannot leak into
+  // the next mousedown (Chromium would start a native drag from it).
+  async settle() {
+    await React.act(async () => { for (const callback of frames.splice(0)) callback(0); });
+  },
   origin(axis: string) {
     const handle = recorder.handles()[scenario.handles.indexOf(axis as any)];
     const rect = handle.getBoundingClientRect();

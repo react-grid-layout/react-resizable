@@ -69,6 +69,7 @@ async function main() {
       await page.goto(url);
       const gestures = await page.evaluate(name => window.goldenBrowser.mount(name), name);
       for (const gesture of gestures) {
+        await page.evaluate(() => window.goldenBrowser.settle());
         const origin = await page.evaluate(axis => window.goldenBrowser.origin(axis), gesture.axis);
         await page.mouse.move(origin.x, origin.y);
         for (const input of gesture.inputs) {

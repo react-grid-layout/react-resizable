@@ -49,8 +49,10 @@ coordinates relative to the offset parent. This makes north/west correction
 observable. The layout patch restores the original own property descriptors,
 including the absence of a descriptor. It does not stub drag handlers.
 
-Animation frames drain at an explicit checkpoint so selection cleanup does not
-depend on wall-clock timing. The recorder never reads layout itself.
+Animation frames drain at explicit checkpoints so selection cleanup does not
+depend on wall-clock timing. Frames queued by one gesture drain, unrecorded,
+before the next gesture starts, as real frames would between separate drags.
+The final gesture's frames drain in the recorded `animation-frame` step. The recorder never reads layout itself.
 
 ## Known bugs
 
