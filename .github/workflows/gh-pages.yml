@@ -13,6 +13,12 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
 
+      # Pin the Node.js that bundles Corepack (Node.js 25+ does not).
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
       - name: Install and Build
         run: |
           corepack enable
