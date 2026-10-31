@@ -17,15 +17,18 @@ jobs:
 
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+
+      - name: Enable Corepack
+        run: corepack enable
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: 24
 
       - name: Install Node.js dependencies
-        run: yarn
+        run: yarn install --immutable
 
-      - name: Run ESLint/Flow
+      - name: Run ESLint
         run: yarn lint

@@ -15,7 +15,8 @@ jobs:
 
       - name: Install and Build
         run: |
-          yarn
+          corepack enable
+          yarn install --immutable
           yarn build-example
           mkdir -p dist
           cp -r examples dist/examples
