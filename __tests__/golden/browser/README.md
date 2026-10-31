@@ -6,18 +6,18 @@ lib source ─▶ webpack ─▶ Chromium mouse input ─▶ shared recorder
 jsdom .golden.json ───────────────────────────────────┴─▶ exact comparison
 ```
 
-Install this directory's pinned Playwright dependency separately when needed:
+Run it locally:
 
 ```sh
-npm install --prefix __tests__/golden/browser
-__tests__/golden/browser/node_modules/.bin/playwright install chromium
+yarn playwright install chromium
 yarn golden:browser
 ```
 
-The runner never downloads dependencies or browsers. `PLAYWRIGHT_MODULE` can
-point to an existing Playwright installation. `PLAYWRIGHT_CHROMIUM_EXECUTABLE`
-can select an existing Chromium executable when its cached revision differs
-from Playwright's default. The root package does not depend on Playwright.
+`playwright` is a devDependency at the repo root, and CI runs this check after
+the unit tests. The runner never downloads browsers. `PLAYWRIGHT_MODULE` can
+point to another Playwright installation, and `PLAYWRIGHT_CHROMIUM_EXECUTABLE`
+can select an existing Chromium when the cached revision differs from
+Playwright's default.
 
 The shared `browserScenarios` select both components, all eight handles, both
 anchors, scale changes, and current edge-case behavior. Every case uses real

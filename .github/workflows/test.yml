@@ -49,3 +49,11 @@ jobs:
 
       - name: Smoke-test built artifact
         run: node ./__tests__/integration/smoke.cjs
+
+      - name: Install Playwright Chromium
+        run: yarn playwright install --with-deps chromium
+
+      # Replays the browser scenarios with real Chromium input and fails if any
+      # trace differs from its jsdom golden file.
+      - name: Browser cross-check of golden traces
+        run: yarn golden:browser
