@@ -16,7 +16,7 @@ yarn test
 # Run tests in watch mode
 yarn unit
 
-# Lint (ESLint)
+# Lint (oxlint)
 yarn lint
 
 # Type check only (tsc --noEmit)
@@ -64,10 +64,6 @@ This is a React component library providing resizable functionality via two main
 - Position tracking via `lastHandleRect` compensates for element repositioning during north/west drags
 - `transformScale` prop adjusts deltas when parent has CSS transform scaling
 - **Delta base is `lastSize`, not `props.width/height`** (see PR #255). Between consecutive `onResize` calls, the parent may not have re-rendered yet, so `this.props.width` is stale. The component accumulates from `lastSize` to avoid drift. Consequence: `dimensionsChanged` must also be compared against the base (`baseWidth`/`baseHeight`), not props, otherwise zero-delta calls fire spurious callbacks.
-
-## Dependency Notes
-
-- **ESLint is pinned to `^9.x`**. ESLint 10 removed `scopeManager.addGlobals`, which `@babel/eslint-parser` 7.x still calls (`TypeError: scopeManager.addGlobals is not a function`). The parser fix lives in v8 RCs, but those require Babel core v8 (also pre-release). Stay on ESLint 9 until both stabilize together.
 
 ### Build Output
 
