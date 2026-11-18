@@ -5,9 +5,7 @@
     "correctness": "off"
   },
   "env": {
-    "builtin": true,
-    "browser": true,
-    "node": true
+    "builtin": true
   },
   "rules": {
     "constructor-super": "error",
@@ -78,6 +76,17 @@
       ],
       "rules": {
         "no-unused-vars": "off"
+      },
+      "globals": {
+        "window": "readonly",
+        "document": "readonly",
+        "console": "readonly",
+        "require": "readonly",
+        "module": "readonly",
+        "exports": "readonly",
+        "__dirname": "readonly",
+        "process": "readonly",
+        "global": "readonly"
       }
     },
     {
@@ -120,8 +129,28 @@
         "jest",
         "typescript"
       ],
-      "env": {
-        "jest": true
+      "globals": {
+        "window": "readonly",
+        "document": "readonly",
+        "console": "readonly",
+        "HTMLElement": "readonly",
+        "HTMLDivElement": "readonly",
+        "HTMLSpanElement": "readonly",
+        "Element": "readonly",
+        "DOMRect": "readonly",
+        "require": "readonly",
+        "module": "readonly",
+        "exports": "readonly",
+        "__dirname": "readonly",
+        "process": "readonly",
+        "global": "readonly",
+        "jest": "readonly",
+        "describe": "readonly",
+        "test": "readonly",
+        "expect": "readonly",
+        "beforeEach": "readonly",
+        "afterEach": "readonly",
+        "it": "readonly"
       }
     }
   ]
