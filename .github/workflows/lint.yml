@@ -34,5 +34,5 @@ jobs:
       - name: Install Node.js dependencies
         run: yarn install --immutable
 
-      - name: Run ESLint
+      - name: Run oxlint
         run: yarn lint
